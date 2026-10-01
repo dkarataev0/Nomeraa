@@ -4,13 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#07090d">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Nomeraa">
-<link rel="manifest" href="./manifest.webmanifest?v=6.2">
+<link rel="manifest" href="./manifest.webmanifest?v=6">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <title>Nomeraa</title>
 <style>
@@ -183,45 +180,6 @@ a{color:var(--cyan)}
 
 .toast{position:fixed;left:50%;bottom:calc(94px + env(safe-area-inset-bottom));transform:translate(-50%,14px);z-index:300;background:#151d25;border:1px solid var(--line2);color:#e9f1f6;padding:10px 13px;border-radius:12px;box-shadow:0 15px 45px #000a;font-size:10px;font-weight:850;opacity:0;pointer-events:none;transition:.22s;max-width:min(90%,420px);text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}
 
-
-#effectsLayer{position:fixed;inset:0;pointer-events:none;z-index:145;overflow:hidden}
-.pc{transition:transform .18s ease,filter .18s ease}
-.pc.spinning{filter:blur(.35px);transform:translateY(-1px) scale(1.01)}
-.plate{transition:box-shadow .22s ease,border-color .22s ease,transform .18s ease}
-.plate.rolling{box-shadow:0 24px 52px #0009,inset 0 0 0 2px #c8c7bf,0 0 0 1px #2c6a9b44}
-.plate.rolling .pc{color:#0a0c0e}
-.plate.rare-hit{animation:plateRareHit .9s ease}
-.plate.epic-hit{animation:plateEpicHit 1.15s ease}
-.plate.special-hit{animation:plateSpecialHit 1.3s ease}
-@keyframes plateRareHit{
-  0%{transform:scale(1);box-shadow:0 20px 45px #0008,inset 0 0 0 2px #c8c7bf,0 0 0 0 rgba(116,200,255,.0)}
-  30%{transform:scale(1.014);box-shadow:0 26px 65px #0009,inset 0 0 0 2px #c8c7bf,0 0 28px 6px rgba(116,200,255,.26)}
-  100%{transform:scale(1);box-shadow:0 20px 45px #0008,inset 0 0 0 2px #c8c7bf}
-}
-@keyframes plateEpicHit{
-  0%{transform:scale(1)}
-  22%{transform:scale(1.02);box-shadow:0 30px 72px #000a,inset 0 0 0 2px #c8c7bf,0 0 38px 10px rgba(233,197,107,.35)}
-  55%{transform:scale(.996)}
-  100%{transform:scale(1)}
-}
-@keyframes plateSpecialHit{
-  0%{transform:scale(1)}
-  18%{transform:scale(1.03) rotate(.2deg);box-shadow:0 34px 80px #000a,inset 0 0 0 2px #c8c7bf,0 0 46px 12px rgba(239,104,104,.34)}
-  40%{transform:scale(.995) rotate(-.15deg)}
-  100%{transform:scale(1)}
-}
-.spin-grid.is-locked .btn{opacity:.55}
-.spin-grid .btn.busy{background:linear-gradient(180deg,#1b2530,#151d25);color:#8ea1af}
-.result-box.rare:before{background:radial-gradient(circle,#55b7ff45,transparent 45%)}
-.spark{position:absolute;width:10px;height:10px;border-radius:50%;opacity:.94;will-change:transform,opacity;animation:sparkFly 850ms ease-out forwards;box-shadow:0 0 18px currentColor}
-.spark.epic{animation-duration:1050ms}.spark.special{animation-duration:1250ms}
-@keyframes sparkFly{
-  0%{transform:translate(0,0) scale(.2);opacity:0}
-  10%{opacity:1}
-  100%{transform:translate(var(--dx),var(--dy)) scale(1.25);opacity:0}
-}
-.roll-lock-note{font-size:9px;color:#6f7f8d;margin-top:8px;text-align:center}
-
 @media(min-width:760px){
  body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 50% 20%,#1b2a36,transparent 32%);pointer-events:none}
  .app{margin-top:18px;margin-bottom:18px;min-height:calc(100dvh - 36px);border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 35px 100px #0009;background:#080b0f}
@@ -246,7 +204,7 @@ a{color:var(--cyan)}
 <div class="app" id="app">
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="brand"><div class="mini-logo">77</div><div><b>Nomeraa</b><small id="buildTag">PREMIUM · V6.2</small></div></div>
+      <div class="brand"><div class="mini-logo">77</div><div><b>Nomeraa</b><small id="buildTag">PREMIUM · V6</small></div></div>
       <div class="top-money"><small>НАЛИЧНЫЕ</small><b class="money" id="headerCash">75 000 ₽</b></div>
     </div>
   </header>
@@ -257,8 +215,6 @@ a{color:var(--cyan)}
       <div class="cash money" id="homeWorth">295 000 ₽</div>
       <div class="small">Наличные + коллекция + автомобили</div>
       <div class="subrow"><span class="pill good" id="homeRank">Новичок</span><span class="pill" id="homeLevel">Ур. 1</span><span class="pill gold" id="homeRep">0 реп.</span></div>
-      <div class="progress" style="margin-top:12px"><i id="capitalProgress"></i></div>
-      <div class="small" id="capitalGoal" style="margin-top:6px">До следующей цели</div>
     </div>
 
     <div class="section-title"><h2>Разделы</h2><span>Быстрый доступ</span></div>
@@ -303,11 +259,11 @@ a{color:var(--cyan)}
       </div>
 
       <div class="spin-grid">
-        <button class="btn" id="rollDigits">Цифры · 1 350 ₽</button>
-        <button class="btn" id="rollLetters">Буквы · 1 350 ₽</button>
-        <button class="btn ghost" id="changeRegion">Регион · 800 ₽</button>
-        <button class="btn gold" id="premiumRoll">Premium-поиск · 9 000 ₽</button>
-        <button class="btn primary wide" id="rollAll">Новый номер · 2 500 ₽</button>
+        <button class="btn" id="rollDigits">Цифры · 700 ₽</button>
+        <button class="btn" id="rollLetters">Буквы · 700 ₽</button>
+        <button class="btn ghost" id="changeRegion">Регион · 500 ₽</button>
+        <button class="btn gold" id="premiumRoll">Premium-поиск · 6 500 ₽</button>
+        <button class="btn primary wide" id="rollAll">Новый номер · 1 500 ₽</button>
       </div>
 
       <div class="generator-summary">
@@ -317,10 +273,9 @@ a{color:var(--cyan)}
 
       <div class="row" style="margin-top:10px">
         <button class="btn green" style="flex:1" id="saveNumber">Сохранить</button>
-        <button class="btn ghost" style="flex:1" id="registerNumber">Регистрация · 2 000 ₽</button>
+        <button class="btn ghost" style="flex:1" id="registerNumber">Регистрация · 1 500 ₽</button>
       </div>
       <div class="small" id="generatorHint" style="text-align:center;margin-top:9px">Для установки номера на автомобиль его нужно зарегистрировать.</div>
-<div class="roll-lock-note" id="rollLockNote">Во время анимации генерация временно блокируется.</div>
     </div>
 
     <div id="collectionTab" class="hidden">
@@ -388,7 +343,7 @@ a{color:var(--cyan)}
   <div class="sheet-card">
     <div class="sheet-handle"></div>
     <div class="sheet-title">Выбор региона</div>
-    <div class="small" style="margin-bottom:10px">Смена региона стоит 800 ₽. Premium-регионы встречаются реже.</div>
+    <div class="small" style="margin-bottom:10px">Смена региона стоит 500 ₽. Premium-регионы встречаются реже.</div>
     <div class="region-grid" id="regionGrid"></div>
   </div>
 </div>
@@ -409,14 +364,13 @@ a{color:var(--cyan)}
   </div>
 </div>
 
-<div id="effectsLayer"></div>
 <div class="toast" id="toast"></div>
 
 <script>
 (()=>{
 'use strict';
 
-const BUILD='6.2.0';
+const BUILD='6.0.0';
 const KEY='nomeraa-v6';
 const OLD_KEYS=['nomeraGovUI-v1','nomeraa-v5'];
 const $=s=>document.querySelector(s);
@@ -428,15 +382,15 @@ const PREMIUM_REGIONS=['77','97','99','177','197','199','777','797','799'];
 
 const CAR_CATALOG=[
   {id:'granta',name:'Lada Granta',tier:'Стартовый',price:0,resale:220000,unlockRep:0,
-   photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/2025_Lada_Granta_sedan_black_front.jpg/1280px-2025_Lada_Granta_sedan_black_front.jpg'},
+   photo:'./car-placeholder.svg'},
   {id:'vesta',name:'Lada Vesta Sport',tier:'Sport',price:480000,resale:420000,unlockRep:20,
-   photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/2019_Lada_Vesta_Sport_grey_front.jpg/1280px-2019_Lada_Vesta_Sport_grey_front.jpg'},
+   photo:'./car-placeholder.svg'},
   {id:'camry',name:'Toyota Camry',tier:'Business',price:1250000,resale:1100000,unlockRep:60,
-   photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/2019_Toyota_Camry_%28XV70%29_2.5_V_%28front%29%2C_East_Surabaya.jpg/1280px-2019_Toyota_Camry_%28XV70%29_2.5_V_%28front%29%2C_East_Surabaya.jpg'},
+   photo:'./car-placeholder.svg'},
   {id:'bmw5',name:'BMW 5 Series',tier:'Premium',price:3800000,resale:3350000,unlockRep:180,
-   photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/BMW_G30_fr.jpg/1280px-BMW_G30_fr.jpg'},
+   photo:'./car-placeholder.svg'},
   {id:'g63',name:'Mercedes-AMG G63',tier:'Elite',price:8900000,resale:7800000,unlockRep:400,
-   photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Mercedes-Benz_G63_AMG_%28W463%29_front.JPG/1280px-Mercedes-Benz_G63_AMG_%28W463%29_front.JPG'}
+   photo:'./car-placeholder.svg'}
 ];
 
 const BUSINESSES=[
@@ -475,16 +429,11 @@ let marketTab='market';
 let lastRare=null;
 let timerHandle=null;
 let audioCtx=null;
-let isRolling=false;
-let spinCooldownUntil=0;
 
 function money(n){return Math.max(0,Math.round(n)).toLocaleString('ru-RU')+' ₽'}
 function pick(a){return a[Math.floor(Math.random()*a.length)]}
 function clamp(n,a,b){return Math.max(a,Math.min(b,n))}
-function today(){
-  const d=new Date(),y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
-  return `${y}-${m}-${day}`
-}
+function today(){return new Date().toISOString().slice(0,10)}
 function carDef(id){return CAR_CATALOG.find(c=>c.id===id)}
 function ownedCar(id){return S.cars.find(c=>c.id===id&&c.owned)}
 function currentCode(){const c=S.current;return `${c.letters[0]}${c.digits}${c.letters[1]}${c.letters[2]} ${c.region}`}
@@ -523,85 +472,6 @@ function tone(f=500,d=.055,gain=.022,type='sine'){
     o.connect(g);g.connect(audioCtx.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+d);o.stop(audioCtx.currentTime+d);
   }catch{}
 }
-
-function playSpinStart(){
-  [0,55,110,165].forEach((ms,i)=>setTimeout(()=>tone(200+i*45,.024,.007,'square'),ms))
-}
-function playSpinStop(order=0){
-  setTimeout(()=>tone(420+order*70,.028,.008,'triangle'),order*46)
-}
-function playRaritySound(cls=''){
-  if(cls==='rare'){
-    [[620,.05,.018,'triangle'],[760,.08,.022,'triangle']].forEach((x,i)=>setTimeout(()=>tone(...x),i*85))
-  }else if(cls==='epic'){
-    [[520,.05,.018,'triangle'],[760,.07,.024,'triangle'],[980,.12,.03,'sine']].forEach((x,i)=>setTimeout(()=>tone(...x),i*90))
-  }else if(cls==='special'){
-    [[430,.06,.02,'sawtooth'],[650,.06,.022,'triangle'],[910,.1,.028,'triangle'],[1180,.16,.034,'sine']].forEach((x,i)=>setTimeout(()=>tone(...x),i*95))
-  }else{
-    tone(360,.045,.011,'triangle')
-  }
-}
-function flashPlate(cls=''){
-  const plate=$('#plate');
-  ['rare-hit','epic-hit','special-hit'].forEach(c=>plate.classList.remove(c));
-  if(!cls)return;
-  const cname=cls==='special'?'special-hit':cls==='epic'?'epic-hit':'rare-hit';
-  plate.classList.add(cname);
-  setTimeout(()=>plate.classList.remove(cname),1400)
-}
-function spawnSparks(cls='rare'){
-  const layer=$('#effectsLayer');
-  const rect=$('#plate').getBoundingClientRect();
-  const colors=cls==='special'?['#ff7a7a','#ffc1c1','#ffd37f']:cls==='epic'?['#e9c56b','#ffe49d','#ffd27a']:['#74c8ff','#d4f1ff','#8de0ff'];
-  const count=cls==='special'?28:cls==='epic'?22:16;
-  for(let i=0;i<count;i++){
-    const s=document.createElement('span');
-    s.className='spark '+cls;
-    const ang=(Math.PI*2/count)*i+(Math.random()*.28);
-    const dist=(cls==='special'?150:cls==='epic'?126:102)+(Math.random()*42);
-    const x=Math.cos(ang)*dist;
-    const y=Math.sin(ang)*dist;
-    s.style.left=(rect.left+rect.width/2)+'px';
-    s.style.top=(rect.top+rect.height/2)+'px';
-    s.style.setProperty('--dx',x.toFixed(2)+'px');
-    s.style.setProperty('--dy',y.toFixed(2)+'px');
-    s.style.color=colors[i%colors.length];
-    const size=cls==='special'?12:cls==='epic'?10:8;
-    s.style.width=size+'px';
-    s.style.height=size+'px';
-    layer.appendChild(s);
-    setTimeout(()=>s.remove(),1450)
-  }
-}
-function setRollButtonsState(disabled,label=''){
-  ['rollDigits','rollLetters','changeRegion','premiumRoll','rollAll','saveNumber','registerNumber'].forEach(id=>{
-    const el=$('#'+id); if(el) el.disabled=disabled || (id==='registerNumber' && S.current.registered)
-  });
-  const wrap=document.querySelector('.spin-grid');
-  if(wrap) wrap.classList.toggle('is-locked',disabled);
-  const main=$('#rollAll');
-  if(main){
-    main.classList.toggle('busy',disabled);
-    main.textContent=disabled?(label||'Генерация...'):'Новый номер · 2 500 ₽'
-  }
-  const note=$('#rollLockNote');
-  if(note){
-    if(disabled) note.textContent='Генерация идёт... дождись завершения анимации.';
-    else if(Date.now()<spinCooldownUntil) note.textContent='Небольшая пауза для защиты от спама.';
-    else note.textContent='Во время анимации генерация временно блокируется.'
-  }
-}
-function refreshRollAvailability(){
-  const locked=isRolling || Date.now()<spinCooldownUntil;
-  if(locked){ setRollButtonsState(true) }
-  else{ setRollButtonsState(false) }
-}
-function canStartRoll(){
-  if(isRolling){toast('Подожди, номер ещё крутится'); return false}
-  if(Date.now()<spinCooldownUntil){toast('Слишком быстро — дождись окончания паузы'); return false}
-  return true
-}
-
 function addXP(v){
   S.xp+=v;
   while(S.xp>=xpNeed()){S.xp-=xpNeed();S.level++;S.rep+=3;toast(`Новый уровень: ${S.level}`);tone(760,.12,.03,'triangle')}
@@ -687,47 +557,48 @@ function classify(){
   const hundreds=d[1]==='0'&&d[2]==='0';
   const sameLetters=L[0]===L[1]&&L[1]===L[2];
   const outerLetters=L[0]===L[2];
+  const repeatedDigits=new Set(d).size===1;
   const specialSeries=(L.join('')==='АМР'||L.join('')==='ЕКХ'||L.join('')==='СКР');
   let score=0;
-  if(palindrome)score+=1;
-  if(hundreds)score+=1;
-  if(triple)score+=4;
-  if(outerLetters)score+=1;
-  if(sameLetters)score+=4;
-  if(PREMIUM_REGIONS.includes(r))score+=1;
-  if(specialSeries)score+=7;
+  if(palindrome)score+=2;
+  if(hundreds)score+=2;
+  if(triple||repeatedDigits)score+=6;
+  if(outerLetters)score+=2;
+  if(sameLetters)score+=7;
+  if(PREMIUM_REGIONS.includes(r))score+=2;
+  if(specialSeries)score+=8;
 
   let label='Обычный',cls='';
-  if(score>=13){label='Спецсерия';cls='special'}
-  else if(score>=9){label='Коллекционный';cls='epic'}
-  else if(score>=5){label='Очень редкий';cls='rare'}
-  else if(score>=3){label='Редкий';cls='rare'}
+  if(score>=17){label='Спецсерия';cls='special'}
+  else if(score>=12){label='Коллекционный';cls='epic'}
+  else if(score>=7){label='Очень редкий';cls='rare'}
+  else if(score>=4){label='Редкий';cls='rare'}
 
-  let value=700+score*1800;
-  if(triple)value+=7000;
-  if(sameLetters)value+=9000;
-  if(specialSeries)value+=45000;
-  if(['777','797','799'].includes(r))value+=7000;
+  let value=1200+score*2600;
+  if(triple)value+=9000;
+  if(sameLetters)value+=16000;
+  if(specialSeries)value+=65000;
+  if(['777','797','799'].includes(r))value+=12000;
   if(c.registered)value*=1.05;
   value=Math.round(value/100)*100;
-  return{score,label,cls,value,mult:(1+score*.14).toFixed(2)}
+  return{score,label,cls,value,mult:(1+score*.16).toFixed(2)}
 }
 
 function rareDigits(boost=1){
   const x=Math.random()/boost;
-  if(x<.008)return pick(['001','007','100','111','222','333','444','555','666','777','888','999']);
-  if(x<.035)return pick(['101','202','303','404','505','707','808','909','500','700','900']);
+  if(x<.025)return pick(['001','007','010','100','111','222','333','444','555','666','777','888','999']);
+  if(x<.09)return pick(['101','202','303','404','505','606','707','808','909','500','700','900']);
   return String(Math.floor(Math.random()*1000)).padStart(3,'0')
 }
 function rareLetters(boost=1){
   const x=Math.random()/boost;
-  if(x<.0025)return pick([['А','М','Р'],['Е','К','Х'],['С','К','Р']]);
-  if(x<.018){const l=pick(LETTERS);return[l,l,l]}
-  if(x<.06){const a=pick(LETTERS),b=pick(LETTERS);return[a,b,a]}
+  if(x<.009)return pick([['А','М','Р'],['Е','К','Х'],['С','К','Р']]);
+  if(x<.05){const l=pick(LETTERS);return[l,l,l]}
+  if(x<.13){const a=pick(LETTERS),b=pick(LETTERS);return[a,b,a]}
   return[pick(LETTERS),pick(LETTERS),pick(LETTERS)]
 }
 function randomRegion(premium=false){
-  if(premium||Math.random()<.08)return pick(PREMIUM_REGIONS);
+  if(premium||Math.random()<.13)return pick(PREMIUM_REGIONS);
   return pick(REGIONS)
 }
 
@@ -737,39 +608,25 @@ function setCell(name,val){
 }
 async function rollCell(name,target,pool,dur=520,loops=8){
   const cell=document.querySelector(`[data-cell="${name}"]`),t=cell.querySelector('.rolltrack'),h=cell.clientHeight||76;
-  const arr=[];
-  cell.classList.add('spinning');
-  for(let i=0;i<loops;i++)arr.push(pick(pool));
-  arr.push(target);
-  t.style.transition='none';
-  t.style.transform='translateY(0)';
-  t.innerHTML=arr.map(x=>`<span>${x}</span>`).join('');
-  await new Promise(requestAnimationFrame);
-  await new Promise(requestAnimationFrame);
-  t.style.transition=`transform ${dur}ms cubic-bezier(.1,.8,.13,1)`;
-  t.style.transform=`translateY(-${(arr.length-1)*h}px)`;
-  await new Promise(r=>setTimeout(r,dur+18));
-  setCell(name,target);
-  cell.classList.remove('spinning')
+  const arr=[];for(let i=0;i<loops;i++)arr.push(pick(pool));arr.push(target);
+  t.style.transition='none';t.style.transform='translateY(0)';t.innerHTML=arr.map(x=>`<span>${x}</span>`).join('');
+  await new Promise(requestAnimationFrame);await new Promise(requestAnimationFrame);
+  t.style.transition=`transform ${dur}ms cubic-bezier(.12,.73,.16,1)`;t.style.transform=`translateY(-${(arr.length-1)*h}px)`;
+  await new Promise(r=>setTimeout(r,dur+20));setCell(name,target)
 }
 async function animateCurrent(kind='all'){
-  const c=S.current,p=[],plate=$('#plate');
-  plate.classList.add('rolling');
-  playSpinStart();
+  const c=S.current,p=[];
   if(kind==='all'||kind==='digits'){
-    p.push(rollCell('d1',c.digits[0],DIGITS,520,10));
-    p.push((async()=>{await delay(70);return rollCell('d2',c.digits[1],DIGITS,620,11)})());
-    p.push((async()=>{await delay(145);return rollCell('d3',c.digits[2],DIGITS,720,12)})());
-    [0,1,2].forEach(i=>playSpinStop(i));
+    p.push(rollCell('d1',c.digits[0],DIGITS,470,8));
+    p.push((async()=>{await delay(55);return rollCell('d2',c.digits[1],DIGITS,535,9)})());
+    p.push((async()=>{await delay(110);return rollCell('d3',c.digits[2],DIGITS,610,10)})());
   }
   if(kind==='all'||kind==='letters'){
-    p.push((async()=>{await delay(100);return rollCell('l1',c.letters[0],LETTERS,560,9)})());
-    p.push((async()=>{await delay(175);return rollCell('l2',c.letters[1],LETTERS,660,10)})());
-    p.push((async()=>{await delay(250);return rollCell('l3',c.letters[2],LETTERS,760,11)})());
-    [3,4,5].forEach(i=>playSpinStop(i));
+    p.push((async()=>{await delay(90);return rollCell('l1',c.letters[0],LETTERS,520,8)})());
+    p.push((async()=>{await delay(155);return rollCell('l2',c.letters[1],LETTERS,600,9)})());
+    p.push((async()=>{await delay(220);return rollCell('l3',c.letters[2],LETTERS,680,10)})());
   }
-  await Promise.all(p);
-  plate.classList.remove('rolling')
+  await Promise.all(p)
 }
 function delay(ms){return new Promise(r=>setTimeout(r,ms))}
 
@@ -780,49 +637,30 @@ function newNumber(boost=1,premiumRegion=false){
   S.current.registered=false;
 }
 
-function collectionLimit(){return S.upgrades.dealer?60:24}
-function hasCollectionSpace(){
-  if(S.collection.length<collectionLimit())return true;
-  toast(`Коллекция заполнена: ${S.collection.length}/${collectionLimit()}`);
-  return false
-}
 function addCurrentToCollection(){
   const code=currentCode(),c=classify();
   const existing=S.collection.find(n=>n.code===code);
   if(existing){toast('Этот номер уже в коллекции');return false}
-  if(!hasCollectionSpace())return false
+  if(S.collection.length>=24&&!S.upgrades.dealer){toast('Лимит коллекции 24. Лицензия дилера расширяет до 60.');return false}
+  if(S.collection.length>=60){toast('Коллекция заполнена');return false}
   S.collection.push({id:Date.now()+Math.random(),code,value:c.value,label:c.label,registered:S.current.registered});
   S.rep+=Math.max(1,Math.floor(c.score/2));addXP(4+c.score);hist('Номер сохранён',0,code);save();return true
 }
 function showRareResult(){
   const c=classify();
-  if(c.score<7){
-    playRaritySound('');
-    flashPlate('');
-    return
-  }
+  if(c.score<7)return;
   lastRare={code:currentCode(),value:c.value,label:c.label,registered:S.current.registered};
-  const box=$('#resultBox');
-  box.className='result-box '+(c.cls||'');
+  const box=$('#resultBox');box.className='result-box '+(c.cls||'');
   $('#resultEyebrow').textContent=c.cls==='special'?'ИГРОВАЯ СПЕЦСЕРИЯ':c.cls==='epic'?'КОЛЛЕКЦИОННОЕ ВЫПАДЕНИЕ':'РЕДКОЕ ВЫПАДЕНИЕ';
-  $('#resultTitle').textContent=c.label;
-  $('#resultNumber').textContent=currentCode();
-  $('#resultValue').textContent=money(c.value);
+  $('#resultTitle').textContent=c.label;$('#resultNumber').textContent=currentCode();$('#resultValue').textContent=money(c.value);
   $('#resultSub').textContent=S.upgrades.appraiser?`Коэффициент редкости x${c.mult}`:'Экспертная оценка откроет коэффициент редкости.';
-  flashPlate(c.cls||'rare');
-  playRaritySound(c.cls||'rare');
-  spawnSparks(c.cls||'rare');
-  $('#resultModal').classList.add('show');
-  haptic(c.score>=12?[35,35,55]:25)
+  $('#resultModal').classList.add('show');haptic(c.score>=12?[35,35,55]:25);tone(c.score>=12?760:610,.1,.03,'triangle')
 }
 
 function renderAll(){
   ensureDaily();
   $('#headerCash').textContent=money(S.cash);
-  const worth=netWorth();$('#homeWorth').textContent=money(worth);
-  const goals=[500000,1000000,3000000,10000000],goal=goals.find(g=>worth<g)||10000000,prev=goals.filter(g=>g<goal).pop()||0;
-  $('#capitalProgress').style.width=(worth>=10000000?100:clamp((worth-prev)/(goal-prev)*100,0,100))+'%';
-  $('#capitalGoal').textContent=worth>=10000000?'Капитал 10 000 000 ₽ достигнут':`До цели ${money(goal)} осталось ${money(goal-worth)}`;
+  $('#homeWorth').textContent=money(netWorth());
   $('#homeRank').textContent=rank();
   $('#homeLevel').textContent=`Ур. ${S.level}`;
   $('#homeRep').textContent=`${S.rep} реп.`;
@@ -830,7 +668,7 @@ function renderAll(){
   $('#luckText').textContent=S.upgrades.vip?'Premium +10% скидка':'Базовый';
   $('#collectionCount').textContent=S.collection.length;
   $('#dailyDate').textContent=S.daily.date.split('-').reverse().join('.');
-  renderPlate();renderMissions();renderBusinesses();renderAssets();renderCollection();renderGarage();renderMarket();renderAuction();renderProfile();refreshRollAvailability();save()
+  renderPlate();renderMissions();renderBusinesses();renderAssets();renderCollection();renderGarage();renderMarket();renderAuction();renderProfile();save()
 }
 function renderPlate(){
   const c=S.current;
@@ -841,19 +679,14 @@ function renderPlate(){
   $('#registeredChip').textContent=c.registered?'Зарегистрирован':'Не зарегистрирован';
   $('#registeredChip').className='result-chip '+(c.registered?'rare':'');
   $('#registerNumber').disabled=c.registered;
-  $('#registerNumber').textContent=c.registered?'Зарегистрирован':`Регистрация · ${money(spinCost(2000))}`;
-  $('#generatorHint').textContent=S.upgrades.appraiser?`Коэффициент редкости: x${x.mult}`:'Для установки номера на автомобиль его нужно зарегистрировать.';
-  $('#rollDigits').textContent='Цифры · 1 350 ₽';
-  $('#rollLetters').textContent='Буквы · 1 350 ₽';
-  $('#changeRegion').textContent='Регион · 800 ₽';
-  $('#premiumRoll').textContent='Premium-поиск · 9 000 ₽';
-  if(!isRolling){$('#rollAll').textContent='Новый номер · 2 500 ₽'}
+  $('#registerNumber').textContent=c.registered?'Зарегистрирован':`Регистрация · ${money(spinCost(1500))}`;
+  $('#generatorHint').textContent=S.upgrades.appraiser?`Коэффициент редкости: x${x.mult}`:'Для установки номера на автомобиль его нужно зарегистрировать.'
 }
 function renderMissions(){
   const tasks=[
-    {key:'Rolls',title:'Охотник',desc:'Сделать 5 прокруток',cur:S.daily.rolls,max:5,reward:7000,xp:20},
-    {key:'Regs',title:'Регистратор',desc:'Зарегистрировать 2 номера',cur:S.daily.regs,max:2,reward:10000,xp:25},
-    {key:'Sales',title:'Перекуп',desc:'Продать 1 номер',cur:S.daily.sales,max:1,reward:12000,xp:30}
+    {key:'Rolls',title:'Охотник',desc:'Сделать 5 прокруток',cur:S.daily.rolls,max:5,reward:5000,xp:20},
+    {key:'Regs',title:'Регистратор',desc:'Зарегистрировать 2 номера',cur:S.daily.regs,max:2,reward:7000,xp:25},
+    {key:'Sales',title:'Перекуп',desc:'Продать 1 номер',cur:S.daily.sales,max:1,reward:9000,xp:30}
   ];
   const g=$('#missions');g.innerHTML='';
   for(const t of tasks){
@@ -962,7 +795,6 @@ function renderMarket(){
 }
 function buyMarket(id){
   const x=S.market.items.find(i=>i.id===id);if(!x||x.bought)return;
-  if(!hasCollectionSpace())return;
   if(S.cash<x.price){toast('Недостаточно денег');return}
   S.cash-=x.price;S.spent+=x.price;x.bought=true;S.collection.push({id:Date.now()+Math.random(),code:x.code,value:x.value,label:x.label,registered:false});hist('Покупка на рынке',-x.price,x.code);addXP(5);save();renderAll();toast(`${x.code} куплен`)
 }
@@ -995,7 +827,6 @@ function placeBid(id){
 }
 function buyout(id){
   const x=S.auction.lots.find(l=>l.id===id);if(!x)return;
-  if(!hasCollectionSpace())return;
   const price=Math.round(x.value*1.18/100)*100;
   if(S.cash<price){toast('Недостаточно денег');return}
   S.cash-=price;S.spent+=price;S.collection.push({id:Date.now()+Math.random(),code:x.code,value:x.value,label:x.label,registered:false});S.auction.lots=S.auction.lots.filter(l=>l.id!==id);hist('Выкуп на аукционе',-price,x.code);S.rep+=3;addXP(8);save();renderAll();toast(`Лот ${x.code} выкуплен`)
@@ -1013,15 +844,14 @@ function auctionTick(){
     }
     if(x.sec<=0){
       if(x.leader==='user'){
-        if(!hasCollectionSpace()){toast(`Лот ${x.code} не получен: коллекция заполнена`)}
-        else if(S.cash>=x.bid){
+        if(S.cash>=x.bid){
           S.cash-=x.bid;S.spent+=x.bid;S.collection.push({id:Date.now()+Math.random(),code:x.code,value:x.value,label:x.label,registered:false});hist('Победа на аукционе',-x.bid,x.code);S.rep+=4;addXP(10);toast(`Вы выиграли ${x.code}`)
         }else toast(`Лот ${x.code} проигран: не хватило денег`)
       }
       S.auction.lots=S.auction.lots.filter(l=>l.id!==x.id)
     }
   }
-  if(!S.auction.lots.length){S.auction.lots=[];ensureAuction()}
+  if(!S.auction.lots.length)setTimeout(()=>{S.auction.lots=[];ensureAuction();renderAuction()},4000);
   save();if(activeView==='market'&&marketTab==='auction')renderAuction()
 }
 
@@ -1061,35 +891,20 @@ function setMarketTab(tab){
 }
 
 async function doRoll(kind,boost=1,premium=false,cost=1500){
-  if(!canStartRoll())return;
-  isRolling=true;
-  setRollButtonsState(true,'Генерация...');
-  if(!spend(cost,kind==='all'?'Прокрутка номера':kind==='digits'?'Прокрутка цифр':kind==='letters'?'Прокрутка букв':'Premium-поиск')){
-    isRolling=false;
-    refreshRollAvailability();
-    return
-  }
-  S.daily.rolls++;
-  addXP(kind==='all'?4:2);
+  if(!spend(cost,kind==='all'?'Прокрутка номера':kind==='digits'?'Прокрутка цифр':kind==='letters'?'Прокрутка букв':'Premium-поиск'))return;
+  S.daily.rolls++;addXP(kind==='all'?4:2);
   if(kind==='digits'){S.current.digits=rareDigits(boost);S.current.registered=false}
   else if(kind==='letters'){S.current.letters=rareLetters(boost);S.current.registered=false}
   else{newNumber(boost,premium)}
-  renderPlate();
-  await animateCurrent(kind==='premium'?'all':kind);
-  spinCooldownUntil=Date.now()+650;
-  isRolling=false;
-  renderAll();
-  showRareResult();
-  refreshRollAvailability();
-  setTimeout(refreshRollAvailability,700)
+  renderPlate();await animateCurrent(kind==='premium'?'all':kind);renderAll();showRareResult()
 }
 
-function openRegions(){if(!canStartRoll())return;renderRegionGrid();$('#regionSheet').classList.add('show')}
+function openRegions(){renderRegionGrid();$('#regionSheet').classList.add('show')}
 function renderRegionGrid(){
   const g=$('#regionGrid');g.innerHTML='';
   for(const r of REGIONS){
     const b=document.createElement('button');b.textContent=r;b.classList.toggle('active',r===S.current.region);
-    b.onclick=()=>{if(r===S.current.region){$('#regionSheet').classList.remove('show');return}if(!spend(800,'Смена региона'))return;S.current.region=r;S.current.registered=false;$('#regionSheet').classList.remove('show');renderAll();toast(`Регион ${r}`)};g.appendChild(b)
+    b.onclick=()=>{if(r===S.current.region){$('#regionSheet').classList.remove('show');return}if(!spend(500,'Смена региона'))return;S.current.region=r;S.current.registered=false;$('#regionSheet').classList.remove('show');renderAll();toast(`Регион ${r}`)};g.appendChild(b)
   }
 }
 
@@ -1101,16 +916,16 @@ $('#startBtn').onclick=startApp;
 $$('[data-go]').forEach(b=>b.onclick=()=>navigate(b.dataset.go));
 $$('[data-numtab]').forEach(b=>b.onclick=()=>setNumberTab(b.dataset.numtab));
 $$('[data-market-tab]').forEach(b=>b.onclick=()=>setMarketTab(b.dataset.marketTab));
-$('#rollDigits').onclick=()=>doRoll('digits',1,false,1350);
-$('#rollLetters').onclick=()=>doRoll('letters',1,false,1350);
-$('#rollAll').onclick=()=>doRoll('all',1,false,2500);
-$('#premiumRoll').onclick=()=>doRoll('premium',3.2,true,9000);
+$('#rollDigits').onclick=()=>doRoll('digits',1,false,700);
+$('#rollLetters').onclick=()=>doRoll('letters',1,false,700);
+$('#rollAll').onclick=()=>doRoll('all',1,false,1500);
+$('#premiumRoll').onclick=()=>doRoll('premium',3.2,true,6500);
 $('#changeRegion').onclick=openRegions;
 $('#regionSheet').onclick=e=>{if(e.target===$('#regionSheet'))$('#regionSheet').classList.remove('show')};
 $('#saveNumber').onclick=()=>{if(addCurrentToCollection()){renderAll();toast('Номер сохранён')}};
 $('#registerNumber').onclick=()=>{
   if(S.current.registered)return;
-  if(!spend(2000,'Регистрация номера'))return;
+  if(!spend(1500,'Регистрация номера'))return;
   S.current.registered=true;S.daily.regs++;S.rep+=2;addXP(6);hist('Номер зарегистрирован',0,currentCode());
   const inCol=S.collection.find(n=>n.code===currentCode());if(inCol){inCol.registered=true;inCol.value=classify().value}
   save();renderAll();toast('Регистрация завершена')
@@ -1133,11 +948,10 @@ function boot(){
   document.documentElement.dataset.ready='1'
 }
 boot();
-refreshRollAvailability();
 
-if('serviceWorker' in navigator){
+if(false && 'serviceWorker' in navigator){
   window.addEventListener('load',async()=>{
-    try{const r=await navigator.serviceWorker.register('./service-worker.js?v=6.2',{updateViaCache:'none'});r.update()}catch{}
+    try{const r=await navigator.serviceWorker.register('./service-worker.js?v=6',{updateViaCache:'none'});r.update()}catch{}
   })
 }
 })();

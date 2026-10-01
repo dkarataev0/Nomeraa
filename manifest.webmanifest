@@ -1,7 +1,7 @@
 {
-  "name": "Nomeraa — Premium",
+  "name": "Nomeraa — Premium V6.2",
   "short_name": "Nomeraa",
-  "start_url": "./",
+  "start_url": "./?app=6.2",
   "scope": "./",
   "display": "standalone",
   "background_color": "#07090d",
