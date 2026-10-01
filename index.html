@@ -2,1179 +2,974 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0d1117">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#07090d">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Номера">
-<link rel="manifest" href="./manifest.webmanifest?v=5.1">
+<meta name="apple-mobile-web-app-title" content="Nomeraa">
+<link rel="manifest" href="./manifest.webmanifest?v=6">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
-<title>Система автономеров</title>
+<title>Nomeraa</title>
 <style>
 :root{
-  --bg:#0b0e12;--panel:#f7f8fa;--line:#e2e6eb;--ink:#20262d;--muted:#7a858f;
-  --blue:#1677d2;--blue2:#0f63b6;--green:#1d8b56;--red:#d94a4a;--gold:#c89d3a;
-  --shadow:0 24px 70px rgba(0,0,0,.42);
+  --bg:#07090d;--bg2:#0b0f15;--panel:#10151d;--panel2:#141b24;--panel3:#18212c;
+  --line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.13);
+  --text:#f5f7fa;--muted:#8c99a8;--muted2:#667383;
+  --blue:#3197ea;--blue2:#1772bd;--cyan:#74c8ff;--green:#52c987;--gold:#e9c56b;
+  --red:#ef6868;--purple:#ad83ff;--shadow:0 24px 80px rgba(0,0,0,.45);
 }
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#0a0d10;color:#fff}
-body{min-height:100dvh;overflow-x:hidden}
-button,input,select{font:inherit}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,Arial,sans-serif}
+body{min-height:100dvh;overflow-x:hidden;background:
+  radial-gradient(circle at 50% -10%,rgba(66,126,170,.22),transparent 38%),
+  linear-gradient(180deg,#090d12 0,#07090d 55%,#06080b 100%)}
+button,input{font:inherit}
 button{cursor:pointer}
-button:disabled{cursor:not-allowed;opacity:.45}
-.game-bg{position:fixed;inset:0;overflow:hidden;background:
-  radial-gradient(circle at 50% 12%,rgba(255,255,255,.13),transparent 30%),
-  linear-gradient(#313941 0 40%,#1a2026 40% 43%,#12171c 43% 100%)}
-.game-bg:before{content:"";position:absolute;left:0;right:0;top:40%;height:3px;background:#8593a033;box-shadow:0 8px 20px #0006}
-.poster{position:absolute;border:1px solid #83909c33;background:#d4dde414;color:#d9e3eb55;font-weight:900;text-align:center;padding:14px;filter:blur(.15px)}
-.poster.p1{left:7%;top:32%;width:120px;height:90px}.poster.p2{right:7%;top:31%;width:110px;height:135px}
-.person{position:absolute;bottom:8%;width:90px;height:260px;border-radius:45px 45px 15px 15px;background:linear-gradient(#1a2025,#0d1013);opacity:.58;filter:blur(2px)}
-.person:before{content:"";position:absolute;width:64px;height:64px;border-radius:50%;left:13px;top:-46px;background:#171c21}
-.person.a{left:19%}.person.b{right:19%;height:245px}
-.floor{position:absolute;left:-10%;right:-10%;bottom:-15%;height:42%;transform:perspective(500px) rotateX(58deg);background:repeating-linear-gradient(90deg,#151b20 0 62px,#21292f 63px 64px),repeating-linear-gradient(0deg,#0000 0 62px,#252e35 63px 64px);opacity:.8}
+button:disabled{opacity:.4;cursor:not-allowed}
+a{color:var(--cyan)}
+.app{width:min(100%,560px);min-height:100dvh;margin:0 auto;position:relative;padding-bottom:calc(92px + env(safe-area-inset-bottom))}
+.hidden{display:none!important}
+.glass{background:linear-gradient(145deg,rgba(20,27,36,.96),rgba(13,18,25,.96));border:1px solid var(--line);box-shadow:var(--shadow)}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#ffffff08;border-radius:999px;padding:6px 9px;font-size:10px;font-weight:800;color:#b9c5cf}
+.pill.good{color:#8de0ab;background:#3da56a16;border-color:#58c17d2b}
+.pill.gold{color:#f1d789;background:#d5a94317;border-color:#d5a9432c}
+.money{font-variant-numeric:tabular-nums}
+.small{font-size:10px;color:var(--muted);line-height:1.45}
+.eyebrow{font-size:9px;letter-spacing:.12em;color:#788898;font-weight:900;text-transform:uppercase}
+.h1{font-size:28px;font-weight:950;letter-spacing:-.04em;margin:4px 0}
+.h2{font-size:18px;font-weight:900;letter-spacing:-.02em}
+.h3{font-size:13px;font-weight:900}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.stack{display:flex;flex-direction:column;gap:10px}
+.btn{border:0;border-radius:12px;padding:12px 13px;font-weight:900;font-size:12px;color:#eaf4fb;background:#19232d}
+.btn.primary{background:linear-gradient(180deg,#349de9,#1c78c0);box-shadow:0 10px 26px rgba(25,120,194,.22)}
+.btn.green{background:linear-gradient(180deg,#37a96c,#267b50)}
+.btn.gold{background:linear-gradient(180deg,#bea052,#8b6b24);color:#fff7da}
+.btn.ghost{border:1px solid var(--line);background:#ffffff05;color:#b7c2cc}
+.btn.danger{background:#35191d;color:#ff9b9b;border:1px solid #ff707020}
+.btn:active{transform:scale(.985)}
+.card{border:1px solid var(--line);background:linear-gradient(145deg,var(--panel2),var(--panel));border-radius:18px;padding:14px;box-shadow:0 12px 38px rgba(0,0,0,.18)}
+.card.soft{box-shadow:none;background:#101720}
+.divider{height:1px;background:var(--line);margin:12px 0}
 
-.top-strip{position:relative;z-index:2;height:28px;padding:5px 12px;display:flex;justify-content:space-between;font-size:10px;color:#dfe5ea99;text-transform:uppercase;letter-spacing:.06em}
-.hud{position:fixed;right:14px;top:42px;z-index:4;width:180px;display:flex;flex-direction:column;gap:7px}
-.hud-box{background:#111820e8;border:1px solid #ffffff1a;border-radius:8px;padding:8px 10px;box-shadow:0 7px 25px #0005}
-.hud-box strong{display:block;font-size:10px;letter-spacing:.05em}.hud-box small{display:block;color:#b6c0c9;font-size:9px;margin-top:3px}
-.hud-box .gold{color:#edcc6b}
-.hud-box .bar{height:4px;background:#2a3138;border-radius:4px;margin-top:6px;overflow:hidden}.hud-box .bar i{display:block;height:100%;width:62%;background:#d2a64c}
-@media(max-width:850px){.hud{display:none}.top-strip{font-size:8px}}
+/* splash */
+.splash{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;background:
+ radial-gradient(circle at 50% 25%,#1a2d3d,transparent 35%),linear-gradient(180deg,#080b0f,#05070a)}
+.splash.hide{animation:splashOut .5s ease forwards;pointer-events:none}
+@keyframes splashOut{to{opacity:0;transform:scale(1.02)}}
+.splash-inner{text-align:center;width:min(420px,100%)}
+.logo77{width:94px;height:94px;margin:0 auto 22px;border-radius:28px;background:linear-gradient(145deg,#fff,#cfd7de);display:grid;place-items:center;color:#0b0f13;font-size:39px;font-weight:950;box-shadow:0 25px 70px #000a}
+.splash h1{font-size:36px;letter-spacing:-.055em;margin:0 0 10px}
+.splash p{font-size:13px;color:#9eabb7;line-height:1.55;margin:0 auto 20px;max-width:390px}
+.feature-pills{display:flex;justify-content:center;flex-wrap:wrap;gap:7px;margin-bottom:20px}
+.start-btn{width:min(100%,390px);border:0;border-radius:15px;padding:15px;background:linear-gradient(180deg,#3298e6,#176eb6);color:white;font-size:16px;font-weight:950;box-shadow:0 15px 35px #0f65a45c}
 
-.desktop-wrap{position:relative;z-index:3;min-height:calc(100dvh - 28px);display:flex;align-items:center;justify-content:center;padding:34px 16px 44px}
-.window{width:min(1120px,94vw);min-height:630px;background:var(--panel);color:var(--ink);border-radius:9px;box-shadow:var(--shadow);overflow:hidden;border:1px solid #cbd2d9}
-.header{height:58px;background:#fff;border-bottom:1px solid var(--line);display:grid;grid-template-columns:210px 1fr 120px;align-items:center;padding:0 16px}
-.brand{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:900;color:#35414b}.crest{width:28px;height:28px;border-radius:50%;border:2px solid #50606d;display:grid;place-items:center;font-size:13px}
-.sys{display:flex;justify-content:center;align-items:center;gap:9px;font-size:12px;font-weight:900;letter-spacing:.02em}.sys i{width:30px;height:12px;background:linear-gradient(90deg,#1677d2 0 47%,#e8edf2 47%);border-radius:2px;display:inline-block}
-.logout{text-align:right;font-size:11px;color:#58636c}.esc{background:#17191c;color:white;border:0;border-radius:4px;padding:3px 6px;font-size:9px;margin-left:4px}
-.layout{display:grid;grid-template-columns:180px minmax(0,1fr) 250px;min-height:572px}
-.sidebar{background:#fbfcfd;border-right:1px solid var(--line);padding:18px 12px;display:flex;flex-direction:column}
-.nav-btn{border:0;border-radius:5px;padding:11px 12px;text-align:left;font-weight:750;font-size:12px;background:transparent;color:#49545d;margin-bottom:4px}
-.nav-btn.active{background:var(--blue);color:white}.nav-btn span{margin-right:8px}
-.side-bottom{margin-top:auto;background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;font-size:11px;box-shadow:0 4px 14px #25313d0d}
-.statline{display:flex;justify-content:space-between;margin:6px 0}.statline b{font-size:12px}.red-dot,.blue-dot,.coin-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:5px}.red-dot{background:#dc5050}.blue-dot{background:#2e7ed2}.coin-dot{background:#d9aa48}
+/* header */
+.topbar{position:sticky;top:0;z-index:50;padding:calc(12px + env(safe-area-inset-top)) 14px 10px;background:linear-gradient(180deg,rgba(7,9,13,.96),rgba(7,9,13,.83),transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:9px}
+.mini-logo{width:34px;height:34px;border-radius:11px;background:linear-gradient(145deg,#f7f8f9,#cbd5dc);display:grid;place-items:center;color:#0b0e12;font-weight:950;font-size:14px}
+.brand b{display:block;font-size:13px}.brand small{display:block;color:#6f7f8d;font-size:8px;margin-top:1px}
+.top-money{text-align:right}.top-money small{display:block;font-size:8px;color:#738391;font-weight:800}.top-money b{font-size:15px;color:#79d29d}
 
-.main{padding:18px 24px 20px;background:#f5f7f9}
-.path{font-size:10px;color:#687680;text-transform:uppercase;font-weight:850;letter-spacing:.05em;margin-bottom:16px}
-.type-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.label{font-size:11px;color:#6f7b85;font-weight:700}
-.segment{display:flex;background:#e9edf1;padding:3px;border-radius:5px;gap:3px}
-.seg{border:0;background:transparent;color:#65717b;font-size:10px;font-weight:850;border-radius:4px;padding:7px 11px}.seg.active{background:var(--blue);color:#fff}
-.plate-zone{background:linear-gradient(180deg,#fff,#f6f8fa);border:1px solid var(--line);border-radius:7px;padding:18px 16px;margin-bottom:14px;position:relative}
-.plate{margin:auto;width:min(520px,100%);height:116px;border:5px solid #111;border-radius:8px;background:#f6f5ee;display:grid;grid-template-columns:1fr 26%;overflow:hidden;box-shadow:inset 0 0 0 2px #c6c5bc,0 6px 18px #25313d22;transition:.25s}
-.plate.moto{width:250px;height:180px;grid-template-columns:1fr 34%}
-.plate-main{display:grid;grid-template-columns:.9fr 1fr 1fr 1fr .9fr .9fr;align-items:center;padding:0 14px}
-.plate.moto .plate-main{grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;padding:9px}
-.cell{height:82px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;font:900 72px/1 "Arial Narrow",Arial,sans-serif;color:#0a0a0a;font-variant-numeric:tabular-nums}
-.cell.letter{font-size:58px}.plate.moto .cell{height:70px;font-size:55px}.plate.moto .cell.letter{font-size:44px}
-.track{position:absolute;left:0;top:0;width:100%;will-change:transform}.track span{height:82px;display:flex;align-items:center;justify-content:center}.plate.moto .track span{height:70px}
-.region{border-left:3px solid #111;display:flex;align-items:center;justify-content:center;flex-direction:column;font:900 54px/1 Arial,sans-serif}.plate.moto .region{font-size:42px}
-.rus{font-size:15px;margin-top:7px;display:flex;align-items:center;gap:6px}.flag{width:31px;height:16px;border:1px solid #999;background:linear-gradient(#fff 0 33.33%,#2455a2 33.33% 66.66%,#d52b1e 66.66%)}
-.plate.special{box-shadow:0 0 0 3px #ef5a5a66,inset 0 0 0 2px #c6c5bc,0 6px 18px #25313d22;animation:spec .7s ease}
-@keyframes spec{0%{transform:scale(.985)}45%{transform:scale(1.018)}100%{transform:scale(1)}}
-.number-info{display:flex;justify-content:center;gap:12px;margin-top:11px;font-size:10px;color:#7b8790}
-.badge{padding:4px 7px;border-radius:4px;background:#eef2f5;font-weight:850}.badge.hot{background:#ffe9e9;color:#b73b3b}
+/* content */
+.view{display:none;padding:4px 14px 18px}
+.view.active{display:block;animation:viewIn .22s ease}
+@keyframes viewIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.section-title{margin:12px 1px 9px;display:flex;align-items:end;justify-content:space-between}
+.section-title h2{font-size:16px;margin:0}.section-title span{font-size:9px;color:var(--muted)}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.kpi{border-radius:16px;padding:13px;background:linear-gradient(145deg,#121a23,#0d131a);border:1px solid var(--line)}
+.kpi small{display:block;color:#748493;font-size:8px;font-weight:850;text-transform:uppercase;letter-spacing:.07em}
+.kpi b{display:block;font-size:19px;margin-top:4px;letter-spacing:-.035em}
+.kpi b.green{color:#76d39d}.kpi b.gold{color:#ebce7f}
 
-.pay-title{margin:10px 0 7px;font-size:10px;color:#7b8790}.pay-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-.pay{border:1px solid var(--line);background:#fff;color:#57626c;border-radius:4px;font-size:10px;padding:7px 10px;font-weight:750}.pay.active{border-color:#6aa4db;background:#eaf4fd;color:#1e6bae}
-.spin-grid{display:grid;grid-template-columns:1fr 1fr .85fr;gap:10px;margin-bottom:14px}
-.box{background:#fff;border:1px solid var(--line);border-radius:6px;padding:10px}.box small{display:block;color:#7c8790;font-size:9px;margin-bottom:7px}.big-btn{width:100%;border:0;border-radius:5px;background:#dcebf8;color:#2b70ad;font-weight:900;font-size:12px;padding:10px 7px}.big-btn:hover{filter:brightness(.98)}
-.big-btn.region-btn{background:#edf1f4;color:#56636d}
-.action-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.primary,.green{border:0;border-radius:5px;color:#fff;font-weight:850;font-size:11px;padding:12px}.primary{background:var(--blue)}.green{background:var(--green)}
-.message{min-height:18px;margin-top:9px;text-align:center;font-size:10px;color:#6e7a84}
+/* home */
+.hero{padding:17px;border-radius:21px;position:relative;overflow:hidden;background:
+ radial-gradient(circle at 90% 15%,rgba(43,138,207,.22),transparent 30%),
+ linear-gradient(145deg,#121b24,#0d131a);border:1px solid var(--line)}
+.hero:after{content:"77";position:absolute;right:-5px;bottom:-24px;font-size:105px;font-weight:950;color:#ffffff05;letter-spacing:-.08em}
+.hero .cash{font-size:37px;font-weight:950;letter-spacing:-.055em;margin-top:5px}
+.hero .subrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.quick{min-height:106px;text-align:left;border:1px solid var(--line);background:linear-gradient(145deg,#151e28,#10161e);color:#fff;border-radius:17px;padding:13px;position:relative;overflow:hidden}
+.quick .ico{font-size:24px;margin-bottom:12px}.quick b{display:block;font-size:13px}.quick small{display:block;font-size:9px;color:#7f8f9c;margin-top:4px;line-height:1.35}
+.quick.hot{background:radial-gradient(circle at 100% 0,#2177b747,transparent 45%),linear-gradient(145deg,#172635,#10171f);border-color:#3184c833}
+.mission{padding:11px 0;border-bottom:1px solid var(--line)}.mission:last-child{border-bottom:0}
+.mission-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.mission b{font-size:11px}.mission em{font-style:normal;color:#75d19b;font-size:10px;font-weight:900}
+.progress{height:5px;background:#25303a;border-radius:99px;overflow:hidden;margin-top:7px}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#2184d0,#65bbef)}
+.mission .claim{margin-top:8px;width:100%;padding:8px;border-radius:9px;border:0;background:#1c74b9;color:#fff;font-size:10px;font-weight:900}
+.mission .claim:disabled{background:#202a33;color:#61707d}
+.biz-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}.biz-row:last-child{border:0}
+.biz-row b{font-size:11px}.biz-row small{display:block;color:#7d8c99;font-size:9px;margin-top:3px}.income{display:inline-block;margin-top:5px;color:#72cc94;font-size:8px;font-weight:900}
+.biz-row button{border:0;border-radius:9px;padding:9px 10px;background:#1a2a37;color:#7bc6f8;font-size:9px;font-weight:900}
+.biz-row.owned button{background:#173422;color:#80d69e}
 
-.right{padding:18px 14px;background:#fbfcfd;border-left:1px solid var(--line)}
-.r-card{background:#fff;border:1px solid var(--line);border-radius:7px;padding:12px;margin-bottom:10px}.r-title{font-size:11px;font-weight:900;margin-bottom:8px}.r-title.red{color:#b74b4b}.r-title.blue{color:#3476b7}
-.r-card p{font-size:9px;line-height:1.45;color:#77838d;margin:5px 0 8px}
-.example{display:flex;align-items:center;gap:7px;padding:5px 0;border-top:1px solid #edf0f2}.example:first-of-type{border-top:0}.mini-plate{background:#f6f5ef;border:2px solid #171717;border-radius:3px;color:#111;padding:3px 5px;font:900 14px/1 Arial,sans-serif;white-space:nowrap}.tag{font-size:8px;color:#c34a4a;font-weight:850;margin-left:auto}
-.rules{width:100%;border:0;border-radius:4px;padding:8px;background:#ffeaea;color:#b24747;font-size:9px;font-weight:850}
-.restrict{height:78px;background:#f7f7f3;border:2px solid #222;border-radius:4px;display:grid;place-items:center;color:#111;font:900 26px/1 Arial;margin:7px 0}
-.dots{display:flex;gap:5px;justify-content:center;margin-top:6px}.dots i{width:5px;height:5px;border-radius:50%;background:#d1d7dc}.dots i.active{background:#8b959d}
+/* generator */
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:#0d131a;border:1px solid var(--line);padding:4px;border-radius:13px;margin-bottom:11px}
+.tab{border:0;border-radius:9px;padding:9px;background:transparent;color:#748390;font-size:10px;font-weight:900}.tab.active{background:#1d2a35;color:#fff}
+.plate-stage{padding:18px 10px;border-radius:20px;background:
+ radial-gradient(circle at 50% 0,#243647,transparent 45%),linear-gradient(180deg,#121923,#0d1218);border:1px solid var(--line);box-shadow:inset 0 1px #ffffff06}
+.plate{width:min(100%,450px);height:112px;margin:0 auto;background:#f6f5ed;border:5px solid #0e1012;border-radius:9px;display:grid;grid-template-columns:1fr 27%;overflow:hidden;box-shadow:0 20px 45px #0008,inset 0 0 0 2px #c8c7bf}
+.plate-main{display:grid;grid-template-columns:.85fr 1fr 1fr 1fr .85fr .85fr;align-items:center;padding:0 10px}
+.pc{font:950 60px/1 Arial,sans-serif;color:#090a0b;text-align:center;overflow:hidden;position:relative;height:76px;display:flex;align-items:center;justify-content:center}
+.pc.letter{font-size:48px}
+.rolltrack{position:absolute;width:100%;left:0;top:0}.rolltrack span{height:76px;display:flex;align-items:center;justify-content:center}
+.region-box{border-left:3px solid #111;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#111;font:950 47px/1 Arial}
+.rus{font-size:11px;margin-top:7px;display:flex;align-items:center;gap:5px}.flag{width:24px;height:12px;border:1px solid #aaa;background:linear-gradient(#fff 0 33.3%,#2455a2 33.3% 66.6%,#d52b1e 66.6%)}
+.rarity-line{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:12px}
+.result-chip{border-radius:999px;padding:6px 9px;font-size:9px;font-weight:900;background:#ffffff09;border:1px solid var(--line);color:#9dacb9}
+.result-chip.rare{color:#c8a9ff;border-color:#a879ff38;background:#a879ff12}
+.result-chip.epic{color:#f2d17c;border-color:#d8ac4038;background:#d8ac4012}
+.result-chip.special{color:#ff9898;border-color:#ec5f5f40;background:#ec5f5f12}
+.spin-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.spin-grid .btn{font-size:11px;padding:11px 8px}
+.spin-grid .wide{grid-column:1/-1}
+.generator-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.mini-stat{padding:10px;border-radius:12px;background:#0e151d;border:1px solid var(--line)}.mini-stat small{display:block;color:#6f7f8d;font-size:8px}.mini-stat b{display:block;font-size:13px;margin-top:3px}
+.collection-list{display:flex;flex-direction:column;gap:8px}
+.number-card{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px;border-radius:15px;background:linear-gradient(145deg,#131b24,#0f151c);border:1px solid var(--line)}
+.number-code{font:950 20px Arial;color:#f2f4f6}.number-meta{font-size:8px;color:#788895;margin-top:4px}.number-price{text-align:right}.number-price b{display:block;font-size:13px;color:#77cf99}.number-price button{border:0;border-radius:8px;padding:7px 8px;margin-top:6px;background:#1b2833;color:#8dccf5;font-size:8px;font-weight:900}
+.empty{padding:32px 14px;text-align:center;color:#667684;font-size:11px}
 
-.modal{position:fixed;inset:0;background:#05080bbb;z-index:20;display:none;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}
-.modal-card{width:min(680px,95vw);max-height:82dvh;overflow:auto;background:#f8fafb;color:#26313a;border-radius:10px;box-shadow:0 20px 80px #0008;padding:16px}
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.modal-head b{font-size:14px}.close{border:0;background:#e9edf1;border-radius:6px;padding:7px 10px}
-.region-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}.reg{border:1px solid var(--line);background:#fff;border-radius:5px;padding:9px 5px;font-weight:850}.reg.selected{background:#e8f3fd;border-color:#64a0d5;color:#1769b1}
-.inv{display:flex;flex-direction:column;gap:8px}.inv-item{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:7px;padding:10px}.inv-code{font:900 19px Arial;color:#111}.inv-meta{font-size:9px;color:#78838d;margin-top:3px}
-.sell-mini{border:0;background:#eaf4fd;color:#216caf;border-radius:4px;padding:7px 9px;font-weight:850;font-size:10px}
+/* garage */
+.car-feature{overflow:hidden;padding:0}
+.car-photo{height:210px;position:relative;background:#0d1217}
+.car-photo img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.70) saturate(.85) contrast(1.08)}
+.car-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 38%,rgba(8,11,15,.16) 58%,#10161e 100%)}
+.car-feature-info{padding:14px;margin-top:-48px;position:relative;z-index:2}
+.car-feature-info h2{margin:2px 0 4px;font-size:21px}.car-feature-info .plate-mini{display:inline-block;background:#f3f2eb;border:2px solid #111;color:#111;border-radius:4px;padding:4px 7px;font:950 13px Arial;margin-top:8px}
+.car-list{display:grid;grid-template-columns:1fr;gap:10px}
+.car-card{overflow:hidden;padding:0;border-radius:17px;background:#10161d;border:1px solid var(--line)}
+.car-img{height:150px;position:relative;background:#0d1217}.car-img img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.68) saturate(.82) contrast(1.08)}
+.car-img:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(8,11,15,.1),#10161d 100%)}
+.car-body{padding:12px}.car-body h3{margin:0;font-size:14px}.car-body small{display:block;color:#7d8c98;font-size:8px;margin-top:3px}.car-bottom{display:flex;align-items:end;justify-content:space-between;gap:8px;margin-top:10px}.car-price{font-size:15px;font-weight:950}.lock{font-size:8px;color:#eaadad;margin-top:4px}
+.car-actions{display:flex;gap:6px}.car-actions button{border:0;border-radius:8px;padding:8px 9px;font-size:8px;font-weight:900;background:#1a2935;color:#8fcef8}.car-actions button.buy{background:#183523;color:#7ed49d}
 
-@media(max-width:980px){
-  .window{width:min(760px,95vw)}.header{grid-template-columns:150px 1fr 70px}.layout{grid-template-columns:145px minmax(0,1fr)}.right{grid-column:1/-1;border-left:0;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;gap:10px}.r-card{margin:0}
+/* market */
+.segment{display:flex;gap:7px;margin-bottom:10px}
+.seg{flex:1;border:1px solid var(--line);border-radius:11px;padding:10px;background:#10161e;color:#71808d;font-size:10px;font-weight:900}.seg.active{background:#1a2a37;color:#fff;border-color:#2b6e9f55}
+.listing{padding:12px;border-radius:15px;background:#111820;border:1px solid var(--line);margin-bottom:8px}.listing-head{display:flex;justify-content:space-between;gap:10px}.listing-code{font:950 19px Arial}.listing small{font-size:8px;color:#748492}.listing-price{font-size:14px;font-weight:950;color:#80d39f}.listing-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}.listing-actions button{border:0;border-radius:9px;padding:9px;font-size:9px;font-weight:900;background:#192935;color:#83c9f8}.listing-actions .buy{background:#173723;color:#7bd29a}
+.auction{padding:12px;border-radius:15px;background:#111820;border:1px solid var(--line);margin-bottom:8px}.auction.live{border-color:#2b78ae55;box-shadow:0 0 0 1px #2477af22}
+.live-dot{width:6px;height:6px;display:inline-block;background:#ef5e5e;border-radius:50%;margin-right:5px;box-shadow:0 0 0 4px #ef5e5e18;animation:pulse 1.3s infinite}@keyframes pulse{50%{opacity:.35}}
+.auction-feed{margin-top:8px;padding:8px;border-radius:9px;background:#0d1319;color:#738492;font-size:8px;min-height:28px}.you{color:#7cc9f6;font-weight:900}
+.timer{font-size:9px;color:#9aaaB7;font-weight:900}
+
+/* profile */
+.profile-head{text-align:center;padding:18px}.avatar-big{width:76px;height:76px;border-radius:23px;margin:0 auto 11px;background:linear-gradient(145deg,#f5f7f9,#cbd4db);display:grid;place-items:center;color:#0b0e12;font-size:28px;font-weight:950}
+.levelbar{height:6px;border-radius:99px;background:#28333d;overflow:hidden;margin-top:8px}.levelbar i{display:block;height:100%;background:linear-gradient(90deg,#278bd5,#6bc7ff)}
+.upgrade{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}.upgrade:last-child{border:0}.upgrade b{font-size:11px}.upgrade small{display:block;color:#798996;font-size:8px;margin-top:3px}.upgrade button{border:0;border-radius:9px;padding:9px 10px;background:#192b39;color:#88cffb;font-size:9px;font-weight:900}
+.history-item{display:grid;grid-template-columns:1fr auto;gap:8px;padding:9px 0;border-bottom:1px solid var(--line)}.history-item:last-child{border:0}.history-item b{font-size:9px}.history-item small{display:block;font-size:8px;color:#74838f;margin-top:2px}.history-amt{font-size:10px;font-weight:900}.history-amt.pos{color:#73cf98}.history-amt.neg{color:#ef8888}
+.credits{font-size:8px;color:#667684;line-height:1.5}.credits a{color:#7eaed0}
+
+/* sheets */
+.sheet{position:fixed;inset:0;z-index:120;background:rgba(2,5,8,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:flex-end;justify-content:center}
+.sheet.show{display:flex}
+.sheet-card{width:min(100%,560px);max-height:82dvh;overflow:auto;border-radius:22px 22px 0 0;background:#10161d;border:1px solid var(--line2);border-bottom:0;padding:14px 14px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -25px 80px #0009}
+.sheet-handle{width:46px;height:4px;border-radius:99px;background:#34404a;margin:0 auto 12px}
+.sheet-title{font-size:16px;font-weight:900;margin-bottom:10px}
+.region-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.region-grid button{border:1px solid var(--line);background:#151e27;color:#b9c5ce;border-radius:10px;padding:9px 4px;font-size:10px;font-weight:900}.region-grid button.active{background:#1f6fae;color:#fff}
+.result-modal{position:fixed;inset:0;z-index:140;background:rgba(2,5,8,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:18px}.result-modal.show{display:flex}
+.result-box{width:min(100%,470px);border-radius:24px;padding:20px;text-align:center;position:relative;overflow:hidden;background:linear-gradient(145deg,#121a22,#0b1015);border:1px solid var(--line2);box-shadow:0 35px 100px #000b}.result-box:before{content:"";position:absolute;inset:-30%;background:radial-gradient(circle,#2d8bd53d,transparent 45%);animation:glow 2.2s ease-in-out infinite}@keyframes glow{50%{transform:scale(1.15);opacity:.65}}
+.result-box.epic:before{background:radial-gradient(circle,#ddb44d4a,transparent 45%)}.result-box.special:before{background:radial-gradient(circle,#e75d5d4d,transparent 45%)}
+.result-inner{position:relative;z-index:1}.result-title{font-size:24px;font-weight:950;margin:5px 0 14px}.result-number{background:#f5f4ed;color:#111;border:4px solid #111;border-radius:8px;padding:12px 9px;font:950 clamp(34px,10vw,55px)/1 Arial}.result-value{font-size:28px;font-weight:950;margin-top:14px;color:#7fd39f}.result-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:14px}
+
+/* bottom nav */
+.nav{position:fixed;left:50%;bottom:calc(8px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:80;width:min(calc(100% - 16px),544px);display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:7px;border-radius:18px;background:rgba(12,17,23,.94);border:1px solid var(--line2);box-shadow:0 18px 60px #000a;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.nav button{border:0;border-radius:12px;background:transparent;color:#667684;padding:7px 3px;font-size:8px;font-weight:900}.nav button b{display:block;font-size:18px;color:#a9b6c0;margin-bottom:3px}.nav button.active{background:#1a2a37;color:#fff}.nav button.active b{color:#65baff}
+
+.toast{position:fixed;left:50%;bottom:calc(94px + env(safe-area-inset-bottom));transform:translate(-50%,14px);z-index:300;background:#151d25;border:1px solid var(--line2);color:#e9f1f6;padding:10px 13px;border-radius:12px;box-shadow:0 15px 45px #000a;font-size:10px;font-weight:850;opacity:0;pointer-events:none;transition:.22s;max-width:min(90%,420px);text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(min-width:760px){
+ body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 50% 20%,#1b2a36,transparent 32%);pointer-events:none}
+ .app{margin-top:18px;margin-bottom:18px;min-height:calc(100dvh - 36px);border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 35px 100px #0009;background:#080b0f}
+ .topbar{border-radius:28px 28px 0 0}
 }
-@media(max-width:680px){
-  .desktop-wrap{padding:12px 7px calc(22px + env(safe-area-inset-bottom));align-items:flex-start}
-  .window{width:100%;border-radius:7px;min-height:auto}.header{height:52px;grid-template-columns:90px 1fr 52px;padding:0 9px}.brand{font-size:8px;gap:4px}.crest{width:22px;height:22px}.sys{font-size:9px;gap:5px}.sys i{width:20px;height:9px}.logout{font-size:0}.layout{display:block}.sidebar{border-right:0;border-bottom:1px solid var(--line);padding:7px 9px;display:grid;grid-template-columns:1fr 1fr;gap:5px}.nav-btn{margin:0;text-align:center;padding:8px;font-size:10px}.side-bottom{display:none}.main{padding:12px 10px 14px}.path{margin-bottom:10px}.type-row{gap:8px}.plate-zone{padding:13px 7px}.plate{height:88px}.cell{height:62px;font-size:54px}.cell.letter{font-size:43px}.track span{height:62px}.region{font-size:38px}.rus{font-size:10px;margin-top:4px}.flag{width:22px;height:12px}.spin-grid{grid-template-columns:1fr 1fr}.spin-grid .box:last-child{grid-column:1/-1}.action-row{grid-template-columns:1fr}.right{display:block;padding:10px}.r-card{margin-bottom:8px}.region-grid{grid-template-columns:repeat(4,1fr)}
-}
-
-/* ===== Economy v2 ===== */
-.econ-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:0 0 12px}
-.econ-kpi{background:#fff;border:1px solid var(--line);border-radius:6px;padding:8px 9px}
-.econ-kpi small{display:block;color:#87919a;font-size:8px;text-transform:uppercase;font-weight:850;letter-spacing:.04em}
-.econ-kpi b{display:block;margin-top:3px;font-size:13px;color:#2c3740}
-.econ-kpi.goal b{color:#1471c8}
-.quick-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
-.quick-actions button{border:1px solid var(--line);background:#fff;border-radius:5px;padding:8px;color:#55616b;font-size:9px;font-weight:850}
-.contract{background:linear-gradient(135deg,#f8fbfd,#eef6fc);border:1px solid #d9e8f4;border-radius:7px;padding:10px;margin-top:10px}
-.contract-head{display:flex;justify-content:space-between;gap:10px;font-size:10px;font-weight:900}
-.contract small{display:block;color:#74818c;font-size:9px;margin-top:4px}
-.contract .prog{height:5px;background:#dbe5ed;border-radius:99px;overflow:hidden;margin-top:8px}
-.contract .prog i{display:block;height:100%;background:#2178c7;width:0%}
-.market-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.market-card{background:#fff;border:1px solid var(--line);border-radius:7px;padding:10px}
-.market-card .mcode{font:900 22px Arial;color:#111}
-.market-card small{display:block;color:#7b8790;font-size:9px;margin:4px 0 8px}
-.market-card .mprice{font-size:15px;font-weight:900;margin-bottom:7px}
-.market-card button{width:100%;border:0;background:#e8f3fd;color:#1769b1;border-radius:5px;padding:8px;font-size:10px;font-weight:900}
-.economy-table{width:100%;border-collapse:collapse;font-size:10px}
-.economy-table td{border-bottom:1px solid #edf0f2;padding:8px 4px}
-.economy-table td:last-child{text-align:right;font-weight:850}
-.license{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--line);border-radius:7px;padding:10px;margin-bottom:8px}
-.license small{display:block;color:#7d8992;font-size:9px;margin-top:3px}
-.license button{border:0;background:#eaf4fd;color:#1769b1;border-radius:5px;padding:8px 10px;font-weight:900;font-size:10px}
-.license.unlocked{border-color:#b5d8bd;background:#f5fcf7}.license.unlocked button{background:#e7f6eb;color:#227840}
-.balance.flash{animation:moneyFlash .45s ease}
-@keyframes moneyFlash{0%{transform:scale(1)}40%{transform:scale(1.12);color:#1d8b56}100%{transform:scale(1)}}
-@media(max-width:680px){
-  .econ-strip{grid-template-columns:1fr 1fr}
-  .quick-actions{grid-template-columns:1fr}
-  .market-grid{grid-template-columns:1fr}
-}
-
-
-/* ===== Quality v3 systems ===== */
-.rank-card{background:#fff;border:1px solid var(--line);border-radius:7px;padding:10px;margin-top:10px}
-.rank-head{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:900}
-.rank-head b{font-size:11px;color:#1769b1}
-.rank-progress{height:6px;background:#e5ebf0;border-radius:99px;overflow:hidden;margin-top:7px}
-.rank-progress i{display:block;height:100%;background:linear-gradient(90deg,#1677d2,#4fa0e4);width:0%}
-.rank-card small{display:block;color:#7c8790;font-size:9px;margin-top:5px}
-
-.vehicle-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
-.vehicle{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px;overflow:hidden}
-.vehicle.selected{border-color:#6ea8d8;box-shadow:0 0 0 2px #e2f0fb}
-.vehicle-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
-.vehicle-name{font-size:12px;font-weight:900}.vehicle-tier{font-size:8px;border-radius:99px;padding:4px 6px;background:#edf2f6;color:#66717b;font-weight:900}
-.vehicle-visual{height:78px;border-radius:7px;margin:9px 0;background:
-  radial-gradient(circle at 50% 75%,#0003,transparent 35%),
-  linear-gradient(145deg,#dfe7ed,#f9fbfc);
-  position:relative;overflow:hidden;border:1px solid #e5eaee}
-.car-shape{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:78%;height:38%;background:#3d4851;border-radius:24px 35px 12px 12px}
-.car-shape:before{content:"";position:absolute;left:20%;top:-42%;width:55%;height:58%;background:#5a6974;border-radius:18px 22px 4px 4px;clip-path:polygon(15% 100%,28% 0,78% 0,100% 100%)}
-.car-shape:after{content:"";position:absolute;left:9%;right:9%;bottom:-19%;height:22%;background:radial-gradient(circle at 14% 50%,#15191c 0 8px,transparent 9px),radial-gradient(circle at 86% 50%,#15191c 0 8px,transparent 9px)}
-.vehicle-number{display:flex;justify-content:space-between;align-items:center;font-size:9px;color:#77838d}
-.vehicle-number b{font:900 14px Arial;color:#111}
-.vehicle-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
-.vehicle-actions button{border:0;border-radius:5px;padding:8px;font-size:9px;font-weight:900}
-.vehicle-actions .select-car{background:#e9f4fd;color:#1769b1}.vehicle-actions .assign-number{background:#eef6f0;color:#287846}
-
-.dealer-showroom{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
-.buy-car{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px}
-.buy-car b{display:block;font-size:12px}.buy-car small{display:block;color:#7a8690;font-size:9px;margin:4px 0 7px}
-.buy-car .price{font-size:15px;font-weight:900;margin-bottom:7px}
-.buy-car button{width:100%;border:0;background:#eaf4fd;color:#1769b1;border-radius:5px;padding:8px;font-size:9px;font-weight:900}
-
-.auction-list{display:flex;flex-direction:column;gap:8px}
-.auction-item{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px}
-.auction-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-.auction-code{font:900 20px Arial;color:#111}
-.auction-time{font-size:9px;color:#8a949d;font-weight:850}
-.auction-meta{font-size:9px;color:#77838d;margin-top:4px}
-.auction-price{font-size:16px;font-weight:900;margin:9px 0}
-.auction-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.auction-actions button{border:0;border-radius:5px;padding:8px;font-size:9px;font-weight:900}
-.bid{background:#eaf4fd;color:#1769b1}.buyout{background:#eef7f1;color:#257847}
-
-.history-list{display:flex;flex-direction:column;gap:6px}
-.hist{display:flex;justify-content:space-between;gap:10px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:9px}
-.hist small{color:#7e8992;font-size:9px}.hist b{font-size:10px}
-.hist .pos{color:#278048}.hist .neg{color:#b84f4f}
-
-.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:#111820ee;color:#fff;border:1px solid #ffffff22;border-radius:8px;padding:10px 14px;font-size:11px;font-weight:750;opacity:0;pointer-events:none;z-index:100;transition:.25s;box-shadow:0 12px 40px #0007;max-width:min(420px,88vw);text-align:center}
-.toast.show{opacity:1;transform:translate(-50%,0)}
-.rare-pulse{animation:rarePulse 1s ease}
-@keyframes rarePulse{0%{box-shadow:0 0 0 0 #d4a63d66}50%{box-shadow:0 0 0 12px #d4a63d12}100%{box-shadow:0 0 0 0 #d4a63d00}}
-.status-banner{margin-bottom:10px;background:#0f1821;color:#dbe7f0;border-radius:7px;padding:9px 10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-.status-banner small{font-size:8px;color:#9fb0bd}.status-banner b{font-size:10px}.status-banner .wealth{color:#6bc28e}
-.sound-toggle{border:1px solid #ffffff1a;background:#151d25;color:#dbe6ee;border-radius:6px;padding:6px 8px;font-size:9px}
-@media(max-width:680px){
- .vehicle-grid,.dealer-showroom{grid-template-columns:1fr}
-}
-
-
-/* ===== Premium v4 ===== */
-:root{--glass:rgba(12,18,25,.84);--glass-line:rgba(255,255,255,.12);--cyan:#69b8f5;--gold2:#efcb73}
-body.app-locked{overflow:hidden}
-
-.boot{position:fixed;inset:0;z-index:300;background:
-  radial-gradient(circle at 50% 18%,#33414c 0,transparent 30%),
-  linear-gradient(180deg,#090d11,#0d1319 55%,#070a0d);
-  display:flex;align-items:center;justify-content:center;padding:22px;transition:.65s cubic-bezier(.2,.8,.2,1)}
-.boot.hide{opacity:0;transform:scale(1.025);pointer-events:none}
-.boot-inner{width:min(520px,92vw);text-align:center}
-.boot-logo{width:88px;height:88px;border-radius:24px;margin:0 auto 18px;background:linear-gradient(145deg,#f7f9fb,#cfd8df);color:#111;
-display:grid;place-items:center;font-size:36px;font-weight:950;box-shadow:0 18px 60px #0008,inset 0 0 0 1px #fff}
-.boot h1{font-size:clamp(26px,7vw,42px);margin:0 0 8px;letter-spacing:-.04em}
-.boot p{color:#a9b7c2;font-size:12px;line-height:1.55;max-width:440px;margin:0 auto 20px}
-.boot-meta{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-bottom:18px}
-.boot-meta span{border:1px solid #ffffff16;background:#ffffff08;border-radius:999px;padding:6px 9px;color:#b9c6cf;font-size:9px;font-weight:850}
-.boot-start{border:0;border-radius:10px;padding:13px 18px;min-width:220px;background:linear-gradient(180deg,#2589dc,#176db7);color:#fff;font-weight:900;box-shadow:0 10px 30px #0b5f9a55}
-.boot small{display:block;color:#687783;font-size:8px;margin-top:12px}
-
-.window{transition:.35s ease}
-.window.section-flash{box-shadow:0 30px 100px rgba(0,0,0,.58),0 0 0 1px rgba(105,184,245,.28)}
-.main,.right,.sidebar{transition:.3s ease}
-
-.mobile-dock{display:none}
-@media(max-width:680px){
-  body{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
-  .desktop-wrap{padding-bottom:calc(92px + env(safe-area-inset-bottom))}
-  .mobile-dock{position:fixed;z-index:90;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(5,1fr);gap:4px;
-    padding:7px;background:rgba(13,18,24,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-    border:1px solid rgba(255,255,255,.11);border-radius:16px;box-shadow:0 14px 50px #0008}
-  .mobile-dock button{border:0;background:transparent;color:#8ea0ad;border-radius:10px;padding:7px 3px;font-size:8px;font-weight:900}
-  .mobile-dock button b{display:block;font-size:16px;margin-bottom:3px;color:#dce7ef}
-  .mobile-dock button.active{background:#1c73ba;color:#fff}.mobile-dock button.active b{color:#fff}
-}
-
-.selected-car-panel{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;background:linear-gradient(135deg,#101922,#17232d);color:#eef5fa;border-radius:8px;padding:10px 12px;margin:0 0 11px;border:1px solid #ffffff0f;box-shadow:inset 0 1px #ffffff09}
-.selected-car-panel small{display:block;color:#8ea0ad;font-size:8px;letter-spacing:.06em;font-weight:850}
-.selected-car-panel b{display:block;font-size:12px;margin-top:2px}
-.selected-car-value{text-align:right}.selected-car-value b{color:#72c694}
-.selected-car-plate{display:inline-block;margin-top:5px;background:#f5f4ed;color:#111;border:2px solid #111;border-radius:3px;padding:3px 6px;font:900 11px Arial}
-
-.result-overlay{position:fixed;inset:0;z-index:250;background:rgba(2,5,8,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px}
-.result-overlay.show{display:flex;animation:fadeIn .25s ease}
-.result-card{width:min(520px,94vw);position:relative;overflow:hidden;border-radius:18px;background:linear-gradient(160deg,#111820,#0b1015);border:1px solid #ffffff14;color:#fff;box-shadow:0 30px 100px #000b;padding:24px;text-align:center}
-.result-card:before{content:"";position:absolute;inset:-30%;background:radial-gradient(circle,#2a8ed833,transparent 45%);animation:slowPulse 2.4s ease-in-out infinite}
-.result-card.rare:before{background:radial-gradient(circle,#8b69ff44,transparent 45%)}
-.result-card.epic:before{background:radial-gradient(circle,#e2b34f55,transparent 45%)}
-.result-card.special:before{background:radial-gradient(circle,#e958585d,transparent 45%)}
-.result-inner{position:relative;z-index:1}
-.result-eyebrow{font-size:9px;color:#93a7b5;letter-spacing:.16em;font-weight:900}
-.result-title{font-size:25px;font-weight:950;margin:5px 0 14px}
-.result-plate{width:min(390px,92%);margin:0 auto;background:#f5f4ed;border:4px solid #101010;border-radius:8px;color:#111;padding:12px 16px;font:900 clamp(34px,9vw,58px)/1 Arial;box-shadow:0 16px 45px #0007}
-.result-value{font-size:32px;font-weight:950;margin-top:16px;letter-spacing:-.04em}
-.result-sub{font-size:10px;color:#99a9b5;margin:5px 0 16px}
-.result-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.result-actions button{border:0;border-radius:8px;padding:11px;font-size:10px;font-weight:900}
-.result-actions .keep{background:#176fb8;color:#fff}.result-actions .close-result{background:#202b34;color:#cbd6dd}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes slowPulse{0%,100%{transform:scale(.9);opacity:.7}50%{transform:scale(1.12);opacity:1}}
-
-.auction-item.leading{border-color:#6ca8d6;box-shadow:0 0 0 2px #e6f2fb}
-.bid-feed{margin-top:7px;padding:7px 8px;border-radius:5px;background:#f5f7f9;color:#77838d;font-size:8px;min-height:24px}
-.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#dc4f4f;margin-right:5px;box-shadow:0 0 0 4px #dc4f4f18;animation:live 1.4s infinite}
-@keyframes live{50%{opacity:.35}}
-
-.car-detail{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;background:linear-gradient(145deg,#101821,#192631);color:#fff;border-radius:10px;padding:13px;border:1px solid #ffffff10;margin-bottom:10px}
-.car-stage{height:118px;position:relative;border-radius:8px;background:radial-gradient(circle at 50% 80%,#ffffff16,transparent 40%),linear-gradient(#26343e,#10171d);overflow:hidden}
-.car-stage .hero-car{position:absolute;left:50%;top:54%;transform:translate(-50%,-50%);width:72%;height:31%;border-radius:28px 38px 14px 14px;background:linear-gradient(180deg,#8d9ca8,#3e4a53);box-shadow:0 12px 25px #0006}
-.car-stage .hero-car:before{content:"";position:absolute;left:22%;top:-52%;width:52%;height:65%;background:#72828e;clip-path:polygon(18% 100%,30% 0,75% 0,100% 100%);border-radius:13px 16px 2px 2px}
-.car-stage .hero-car:after{content:"";position:absolute;left:8%;right:8%;bottom:-24%;height:24%;background:radial-gradient(circle at 13% 50%,#07090b 0 11px,#64717a 12px 14px,transparent 15px),radial-gradient(circle at 87% 50%,#07090b 0 11px,#64717a 12px 14px,transparent 15px)}
-.car-detail small{display:block;color:#8ea0ad;font-size:8px}.car-detail h3{margin:4px 0 8px;font-size:16px}.car-detail .big-capital{font-size:20px;font-weight:950;color:#73c994}
-.car-detail .hero-number{display:inline-block;margin-top:8px;background:#f4f3ed;color:#111;border:2px solid #111;border-radius:4px;padding:5px 8px;font:900 15px Arial}
-@media(max-width:600px){.car-detail{grid-template-columns:1fr}.car-stage{height:100px}}
-
-.quality-hint{font-size:9px;color:#77838d;text-align:center;margin:8px 0 0}
-
-
-/* ===== Nomeraa V5: game hub / missions / progression ===== */
-.hub{position:fixed;inset:0;z-index:180;background:
-  radial-gradient(circle at 50% -10%,#283845 0,transparent 38%),
-  linear-gradient(180deg,#0b1015 0,#0d1319 42%,#090d11 100%);
-  color:#fff;display:none;overflow:auto;padding:calc(18px + env(safe-area-inset-top)) 14px calc(96px + env(safe-area-inset-bottom))}
-.hub.show{display:block;animation:hubIn .28s ease}
-@keyframes hubIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.hub-shell{width:min(920px,100%);margin:0 auto}
-.hub-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
-.player{display:flex;gap:10px;align-items:center}
-.avatar77{width:44px;height:44px;border-radius:13px;background:linear-gradient(145deg,#fff,#cbd5dc);display:grid;place-items:center;color:#111;font-size:18px;font-weight:950;box-shadow:0 9px 24px #0007}
-.player small{display:block;color:#8da0ad;font-size:8px;font-weight:850;letter-spacing:.08em}
-.player b{font-size:14px}
-.hub-money{text-align:right}.hub-money small{display:block;color:#8da0ad;font-size:8px;font-weight:850}.hub-money b{font-size:17px;color:#7bd09c}
-.level-strip{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;background:#111923;border:1px solid #ffffff10;border-radius:11px;padding:9px 10px;margin-bottom:12px}
-.level-strip b{font-size:10px}.level-strip span{font-size:9px;color:#8fa0ac}.xpbar{height:5px;background:#27323c;border-radius:99px;overflow:hidden}.xpbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#2b8ddd,#67b5ef)}
-.hero-balance{border:1px solid #ffffff10;border-radius:16px;background:
-  radial-gradient(circle at 85% 20%,#1b72b544,transparent 31%),
-  linear-gradient(145deg,#121b24,#10171e);
-  padding:16px;box-shadow:0 16px 45px #0005;margin-bottom:12px;overflow:hidden;position:relative}
-.hero-balance .eyebrow{font-size:8px;color:#8fa1ad;letter-spacing:.12em;font-weight:900}
-.hero-balance h2{font-size:34px;margin:4px 0 2px;letter-spacing:-.05em}
-.hero-balance .worth{font-size:10px;color:#8ea0ac}.hero-balance .worth b{color:#efcb73}
-.hero-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:13px}
-.hero-actions button{border:0;border-radius:9px;padding:10px 7px;font-size:9px;font-weight:900;color:#dce8ef;background:#1b2731}
-.hero-actions button.primary{background:linear-gradient(180deg,#278fe1,#176eb9);color:#fff}
-
-.hub-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:12px}
-.hub-card{background:#111820;border:1px solid #ffffff10;border-radius:14px;padding:13px;box-shadow:0 10px 28px #0003}
-.hub-card h3{font-size:12px;margin:0 0 9px}.hub-card>small{display:block;color:#80919d;font-size:8px;margin-top:-4px;margin-bottom:9px}
-.menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.menu-tile{border:1px solid #ffffff0d;background:linear-gradient(145deg,#18232d,#131c24);border-radius:11px;padding:12px;text-align:left;color:#fff;min-height:88px;position:relative;overflow:hidden}
-.menu-tile:after{content:"";position:absolute;width:70px;height:70px;border-radius:50%;right:-22px;bottom:-30px;background:#ffffff08}
-.menu-tile b{display:block;font-size:12px}.menu-tile small{display:block;color:#91a2ad;font-size:8px;margin-top:4px;line-height:1.35}.tile-icon{font-size:21px;margin-bottom:8px}
-.menu-tile.hot{background:linear-gradient(145deg,#182b3c,#12304a);border-color:#317ebb55}
-
-.daily-list{display:flex;flex-direction:column;gap:7px}.daily{background:#151f28;border:1px solid #ffffff0c;border-radius:9px;padding:9px}
-.daily-top{display:flex;justify-content:space-between;gap:10px}.daily b{font-size:9px}.daily span{font-size:9px;color:#72c491;font-weight:900}.daily small{display:block;font-size:8px;color:#81919d;margin-top:3px}
-.dailybar{height:4px;background:#29343e;border-radius:9px;overflow:hidden;margin-top:6px}.dailybar i{display:block;height:100%;background:#3b91d2;width:0}
-.claim{width:100%;border:0;background:#1a75bc;color:#fff;border-radius:7px;padding:8px;font-size:9px;font-weight:900;margin-top:7px}
-.claim:disabled{background:#29333b;color:#71808b}
-
-.asset-mini{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;background:#151f28;border-radius:9px;padding:9px;margin-bottom:7px}
-.asset-mini small{font-size:8px;color:#80909c}.asset-mini b{font-size:10px}.asset-mini .num{font:900 12px Arial;background:#f2f1ea;color:#111;border:2px solid #111;border-radius:3px;padding:3px 5px}
-.asset-value{font-size:10px;color:#75c793;font-weight:900;text-align:right}
-.achievement-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-.ach{background:#151f28;border:1px solid #ffffff0c;border-radius:9px;padding:9px;text-align:center}
-.ach strong{display:block;font-size:15px}.ach b{display:block;font-size:8px;margin-top:4px}.ach small{font-size:7px;color:#7e8e9a}.ach.locked{opacity:.45}
-
-.business-list{display:flex;flex-direction:column;gap:7px}
-.biz{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;background:#151f28;border:1px solid #ffffff0c;border-radius:9px;padding:10px}
-.biz b{font-size:10px}.biz small{display:block;color:#84949f;font-size:8px;margin-top:3px}.biz button{border:0;border-radius:7px;background:#e9f4fd;color:#1769b1;padding:8px 9px;font-size:8px;font-weight:900}.biz.owned{border-color:#3e8b5b66}.biz.owned button{background:#173f29;color:#7bd09c}
-.income-pill{display:inline-block;margin-top:5px;padding:4px 6px;border-radius:99px;background:#173522;color:#71c58e;font-size:7px;font-weight:900}
-
-.hub-footer{margin-top:12px;color:#61717d;text-align:center;font-size:7px}
-.exit-hub{border:1px solid #ffffff11;background:#111820;color:#aebcc6;border-radius:9px;padding:8px 10px;font-size:9px;font-weight:900}
-
-@media(max-width:720px){
- .hub-grid{grid-template-columns:1fr}
- .hero-balance h2{font-size:29px}
-}
-@media(max-width:430px){
- .hub{padding-left:10px;padding-right:10px}
- .menu-tile{min-height:82px;padding:10px}
- .hero-actions{grid-template-columns:1fr 1fr 1fr}
- .achievement-row{grid-template-columns:repeat(3,1fr)}
-}
-
 </style>
 </head>
-<body class="app-locked">
-
-<div class="boot" id="bootScreen">
-  <div class="boot-inner">
-    <div class="boot-logo">77</div>
-    <h1>Система автономеров</h1>
-    <p>Игровой симулятор коллекционирования номеров, автомобилей и капитала. Это не официальный сервис государственных органов.</p>
-    <div class="boot-meta"><span>РЫНОК</span><span>АУКЦИОН</span><span>ГАРАЖ</span><span>КОЛЛЕКЦИЯ</span></div>
-    <button class="boot-start" id="bootStart">Войти в систему</button>
-    <small>Прогресс сохраняется на устройстве</small>
+<body>
+<div class="splash" id="splash">
+  <div class="splash-inner">
+    <div class="logo77">77</div>
+    <h1>Nomeraa</h1>
+    <p>Премиальный игровой симулятор коллекционирования автономеров, автомобилей и капитала.</p>
+    <div class="feature-pills">
+      <span class="pill">Номера</span><span class="pill">Гараж</span><span class="pill">Рынок</span><span class="pill">Аукцион</span>
+    </div>
+    <button class="start-btn" id="startBtn">Войти в игру</button>
+    <div class="small" style="margin-top:12px">Игровой проект. Не является официальным сервисом государственных органов.</div>
   </div>
 </div>
 
-<div class="game-bg">
-  <div class="poster p1">ОТДЕЛ<br>РЕГИСТРАЦИИ</div><div class="poster p2">ИНФОРМАЦИЯ</div>
-  <div class="person a"></div><div class="person b"></div><div class="floor"></div>
-</div>
-<div class="top-strip"><span>Добро пожаловать в систему регистрации транспорта</span><span>Открытое бета-тестирование</span></div>
-
-<div class="hud">
-  <div class="hud-box"><strong>БЕСПЛАТНАЯ НАКРУТКА · <span id="freeSpins">2</span></strong><small>Следующая через <span id="timer">04:59</span></small></div>
-  <div class="hud-box"><strong class="gold">БЕСПЛАТНЫЕ ВРАЩЕНИЯ</strong><small>Осталось: <span id="bonus">95.6%</span></small><div class="bar"><i></i></div></div>
-  <div class="hud-box"><strong>ПУТЬ НОВИЧКА</strong><small>День первый</small></div>
-</div>
-
-<div class="desktop-wrap">
-  <main class="window">
-    <header class="header">
-      <div class="brand"><span class="crest">⚙</span><span>ГИБДД<br><small>МВД РОССИИ</small></span></div>
-      <div class="sys"><i></i> СИСТЕМА АВТОНОМЕРОВ <span style="font-size:7px;color:#89949d;margin-left:6px">ИГРОВОЙ СИМУЛЯТОР</span></div>
-      <div class="logout"><button id="homeBtn" class="esc" style="background:#176fb8">HOME</button></div>
-    </header>
-
-    <div class="layout">
-      <aside class="sidebar">
-        <button class="nav-btn active" data-nav="create"><span>✎</span>Создать новый</button>
-        <button class="nav-btn" data-nav="inventory"><span>▣</span>Мои номера</button>
-        <button class="nav-btn" data-nav="market"><span>₽</span>Рынок</button>
-        <button class="nav-btn" data-nav="cars"><span>🚘</span>Гараж</button>
-        <button class="nav-btn" data-nav="auction"><span>⚑</span>Аукцион</button>
-        <button class="nav-btn" data-nav="economy"><span>⌁</span>Экономика</button>
-        <button class="nav-btn" data-nav="history"><span>≡</span>История</button>
-        <div class="side-bottom">
-          <div class="statline"><span>● Баланс</span><b id="balance">50 000 ₽</b></div>
-          <div class="statline"><span><span class="blue-dot"></span>Репутация</span><b id="rep">0</b></div>
-          <div class="statline"><span><span class="coin-dot"></span>Коины</span><b id="coins">1 000</b></div>
-          <div class="rank-card">
-            <div class="rank-head"><span>Статус</span><b id="rankName">Новичок</b></div>
-            <div class="rank-progress"><i id="rankProgress"></i></div>
-            <small id="rankHint">До следующего статуса: 100 репутации</small>
-          </div>
-        </div>
-      </aside>
-
-      <section class="main">
-        <div class="path">⚑ Кастомизация нового номера</div>
-        <div class="status-banner">
-          <div><small>ТЕКУЩИЙ ПРОФИЛЬ</small><b id="profileStatus">Новичок · гараж 0/2</b></div>
-          <div><small>КАПИТАЛ</small><b class="wealth" id="netWorth">50 000 ₽</b></div>
-          <button class="sound-toggle" id="soundToggle">Звук: вкл.</button>
-        </div>
-        <div class="selected-car-panel">
-          <div><small>АКТИВНЫЙ АВТОМОБИЛЬ</small><b id="selectedCarName">Lada Granta</b><span class="selected-car-plate" id="selectedCarPlate">БЕЗ НОМЕРА</span></div>
-          <div class="selected-car-value"><small>СТОИМОСТЬ АКТИВА</small><b id="selectedCarValue">450 000 ₽</b></div>
-        </div>
-
-        <div class="econ-strip">
-          <div class="econ-kpi"><small>Наличные</small><b id="cashKpi">50 000 ₽</b></div>
-          <div class="econ-kpi"><small>Всего потрачено</small><b id="spentKpi">0 ₽</b></div>
-          <div class="econ-kpi"><small>Доход с продаж</small><b id="earnedKpi">0 ₽</b></div>
-          <div class="econ-kpi goal"><small>До 1 000 000 ₽</small><b id="goalKpi">950 000 ₽</b></div>
-        </div>
-
-        <div class="type-row">
-          <span class="label">Тип номера</span>
-          <div class="segment"><button class="seg active" data-type="car">🚙 Автомобиль</button><button class="seg" data-type="moto">♟ Мотоцикл</button></div>
-        </div>
-
-        <div class="plate-zone">
-          <div class="plate" id="plate">
-            <div class="plate-main">
-              <div class="cell letter" data-cell="l1"><div class="track"></div></div>
-              <div class="cell" data-cell="d1"><div class="track"></div></div>
-              <div class="cell" data-cell="d2"><div class="track"></div></div>
-              <div class="cell" data-cell="d3"><div class="track"></div></div>
-              <div class="cell letter" data-cell="l2"><div class="track"></div></div>
-              <div class="cell letter" data-cell="l3"><div class="track"></div></div>
-            </div>
-            <div class="region"><span id="regionText">77</span><div class="rus">RUS <span class="flag"></span></div></div>
-          </div>
-          <div class="number-info"><span class="badge" id="statusBadge">Обычная комбинация</span><span class="badge">Оценка: <b id="estimate">1 200 ₽</b></span></div>
-        </div>
-
-        <div class="pay-title">Способ оплаты:</div>
-        <div class="pay-row"><button class="pay active" data-pay="cash">💵 Наличные</button><button class="pay" data-pay="card">▣ Карта</button><button class="pay" data-pay="coins">🪙 Коины</button></div>
-
-        <div class="spin-grid">
-          <div class="box"><small>Крутить цифры</small><button class="big-btn" id="rollDigits">↻ 650 ₽</button></div>
-          <div class="box"><small>Крутить буквы</small><button class="big-btn" id="rollLetters">↻ 650 ₽</button></div>
-          <div class="box"><small>Выбранный регион</small><button class="big-btn region-btn" id="chooseRegion">Изменить · <b id="chosenRegion">77</b></button></div>
-        </div>
-
-        <div class="quick-actions">
-          <button id="rollAll">↻ Новый комплект · 1 200 ₽</button>
-          <button id="premiumRegion">★ Премиум-регион · 4 500 ₽</button>
-          <button id="claimContract">Контракт 0/5</button>
-        </div>
-
-        <div class="contract">
-          <div class="contract-head"><span>Контракт дня: зарегистрировать 5 номеров</span><span>+12 000 ₽</span></div>
-          <small>Обычные номера тоже имеют смысл: они двигают контракт и дают стабильный доход.</small>
-          <div class="prog"><i id="contractProgress"></i></div>
-        </div>
-
-        <div class="action-row">
-          <button class="primary" id="register">✓ Регистрация транспорта · 1 000 ₽</button>
-          <button class="green" id="saveNumber">◉ Сохранить в инвентарь</button>
-        </div>
-        <div class="message" id="message">Прокручивай цифры и буквы отдельно — редкие сочетания подсветятся автоматически.</div><div class="quality-hint">Редкие серии открывают отдельный экран результата и сильнее повышают репутацию.</div>
-      </section>
-
-      <aside class="right">
-        <div class="r-card" id="specialCard">
-          <div class="r-title red">✹ СПЕЦ.НОМЕРА</div>
-          <p>Следующие серии являются эксклюзивными для государственных и приоритетных категорий. В игре они встречаются редко.</p>
-          <div class="example"><span class="mini-plate">А***МР 97</span><span class="tag">ГОС</span></div>
-          <div class="example"><span class="mini-plate">С***КР 197</span><span class="tag">СКР</span></div>
-          <div class="example"><span class="mini-plate">Е***КК 77</span><span class="tag">ОСОБАЯ</span></div>
-          <button class="rules">ⓘ Правила и редкости</button>
-        </div>
-        <div class="r-card">
-          <div class="r-title blue">● ОГРАНИЧЕНИЯ</div>
-          <p>Эти комбинации имеют максимальную ценность, но выпадают исключительно редко.</p>
-          <div class="restrict">***ОО 77</div>
-          <div class="dots"><i></i><i class="active"></i><i></i></div>
-        </div>
-      </aside>
+<div class="app" id="app">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="mini-logo">77</div><div><b>Nomeraa</b><small id="buildTag">PREMIUM · V6</small></div></div>
+      <div class="top-money"><small>НАЛИЧНЫЕ</small><b class="money" id="headerCash">75 000 ₽</b></div>
     </div>
-  </main>
+  </header>
+
+  <section class="view active" data-view="home">
+    <div class="hero">
+      <div class="eyebrow">Общий капитал</div>
+      <div class="cash money" id="homeWorth">295 000 ₽</div>
+      <div class="small">Наличные + коллекция + автомобили</div>
+      <div class="subrow"><span class="pill good" id="homeRank">Новичок</span><span class="pill" id="homeLevel">Ур. 1</span><span class="pill gold" id="homeRep">0 реп.</span></div>
+      <div class="progress" style="margin-top:12px"><i id="capitalProgress"></i></div>
+      <div class="small" id="capitalGoal" style="margin-top:6px">До следующей цели</div>
+    </div>
+
+    <div class="section-title"><h2>Разделы</h2><span>Быстрый доступ</span></div>
+    <div class="quick-grid">
+      <button class="quick hot" data-go="numbers"><div class="ico">▣</div><b>Создать номер</b><small>Прокрутка, оценка и регистрация</small></button>
+      <button class="quick" data-go="garage"><div class="ico">🚘</div><b>Гараж</b><small>Автомобили и установленные номера</small></button>
+      <button class="quick" data-go="market"><div class="ico">₽</div><b>Рынок</b><small>Покупка, продажа и аукцион</small></button>
+      <button class="quick" data-go="profile"><div class="ico">◆</div><b>Профиль</b><small>Уровень, лицензии и история</small></button>
+    </div>
+
+    <div class="section-title"><h2>Задания дня</h2><span id="dailyDate"></span></div>
+    <div class="card" id="missions"></div>
+
+    <div class="section-title"><h2>Дилерский бизнес</h2><span>Пассивный доход</span></div>
+    <div class="card" id="businessHome"></div>
+
+    <div class="section-title"><h2>Активы</h2><span>Лучшее в коллекции</span></div>
+    <div class="card" id="topAssets"></div>
+  </section>
+
+  <section class="view" data-view="numbers">
+    <div class="tabs"><button class="tab active" data-numtab="create">Создать</button><button class="tab" data-numtab="collection">Коллекция <span id="collectionCount">0</span></button></div>
+
+    <div id="createTab">
+      <div class="plate-stage">
+        <div class="plate" id="plate">
+          <div class="plate-main">
+            <div class="pc letter" data-cell="l1"><div class="rolltrack"></div></div>
+            <div class="pc" data-cell="d1"><div class="rolltrack"></div></div>
+            <div class="pc" data-cell="d2"><div class="rolltrack"></div></div>
+            <div class="pc" data-cell="d3"><div class="rolltrack"></div></div>
+            <div class="pc letter" data-cell="l2"><div class="rolltrack"></div></div>
+            <div class="pc letter" data-cell="l3"><div class="rolltrack"></div></div>
+          </div>
+          <div class="region-box"><span id="regionText">77</span><div class="rus">RUS <span class="flag"></span></div></div>
+        </div>
+        <div class="rarity-line">
+          <span class="result-chip" id="rarityChip">Обычный</span>
+          <span class="result-chip">Оценка <b class="money" id="plateValue">1 200 ₽</b></span>
+          <span class="result-chip" id="registeredChip">Не зарегистрирован</span>
+        </div>
+      </div>
+
+      <div class="spin-grid">
+        <button class="btn" id="rollDigits">Цифры · 1 350 ₽</button>
+        <button class="btn" id="rollLetters">Буквы · 1 350 ₽</button>
+        <button class="btn ghost" id="changeRegion">Регион · 800 ₽</button>
+        <button class="btn gold" id="premiumRoll">Premium-поиск · 9 000 ₽</button>
+        <button class="btn primary wide" id="rollAll">Новый номер · 2 500 ₽</button>
+      </div>
+
+      <div class="generator-summary">
+        <div class="mini-stat"><small>Репутация</small><b id="generatorRep">0</b></div>
+        <div class="mini-stat"><small>Шанс редкого</small><b id="luckText">Базовый</b></div>
+      </div>
+
+      <div class="row" style="margin-top:10px">
+        <button class="btn green" style="flex:1" id="saveNumber">Сохранить</button>
+        <button class="btn ghost" style="flex:1" id="registerNumber">Регистрация · 2 000 ₽</button>
+      </div>
+      <div class="small" id="generatorHint" style="text-align:center;margin-top:9px">Для установки номера на автомобиль его нужно зарегистрировать.</div>
+    </div>
+
+    <div id="collectionTab" class="hidden">
+      <div class="collection-list" id="collectionList"></div>
+    </div>
+  </section>
+
+  <section class="view" data-view="garage">
+    <div class="section-title"><h2>Гараж</h2><span id="garageCapacity">1 / 2</span></div>
+    <div class="card car-feature" id="featuredCar"></div>
+    <div class="section-title"><h2>Автосалон</h2><span>Игровые цены</span></div>
+    <div class="car-list" id="carCatalog"></div>
+  </section>
+
+  <section class="view" data-view="market">
+    <div class="segment"><button class="seg active" data-market-tab="market">Рынок</button><button class="seg" data-market-tab="auction">Аукцион</button></div>
+    <div id="marketPanel"></div>
+    <div id="auctionPanel" class="hidden"></div>
+  </section>
+
+  <section class="view" data-view="profile">
+    <div class="card profile-head">
+      <div class="avatar-big">77</div>
+      <div class="h2" id="profileRank">Новичок</div>
+      <div class="small" id="profileLevel">Уровень 1 · 0 репутации</div>
+      <div class="levelbar"><i id="xpBar"></i></div>
+      <div class="small" id="xpText" style="margin-top:6px">0 / 100 XP</div>
+    </div>
+
+    <div class="section-title"><h2>Финансы</h2><span>Состояние аккаунта</span></div>
+    <div class="kpis">
+      <div class="kpi"><small>Наличные</small><b class="green money" id="profileCash">0 ₽</b></div>
+      <div class="kpi"><small>Капитал</small><b class="gold money" id="profileWorth">0 ₽</b></div>
+      <div class="kpi"><small>Всего заработано</small><b class="money" id="earnedStat">0 ₽</b></div>
+      <div class="kpi"><small>Всего потрачено</small><b class="money" id="spentStat">0 ₽</b></div>
+    </div>
+
+    <div class="section-title"><h2>Лицензии</h2><span>Улучшения экономики</span></div>
+    <div class="card" id="upgrades"></div>
+
+    <div class="section-title"><h2>История</h2><span>Последние операции</span></div>
+    <div class="card" id="history"></div>
+
+    <div class="section-title"><h2>О приложении</h2><span>V6</span></div>
+    <div class="card">
+      <div class="small">Nomeraa — игровой симулятор. Реальные автомобильные фотографии используются как визуальные материалы.</div>
+      <div class="divider"></div>
+      <div class="credits">
+        Lada Granta — Throwawayacc222, CC0; Lada Vesta Sport — Throwawayacc222, CC0; Toyota Camry — Alex Neman, CC BY-SA 4.0; BMW 5 Series — Herranderssvensson, CC BY-SA 3.0; Mercedes-Benz G63 AMG — Tokumeigakarinoaoshima, CC0. Источник: Wikimedia Commons.
+      </div>
+      <button class="btn danger" id="resetGame" style="width:100%;margin-top:12px">Сбросить прогресс</button>
+    </div>
+  </section>
 </div>
 
-<div class="modal" id="regionModal">
-  <div class="modal-card">
-    <div class="modal-head"><b>Выберите регион</b><button class="close" data-close="regionModal">Закрыть</button></div>
+<nav class="nav" id="nav">
+  <button class="active" data-go="home"><b>⌂</b>Главная</button>
+  <button data-go="numbers"><b>▣</b>Номера</button>
+  <button data-go="garage"><b>🚘</b>Гараж</button>
+  <button data-go="market"><b>₽</b>Рынок</button>
+  <button data-go="profile"><b>◆</b>Профиль</button>
+</nav>
+
+<div class="sheet" id="regionSheet">
+  <div class="sheet-card">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Выбор региона</div>
+    <div class="small" style="margin-bottom:10px">Смена региона стоит 800 ₽. Premium-регионы встречаются реже.</div>
     <div class="region-grid" id="regionGrid"></div>
   </div>
 </div>
 
-<div class="modal" id="inventoryModal">
-  <div class="modal-card">
-    <div class="modal-head"><b>Мои номера</b><button class="close" data-close="inventoryModal">Закрыть</button></div>
-    <div class="inv" id="inventoryList"></div>
-  </div>
-</div>
-
-
-<div class="modal" id="marketModal">
-  <div class="modal-card">
-    <div class="modal-head"><b>Рынок автономеров</b><button class="close" data-close="marketModal">Закрыть</button></div>
-    <div style="font-size:10px;color:#77838d;margin-bottom:10px">Редкие номера — игровые активы. При продаже удерживается комиссия 8%.</div>
-    <div class="market-grid" id="marketList"></div>
-  </div>
-</div>
-
-<div class="modal" id="economyModal">
-  <div class="modal-card">
-    <div class="modal-head"><b>Экономика и развитие</b><button class="close" data-close="economyModal">Закрыть</button></div>
-    <table class="economy-table">
-      <tr><td>Прокрутка цифр / букв</td><td>650 ₽</td></tr>
-      <tr><td>Полный новый комплект</td><td>1 200 ₽</td></tr>
-      <tr><td>Премиум-регион</td><td>4 500 ₽</td></tr>
-      <tr><td>Регистрация транспорта</td><td>1 000 ₽</td></tr>
-      <tr><td>Комиссия рынка</td><td>8%</td></tr>
-      <tr><td>Контракт дня</td><td>+12 000 ₽</td></tr>
-      <tr><td>Главная цель</td><td>1 000 000 ₽</td></tr>
-      <tr><td>Статусы</td><td>Новичок → Перекуп → Дилер → Коллекционер → Магнат</td></tr>
-    </table>
-    <div style="height:12px"></div>
-    <div class="license" id="licDealer"><div><b>Лицензия дилера</b><small>Разрешает продажу номеров дороже 75 000 ₽ и даёт +5% к выручке</small></div><button data-license="dealer">35 000 ₽</button></div>
-    <div class="license" id="licExpert"><div><b>Экспертная оценка</b><small>Показывает коэффициент редкости и даёт +3% к выручке</small></div><button data-license="expert">20 000 ₽</button></div>
-    <div class="license" id="licVip"><div><b>VIP-регистратор</b><small>Скидка 15% на прокрутки, регистрацию и премиум-регионы</small></div><button data-license="vip">60 000 ₽</button></div>
-  </div>
-</div>
-
-
-<div class="modal" id="carsModal">
-  <div class="modal-card">
-    <div class="modal-head"><b>Гараж и автомобили</b><button class="close" data-close="carsModal">Закрыть</button></div>
-    <div style="font-size:10px;color:#76828c;margin-bottom:10px">Номера получают дополнительную ценность, когда закреплены за автомобилем. Более дорогой класс машины увеличивает коллекционный капитал.</div>
-    <div class="car-detail">
-      <div class="car-stage"><div class="hero-car"></div></div>
-      <div><small>ВЫБРАННЫЙ АВТОМОБИЛЬ</small><h3 id="heroCarName">Lada Granta</h3><small>КАПИТАЛ АВТОМОБИЛЯ</small><div class="big-capital" id="heroCarValue">450 000 ₽</div><span class="hero-number" id="heroCarNumber">БЕЗ НОМЕРА</span></div>
+<div class="result-modal" id="resultModal">
+  <div class="result-box" id="resultBox">
+    <div class="result-inner">
+      <div class="eyebrow" id="resultEyebrow">РЕДКОЕ ВЫПАДЕНИЕ</div>
+      <div class="result-title" id="resultTitle">Редкий номер</div>
+      <div class="result-number" id="resultNumber">А777АА 77</div>
+      <div class="result-value money" id="resultValue">100 000 ₽</div>
+      <div class="small" id="resultSub">Добавь номер в коллекцию или продолжай поиск.</div>
+      <div class="result-actions">
+        <button class="btn primary" id="keepResult">Сохранить</button>
+        <button class="btn ghost" id="closeResult">Продолжить</button>
+      </div>
     </div>
-    <div class="vehicle-grid" id="vehicleList"></div>
-    <div style="height:12px"></div>
-    <b style="font-size:11px">Автосалон</b>
-    <div class="dealer-showroom" id="showroomList" style="margin-top:8px"></div>
-  </div>
-</div>
-
-<div class="modal" id="auctionModal">
-  <div class="modal-card">
-    <div class="modal-head"><b>Аукцион номеров</b><button class="close" data-close="auctionModal">Закрыть</button></div>
-    <div style="font-size:10px;color:#77838d;margin-bottom:10px">Виртуальные участники повышают ставки. Лоты обновляются при каждом открытии аукциона.</div>
-    <div class="auction-list" id="auctionList"></div>
-  </div>
-</div>
-
-<div class="modal" id="historyModal">
-  <div class="modal-card">
-    <div class="modal-head"><b>История операций</b><button class="close" data-close="historyModal">Закрыть</button></div>
-    <div class="history-list" id="historyList"></div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-
-<div class="mobile-dock" id="mobileDock">
-  <button class="active" data-dock="hub"><b>⌂</b>Главная</button>
-  <button data-dock="cars"><b>🚘</b>Гараж</button>
-  <button data-dock="market"><b>₽</b>Рынок</button>
-  <button data-dock="auction"><b>⚑</b>Аукцион</button>
-  <button data-dock="history"><b>≡</b>История</button>
-</div>
-
-
-<div class="result-overlay" id="resultOverlay">
-  <div class="result-card" id="resultCard">
-    <div class="result-inner">
-      <div class="result-eyebrow" id="resultEyebrow">РЕДКОЕ ВЫПАДЕНИЕ</div>
-      <div class="result-title" id="resultTitle">Редкий номер</div>
-      <div class="result-plate" id="resultPlate">А777АА 77</div>
-      <div class="result-value" id="resultValue">100 000 ₽</div>
-      <div class="result-sub" id="resultSub">Коллекционная оценка</div>
-      <div class="result-actions">
-        <button class="keep" id="resultKeep">Сохранить номер</button>
-        <button class="close-result" id="resultClose">Продолжить</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="hub" id="gameHub">
-  <div class="hub-shell">
-    <div class="hub-top">
-      <div class="player"><div class="avatar77">77</div><div><small>ПРОФИЛЬ ИГРОКА</small><b id="hubRank">Новичок</b></div></div>
-      <div class="hub-money"><small>НАЛИЧНЫЕ</small><b id="hubBalance">50 000 ₽</b></div>
-    </div>
-
-    <div class="level-strip">
-      <b id="hubLevel">УР. 1</b><div class="xpbar"><i id="hubXp"></i></div><span id="hubXpText">0 / 100 XP</span>
-    </div>
-
-    <section class="hero-balance">
-      <div class="eyebrow">ОБЩИЙ КАПИТАЛ</div>
-      <h2 id="hubWorth">500 000 ₽</h2>
-      <div class="worth">Коллекционный рейтинг: <b id="collectionScore">0</b></div>
-      <div class="hero-actions">
-        <button class="primary" data-hub-action="terminal">Создать номер</button>
-        <button data-hub-action="garage">Гараж</button>
-        <button data-hub-action="auction">Аукцион</button>
-      </div>
-    </section>
-
-    <div class="hub-grid">
-      <div>
-        <section class="hub-card">
-          <h3>Игровые разделы</h3>
-          <small>Развивай коллекцию и капитал</small>
-          <div class="menu-grid">
-            <button class="menu-tile hot" data-hub-action="terminal"><div class="tile-icon">▣</div><b>Регистрация</b><small>Генерация и оценка новых номеров</small></button>
-            <button class="menu-tile" data-hub-action="garage"><div class="tile-icon">🚘</div><b>Гараж</b><small>Автомобили и установленные номера</small></button>
-            <button class="menu-tile" data-hub-action="market"><div class="tile-icon">₽</div><b>Рынок</b><small>Покупка и перепродажа номеров</small></button>
-            <button class="menu-tile" data-hub-action="auction"><div class="tile-icon">⚑</div><b>Аукцион</b><small>Ставки против виртуальных коллекционеров</small></button>
-            <button class="menu-tile" data-hub-action="economy"><div class="tile-icon">⌁</div><b>Бизнес</b><small>Лицензии и источники дохода</small></button>
-            <button class="menu-tile" data-hub-action="history"><div class="tile-icon">≡</div><b>История</b><small>Доходы, расходы и сделки</small></button>
-          </div>
-        </section>
-
-        <section class="hub-card" style="margin-top:12px">
-          <h3>Активы</h3>
-          <small>Самые ценные вещи аккаунта</small>
-          <div id="hubAssets"></div>
-        </section>
-      </div>
-
-      <div>
-        <section class="hub-card">
-          <h3>Задания дня</h3>
-          <small>Стабильный источник денег и репутации</small>
-          <div class="daily-list" id="dailyList"></div>
-        </section>
-
-        <section class="hub-card" style="margin-top:12px">
-          <h3>Дилерский бизнес</h3>
-          <small>Вкладывай деньги в постоянный доход</small>
-          <div class="business-list" id="businessList"></div>
-        </section>
-
-        <section class="hub-card" style="margin-top:12px">
-          <h3>Достижения</h3>
-          <div class="achievement-row" id="achievementList"></div>
-        </section>
-      </div>
-    </div>
-
-    <div style="display:flex;justify-content:center;margin-top:13px"><button class="exit-hub" id="hubToTerminal">Открыть терминал регистрации</button></div>
-    <div class="hub-footer">Nomeraa · игровой симулятор · прогресс хранится локально на устройстве</div>
-  </div>
-</div>
-
-
 <script>
 (()=>{
-const $=q=>document.querySelector(q), $$=q=>[...document.querySelectorAll(q)];
-const LETTERS=['А','В','Е','К','М','Н','О','Р','С','Т','У','Х'], DIGITS='0123456789'.split('');
+'use strict';
+
+const BUILD='6.0.0';
+const KEY='nomeraa-v6';
+const OLD_KEYS=['nomeraGovUI-v1','nomeraa-v5'];
+const $=s=>document.querySelector(s);
+const $$=s=>[...document.querySelectorAll(s)];
+const LETTERS=['А','В','Е','К','М','Н','О','Р','С','Т','У','Х'];
+const DIGITS='0123456789'.split('');
 const REGIONS=['01','02','03','05','07','09','13','16','18','21','23','24','25','26','27','30','31','34','36','38','42','47','50','52','54','55','56','59','61','63','66','69','71','72','74','77','78','82','86','89','92','93','95','96','97','99','102','116','123','124','125','126','134','136','138','142','147','150','152','154','156','159','161','163','164','173','174','177','178','186','190','193','196','197','198','199','702','716','750','752','754','763','774','777','790','797','799'];
-const SPECIAL_REGIONS=['77','97','99','177','197','199','777','797','799'];
-const KEY='nomeraGovUI-v1';
-const fresh={balance:50000,rep:0,coins:1000,pay:'cash',type:'car',region:'77',letters:['А','А','А'],digits:'111',inventory:[],registered:0,freeSpins:2,spent:0,earned:0,contractCount:0,contractClaimed:false,licenses:{dealer:false,expert:false,vip:false},vehicles:[{id:'starter',name:'Lada Granta',tier:'Стартовый',value:450000,number:null}],selectedVehicle:'starter',history:[],sound:true,auctionsWon:0,bootSeen:false,lastReveal:null,xp:0,level:1,
-daily:{rolls:0,sales:0,registered:0,claimedRolls:false,claimedSales:false,claimedReg:false},
-businesses:{office:false,showroom:false,club:false},lastIncomeAt:0,achievements:{firstRare:false,firstCar:false,hundredK:false,million:false}};
-let S;
-try{
-  S=Object.assign({},fresh,JSON.parse(localStorage.getItem(KEY)||'{}'));
-  S.licenses=Object.assign({},fresh.licenses,S.licenses||{});
-  if(!Array.isArray(S.vehicles)||!S.vehicles.length)S.vehicles=JSON.parse(JSON.stringify(fresh.vehicles));
-  if(!Array.isArray(S.history))S.history=[];
-  if(typeof S.sound!=='boolean')S.sound=true;
-  if(!S.selectedVehicle)S.selectedVehicle=S.vehicles[0].id;
-}catch{S={...fresh,licenses:{...fresh.licenses},vehicles:JSON.parse(JSON.stringify(fresh.vehicles)),history:[]}}
-if(!S.daily)S.daily=JSON.parse(JSON.stringify(fresh.daily));
-if(!S.businesses)S.businesses={...fresh.businesses};
-if(!S.achievements)S.achievements={...fresh.achievements};
-if(typeof S.xp!=='number')S.xp=0;
-if(typeof S.level!=='number')S.level=1;
-if(typeof S.lastIncomeAt!=='number')S.lastIncomeAt=0;
-if(!Array.isArray(S.inventory))S.inventory=[];
-if(!Array.isArray(S.vehicles)||!S.vehicles.length)S.vehicles=JSON.parse(JSON.stringify(fresh.vehicles));
-if(!S.licenses)S.licenses={...fresh.licenses};
-if(typeof S.balance!=='number')S.balance=fresh.balance;
-if(typeof S.rep!=='number')S.rep=0;
-if(typeof S.coins!=='number')S.coins=fresh.coins;
-const money=n=>Math.round(n).toLocaleString('ru-RU')+' ₽', pick=a=>a[Math.floor(Math.random()*a.length)], sleep=ms=>new Promise(r=>setTimeout(r,ms));
-const save=()=>localStorage.setItem(KEY,JSON.stringify(S));
+const PREMIUM_REGIONS=['77','97','99','177','197','199','777','797','799'];
 
-function selectedCar(){return S.vehicles.find(v=>v.id===S.selectedVehicle)||S.vehicles[0]}
-function haptic(ms=20){try{if(navigator.vibrate)navigator.vibrate(ms)}catch{}}
-function sectionFlash(){const w=$('.window');w.classList.remove('section-flash');void w.offsetWidth;w.classList.add('section-flash');setTimeout(()=>w.classList.remove('section-flash'),420)}
-function updateCarHero(){
-  const v=selectedCar();if(!v)return;
-  $('#selectedCarName').textContent=v.name;$('#selectedCarValue').textContent=money(v.value||0);$('#selectedCarPlate').textContent=v.number||'БЕЗ НОМЕРА';
-  if($('#heroCarName')){$('#heroCarName').textContent=v.name;$('#heroCarValue').textContent=money(v.value||0);$('#heroCarNumber').textContent=v.number||'БЕЗ НОМЕРА'}
-}
-function revealResult(c){
-  if(!c||c.score<6)return;
-  const card=$('#resultCard');card.className='result-card';
-  if(c.government)card.classList.add('special');else if(c.score>=12)card.classList.add('epic');else card.classList.add('rare');
-  $('#resultEyebrow').textContent=c.government?'СПЕЦИАЛЬНАЯ СЕРИЯ':c.score>=12?'КОЛЛЕКЦИОННОЕ ВЫПАДЕНИЕ':'РЕДКОЕ ВЫПАДЕНИЕ';
-  $('#resultTitle').textContent=c.label;$('#resultPlate').textContent=currentCode();$('#resultValue').textContent=money(c.value);
-  $('#resultSub').textContent=`Редкость x${c.coefficient} · репутация +${Math.max(1,c.score)}`;
-  S.lastReveal={code:currentCode(),value:c.value,label:c.label,score:c.score,type:S.type};
-  $('#resultOverlay').classList.add('show');haptic(c.score>=12?[40,40,70]:35);specialTone(c.score);save();
-}
-function keepLastReveal(){
-  const x=S.lastReveal;if(!x)return;
-  if(!S.inventory.some(n=>n.code===x.code)){S.inventory.push({id:Date.now()+Math.random(),code:x.code,value:x.value,label:x.label,type:x.type});S.rep+=2;addXP(Math.max(6,Math.round((x.score||6)*1.5)));historyAdd('Редкий номер сохранён',0,x.code);checkAchievements()}
-  S.lastReveal=null;save();render();$('#resultOverlay').classList.remove('show');toast('Номер сохранён в коллекцию')
-}
-
-
-const RANKS=[
-  {name:'Новичок',min:0,max:99,garage:2},
-  {name:'Перекуп',min:100,max:299,garage:3},
-  {name:'Дилер',min:300,max:699,garage:5},
-  {name:'Коллекционер',min:700,max:1499,garage:8},
-  {name:'Магнат',min:1500,max:999999,garage:12}
+const CAR_CATALOG=[
+  {id:'granta',name:'Lada Granta',tier:'Стартовый',price:0,resale:220000,unlockRep:0,
+   photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/2025_Lada_Granta_sedan_black_front.jpg/1280px-2025_Lada_Granta_sedan_black_front.jpg'},
+  {id:'vesta',name:'Lada Vesta Sport',tier:'Sport',price:480000,resale:420000,unlockRep:20,
+   photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/2019_Lada_Vesta_Sport_grey_front.jpg/1280px-2019_Lada_Vesta_Sport_grey_front.jpg'},
+  {id:'camry',name:'Toyota Camry',tier:'Business',price:1250000,resale:1100000,unlockRep:60,
+   photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/2019_Toyota_Camry_%28XV70%29_2.5_V_%28front%29%2C_East_Surabaya.jpg/1280px-2019_Toyota_Camry_%28XV70%29_2.5_V_%28front%29%2C_East_Surabaya.jpg'},
+  {id:'bmw5',name:'BMW 5 Series',tier:'Premium',price:3800000,resale:3350000,unlockRep:180,
+   photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/BMW_G30_fr.jpg/1280px-BMW_G30_fr.jpg'},
+  {id:'g63',name:'Mercedes-AMG G63',tier:'Elite',price:8900000,resale:7800000,unlockRep:400,
+   photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Mercedes-Benz_G63_AMG_%28W463%29_front.JPG/1280px-Mercedes-Benz_G63_AMG_%28W463%29_front.JPG'}
 ];
-const CARS=[
-  {id:'vesta',name:'Lada Vesta Sport',tier:'Городской',value:1350000,price:240000},
-  {id:'camry',name:'Toyota Camry',tier:'Бизнес',value:3200000,price:620000},
-  {id:'bmw5',name:'BMW 5 Series',tier:'Премиум',value:6800000,price:1350000},
-  {id:'g63',name:'Mercedes-AMG G 63',tier:'Люкс',value:20500000,price:4200000}
+
+const BUSINESSES=[
+  {id:'broker',name:'Офис перекупа',price:150000,rate:1200,rep:25,desc:'Небольшой поток сделок и клиентов.'},
+  {id:'studio',name:'Номерной салон',price:600000,rate:5000,rep:120,desc:'Подбор и перепродажа редких комбинаций.'},
+  {id:'club',name:'Клуб коллекционеров',price:2200000,rate:16000,rep:350,desc:'Премиальные клиенты и дорогие сделки.'}
 ];
-const rankInfo=()=>RANKS.findLast?RANKS.findLast(r=>S.rep>=r.min):[...RANKS].reverse().find(r=>S.rep>=r.min);
-const garageLimit=()=>rankInfo().garage;
-function historyAdd(title,amount=0,meta=''){
+
+const UPGRADES=[
+  {id:'appraiser',name:'Экспертная оценка',price:30000,rep:0,desc:'Показывает коэффициент редкости и точную оценку.'},
+  {id:'dealer',name:'Лицензия дилера',price:120000,rep:40,desc:'Комиссия продажи снижается с 12% до 6%.'},
+  {id:'vip',name:'Premium-регистратор',price:250000,rep:100,desc:'Скидка 10% на прокрутки и регистрацию.'}
+];
+
+const fresh=()=>({
+  version:6,
+  cash:75000,rep:0,xp:0,level:1,earned:0,spent:0,
+  current:{letters:['А','А','А'],digits:'111',region:'77',registered:false},
+  collection:[],
+  cars:[{id:'granta',owned:true,equipped:null}],
+  selectedCar:'granta',
+  businesses:{broker:false,studio:false,club:false},
+  upgrades:{appraiser:false,dealer:false,vip:false},
+  daily:{date:'',rolls:0,regs:0,sales:0,claimRolls:false,claimRegs:false,claimSales:false},
+  lastIncomeAt:Date.now(),
+  history:[],
+  market:{date:'',items:[]},
+  auction:{lots:[],lastTick:Date.now()},
+  started:false
+});
+
+let S=loadState();
+let activeView='home';
+let numberTab='create';
+let marketTab='market';
+let lastRare=null;
+let timerHandle=null;
+let audioCtx=null;
+
+function money(n){return Math.max(0,Math.round(n)).toLocaleString('ru-RU')+' ₽'}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function clamp(n,a,b){return Math.max(a,Math.min(b,n))}
+function today(){
+  const d=new Date(),y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`
+}
+function carDef(id){return CAR_CATALOG.find(c=>c.id===id)}
+function ownedCar(id){return S.cars.find(c=>c.id===id&&c.owned)}
+function currentCode(){const c=S.current;return `${c.letters[0]}${c.digits}${c.letters[1]}${c.letters[2]} ${c.region}`}
+function xpNeed(){return 100+Math.floor((S.level-1)*70)}
+function rank(){
+  if(S.rep>=500)return 'Магнат';
+  if(S.rep>=250)return 'Коллекционер';
+  if(S.rep>=100)return 'Дилер';
+  if(S.rep>=30)return 'Перекуп';
+  return 'Новичок';
+}
+function garageLimit(){
+  if(S.rep>=500)return 8;
+  if(S.rep>=250)return 6;
+  if(S.rep>=100)return 5;
+  if(S.rep>=30)return 3;
+  return 2;
+}
+function spinCost(v){return S.upgrades.vip?Math.round(v*.9):v}
+function saleFee(){return S.upgrades.dealer?.06:.12}
+function businessRate(){return BUSINESSES.reduce((s,b)=>s+(S.businesses[b.id]?b.rate:0),0)}
+function save(){localStorage.setItem(KEY,JSON.stringify(S))}
+function hist(title,amount=0,meta=''){
   S.history.unshift({id:Date.now()+Math.random(),title,amount,meta,time:new Date().toLocaleString('ru-RU')});
-  S.history=S.history.slice(0,60);
-}
-
-function addXP(v){
-  S.xp+=v;
-  let needed=S.level*100;
-  while(S.xp>=needed){S.xp-=needed;S.level++;S.rep+=8;toast(`Новый уровень: ${S.level}`);tone(780,.1,'triangle',.035);needed=S.level*100}
-}
-function collectionScore(){
-  const inv=S.inventory.reduce((s,n)=>s+Math.round((n.value||0)/1000),0);
-  const veh=S.vehicles.reduce((s,v)=>s+Math.round((v.value||0)/100000),0);
-  return inv+veh+S.rep*2+S.level*25;
-}
-function checkAchievements(){
-  if(!S.achievements.firstRare&&S.inventory.some(n=>(n.value||0)>=30000)){S.achievements.firstRare=true;addXP(40);toast('Достижение: Первый редкий')}
-  if(!S.achievements.firstCar&&S.vehicles.length>=2){S.achievements.firstCar=true;addXP(50);toast('Достижение: Второй автомобиль')}
-  if(!S.achievements.hundredK&&S.balance>=100000){S.achievements.hundredK=true;addXP(60);toast('Достижение: 100 000 ₽')}
-  if(!S.achievements.million&&netWorth()>=1000000){S.achievements.million=true;addXP(100);toast('Достижение: Миллионер')}
-}
-function passiveRate(){
-  let r=0;if(S.businesses.office)r+=900;if(S.businesses.showroom)r+=1800;if(S.businesses.club)r+=3200;return r;
-}
-function collectPassive(){
-  const now=Date.now();if(!S.lastIncomeAt){S.lastIncomeAt=now;save();return}
-  const hours=Math.min(8,(now-S.lastIncomeAt)/3600000),rate=passiveRate();
-  if(rate>0&&hours>=.05){const gain=Math.floor(hours*rate);if(gain>0){S.balance+=gain;S.earned+=gain;historyAdd('Доход бизнеса',gain,`${hours.toFixed(1)} ч.`);toast(`Бизнес принёс ${money(gain)}`)}}
-  S.lastIncomeAt=now;save();
-}
-function openHub(){
-  collectPassive();checkAchievements();renderHub();$('#gameHub').classList.add('show');document.body.classList.add('app-locked')
-}
-function closeHub(){
-  $('#gameHub').classList.remove('show');document.body.classList.remove('app-locked');sectionFlash()
-}
-function renderHub(){
-  checkAchievements();
-  const ri=rankInfo(),need=S.level*100;
-  $('#hubRank').textContent=ri.name;$('#hubBalance').textContent=money(S.balance);$('#hubWorth').textContent=money(netWorth());
-  $('#collectionScore').textContent=collectionScore();$('#hubLevel').textContent=`УР. ${S.level}`;$('#hubXp').style.width=Math.min(100,S.xp/need*100)+'%';$('#hubXpText').textContent=`${S.xp} / ${need} XP`;
-  renderDaily();renderBusiness();renderAchievements();renderHubAssets();save();
-}
-function renderDaily(){
-  const tasks=[
-    {id:'rolls',title:'Охотник за номерами',desc:'Сделать 5 прокруток',cur:S.daily.rolls,max:5,reward:6500,xp:25,claim:'claimedRolls'},
-    {id:'sales',title:'Перекуп',desc:'Продать 2 номера',cur:S.daily.sales,max:2,reward:9000,xp:35,claim:'claimedSales'},
-    {id:'registered',title:'Регистратор',desc:'Зарегистрировать 3 номера',cur:S.daily.registered,max:3,reward:7500,xp:30,claim:'claimedReg'}
-  ];
-  const g=$('#dailyList');g.innerHTML='';
-  tasks.forEach(t=>{
-    const d=document.createElement('div');d.className='daily';
-    d.innerHTML=`<div class="daily-top"><div><b>${t.title}</b><small>${t.desc}</small></div><span>+${money(t.reward)}</span></div><div class="dailybar"><i style="width:${Math.min(100,t.cur/t.max*100)}%"></i></div>`;
-    const b=document.createElement('button');b.className='claim';b.disabled=t.cur<t.max||S.daily[t.claim];b.textContent=S.daily[t.claim]?'Получено':t.cur>=t.max?'Забрать награду':`${Math.min(t.cur,t.max)}/${t.max}`;
-    b.onclick=()=>{if(b.disabled)return;S.daily[t.claim]=true;S.balance+=t.reward;S.earned+=t.reward;addXP(t.xp);historyAdd('Ежедневное задание',t.reward,t.title);tone(700,.09,'triangle',.03);renderHub();toast(`+${money(t.reward)} · +${t.xp} XP`)};
-    d.appendChild(b);g.appendChild(d)
-  })
-}
-const BUSINESS=[
-  {id:'office',name:'Офис перекупа',price:80000,rate:900,desc:'Базовый поток клиентов'},
-  {id:'showroom',name:'Номерной салон',price:220000,rate:1800,desc:'Продажа и подбор дорогих комбинаций'},
-  {id:'club',name:'Клуб коллекционеров',price:500000,rate:3200,desc:'Премиальные клиенты и крупные сделки'}
-];
-function renderBusiness(){
-  const g=$('#businessList');g.innerHTML='';
-  BUSINESS.forEach(x=>{
-    const owned=!!S.businesses[x.id],d=document.createElement('div');d.className='biz'+(owned?' owned':'');
-    d.innerHTML=`<div><b>${x.name}</b><small>${x.desc}</small><span class="income-pill">+${money(x.rate)}/час</span></div>`;
-    const b=document.createElement('button');b.textContent=owned?'Открыто':money(x.price);b.disabled=owned;
-    b.onclick=()=>{if(S.balance<x.price){toast('Недостаточно средств');return}S.balance-=x.price;S.spent+=x.price;S.businesses[x.id]=true;S.lastIncomeAt=Date.now();addXP(Math.round(x.price/10000));historyAdd('Покупка бизнеса',-x.price,x.name);renderHub();render();toast(`${x.name} открыт`)};
-    d.appendChild(b);g.appendChild(d)
-  })
-}
-function renderAchievements(){
-  const data=[
-    ['firstRare','◆','Первый редкий','Номер ≥ 30 000 ₽'],
-    ['firstCar','🚘','Автопарк','Купить вторую машину'],
-    ['hundredK','₽','100 тысяч','Накопить 100 000 ₽'],
-    ['million','★','Миллионер','Капитал 1 млн ₽']
-  ];
-  const g=$('#achievementList');g.innerHTML='';
-  data.slice(0,3).forEach(a=>{const on=S.achievements[a[0]],d=document.createElement('div');d.className='ach'+(on?'':' locked');d.innerHTML=`<strong>${a[1]}</strong><b>${a[2]}</b><small>${a[3]}</small>`;g.appendChild(d)})
-}
-function renderHubAssets(){
-  const g=$('#hubAssets');g.innerHTML='';
-  const car=[...S.vehicles].sort((a,b)=>(b.value||0)-(a.value||0))[0];
-  const num=[...S.inventory].sort((a,b)=>(b.value||0)-(a.value||0))[0];
-  const assets=[];
-  if(car)assets.push({name:car.name,meta:car.tier||'Автомобиль',value:car.value,number:car.number});
-  if(num)assets.push({name:num.code,meta:num.label||'Номер',value:num.value,number:num.code});
-  if(!assets.length){g.innerHTML='<div style="font-size:9px;color:#7f909b;padding:8px 0">Пока нет коллекционных активов.</div>';return}
-  assets.forEach(a=>{const d=document.createElement('div');d.className='asset-mini';d.innerHTML=`<div><b>${a.name}</b><small>${a.meta}</small>${a.number?`<span class="num">${a.number}</span>`:''}</div><div class="asset-value">${money(a.value||0)}</div>`;g.appendChild(d)})
-}
-
-function netWorth(){
-  const cars=S.vehicles.reduce((sum,v)=>sum+(v.value||0),0);
-  const nums=S.inventory.reduce((sum,n)=>sum+(n.value||0),0);
-  return S.balance+cars+nums;
+  S.history=S.history.slice(0,80);
 }
 function toast(t){
-  const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(window.__toastTimer);
-  window.__toastTimer=setTimeout(()=>el.classList.remove('show'),1800);
+  const e=$('#toast');e.textContent=t;e.classList.add('show');clearTimeout(window.__toast);
+  window.__toast=setTimeout(()=>e.classList.remove('show'),1800);
 }
-let audioCtx=null;
-function tone(freq=420,dur=.055,type='sine',gain=.025){
-  if(!S.sound)return;
+function haptic(v=20){try{navigator.vibrate&&navigator.vibrate(v)}catch{}}
+function tone(f=500,d=.055,gain=.022,type='sine'){
   try{
-    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
-    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-    o.type=type;o.frequency.value=freq;g.gain.value=gain;o.connect(g);g.connect(audioCtx.destination);
-    o.start();g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+dur);o.stop(audioCtx.currentTime+dur);
+    audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.value=f;g.gain.value=gain;
+    o.connect(g);g.connect(audioCtx.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+d);o.stop(audioCtx.currentTime+d);
   }catch{}
 }
-function specialTone(score){
-  if(score>=12){tone(520,.09,'triangle',.035);setTimeout(()=>tone(760,.13,'triangle',.035),90)}
-  else if(score>=6){tone(610,.09,'sine',.03)}
-  else tone(390,.045,'sine',.018);
+function addXP(v){
+  S.xp+=v;
+  while(S.xp>=xpNeed()){S.xp-=xpNeed();S.level++;S.rep+=3;toast(`Новый уровень: ${S.level}`);tone(760,.12,.03,'triangle')}
+}
+function spend(v,reason){
+  const cost=spinCost(v);
+  if(S.cash<cost){toast('Недостаточно наличных');return false}
+  S.cash-=cost;S.spent+=cost;hist(reason,-cost);tone(250,.04,.012,'square');save();return true
+}
+function earn(v,reason,meta=''){
+  S.cash+=v;S.earned+=v;hist(reason,v,meta);tone(640,.07,.025,'triangle');save()
+}
+function netWorth(){
+  const cars=S.cars.filter(c=>c.owned).reduce((sum,c)=>sum+(carDef(c.id)?.resale||0),0);
+  const nums=S.collection.reduce((sum,n)=>sum+(n.value||0),0);
+  const biz=BUSINESSES.reduce((sum,b)=>sum+(S.businesses[b.id]?Math.round(b.price*.65):0),0);
+  return S.cash+cars+nums+biz;
+}
+function collectionScore(){
+  return S.collection.reduce((s,n)=>s+Math.round((n.value||0)/1000),0)+S.rep*3+S.cars.filter(c=>c.owned).length*25;
 }
 
+function migrateOld(raw){
+  const n=fresh();
+  try{
+    if(typeof raw.balance==='number')n.cash=Math.max(0,raw.balance);
+    if(typeof raw.rep==='number')n.rep=Math.max(0,raw.rep);
+    if(typeof raw.earned==='number')n.earned=raw.earned;
+    if(typeof raw.spent==='number')n.spent=raw.spent;
+    const inv=raw.inventory||raw.collection||[];
+    if(Array.isArray(inv))n.collection=inv.slice(0,40).map(x=>({
+      id:x.id||Date.now()+Math.random(),code:x.code||'А111АА 77',value:Math.max(1000,x.value||5000),
+      label:x.label||'Импортированный',registered:!!x.registered
+    }));
+    const veh=raw.vehicles||[];
+    if(Array.isArray(veh)){
+      for(const v of veh){
+        const name=(v.name||'').toLowerCase();
+        const found=CAR_CATALOG.find(c=>name.includes(c.name.toLowerCase().split(' ')[0])||v.id===c.id);
+        if(found&&!n.cars.some(c=>c.id===found.id))n.cars.push({id:found.id,owned:true,equipped:v.number||null});
+      }
+    }
+    n.started=!!raw.bootSeen;
+  }catch{}
+  return n;
+}
+function loadState(){
+  try{
+    const own=JSON.parse(localStorage.getItem(KEY)||'null');
+    if(own&&own.version===6)return Object.assign(fresh(),own);
+  }catch{}
+  for(const k of OLD_KEYS){
+    try{
+      const old=JSON.parse(localStorage.getItem(k)||'null');
+      if(old){const m=migrateOld(old);localStorage.setItem(KEY,JSON.stringify(m));return m}
+    }catch{}
+  }
+  return fresh();
+}
+
+function ensureDaily(){
+  const d=today();
+  if(S.daily.date!==d){
+    S.daily={date:d,rolls:0,regs:0,sales:0,claimRolls:false,claimRegs:false,claimSales:false};
+    save()
+  }
+}
+function collectPassive(){
+  const now=Date.now(),rate=businessRate();
+  if(!S.lastIncomeAt){S.lastIncomeAt=now;save();return}
+  const hours=clamp((now-S.lastIncomeAt)/3600000,0,8);
+  if(rate>0&&hours>=.05){
+    const gain=Math.floor(hours*rate);
+    if(gain>=100){earn(gain,'Доход бизнеса',`${hours.toFixed(1)} ч.`);toast(`Бизнес принёс ${money(gain)}`)}
+  }
+  S.lastIncomeAt=now;save()
+}
+
+function classify(){
+  const c=S.current,d=c.digits,L=c.letters,r=c.region;
+  const triple=/^(\d)\1\1$/.test(d);
+  const palindrome=d[0]===d[2];
+  const hundreds=d[1]==='0'&&d[2]==='0';
+  const sameLetters=L[0]===L[1]&&L[1]===L[2];
+  const outerLetters=L[0]===L[2];
+  const specialSeries=(L.join('')==='АМР'||L.join('')==='ЕКХ'||L.join('')==='СКР');
+  let score=0;
+  if(palindrome)score+=1;
+  if(hundreds)score+=1;
+  if(triple)score+=4;
+  if(outerLetters)score+=1;
+  if(sameLetters)score+=4;
+  if(PREMIUM_REGIONS.includes(r))score+=1;
+  if(specialSeries)score+=7;
+
+  let label='Обычный',cls='';
+  if(score>=13){label='Спецсерия';cls='special'}
+  else if(score>=9){label='Коллекционный';cls='epic'}
+  else if(score>=5){label='Очень редкий';cls='rare'}
+  else if(score>=3){label='Редкий';cls='rare'}
+
+  let value=700+score*1800;
+  if(triple)value+=7000;
+  if(sameLetters)value+=9000;
+  if(specialSeries)value+=45000;
+  if(['777','797','799'].includes(r))value+=7000;
+  if(c.registered)value*=1.05;
+  value=Math.round(value/100)*100;
+  return{score,label,cls,value,mult:(1+score*.14).toFixed(2)}
+}
+
+function rareDigits(boost=1){
+  const x=Math.random()/boost;
+  if(x<.008)return pick(['001','007','100','111','222','333','444','555','666','777','888','999']);
+  if(x<.035)return pick(['101','202','303','404','505','707','808','909','500','700','900']);
+  return String(Math.floor(Math.random()*1000)).padStart(3,'0')
+}
+function rareLetters(boost=1){
+  const x=Math.random()/boost;
+  if(x<.0025)return pick([['А','М','Р'],['Е','К','Х'],['С','К','Р']]);
+  if(x<.018){const l=pick(LETTERS);return[l,l,l]}
+  if(x<.06){const a=pick(LETTERS),b=pick(LETTERS);return[a,b,a]}
+  return[pick(LETTERS),pick(LETTERS),pick(LETTERS)]
+}
+function randomRegion(premium=false){
+  if(premium||Math.random()<.08)return pick(PREMIUM_REGIONS);
+  return pick(REGIONS)
+}
 
 function setCell(name,val){
-  const c=document.querySelector(`[data-cell="${name}"]`),t=c.querySelector('.track');
-  t.style.transition='none';t.style.transform='translateY(0)';t.innerHTML=`<span>${val}</span>`;
+  const cell=document.querySelector(`[data-cell="${name}"]`),t=cell.querySelector('.rolltrack');
+  t.style.transition='none';t.style.transform='translateY(0)';t.innerHTML=`<span>${val}</span>`
 }
-async function rollCell(name,target,pool,duration,loops=9){
-  const c=document.querySelector(`[data-cell="${name}"]`),t=c.querySelector('.track'),h=c.clientHeight;
-  const vals=[];for(let i=0;i<loops;i++)vals.push(pick(pool));vals.push(target);
-  t.style.transition='none';t.style.transform='translateY(0)';t.innerHTML=vals.map(v=>`<span>${v}</span>`).join('');
+async function rollCell(name,target,pool,dur=520,loops=8){
+  const cell=document.querySelector(`[data-cell="${name}"]`),t=cell.querySelector('.rolltrack'),h=cell.clientHeight||76;
+  const arr=[];for(let i=0;i<loops;i++)arr.push(pick(pool));arr.push(target);
+  t.style.transition='none';t.style.transform='translateY(0)';t.innerHTML=arr.map(x=>`<span>${x}</span>`).join('');
   await new Promise(requestAnimationFrame);await new Promise(requestAnimationFrame);
-  t.style.transition=`transform ${duration}ms cubic-bezier(.12,.72,.16,1)`;
-  t.style.transform=`translateY(-${(vals.length-1)*h}px)`;
-  await sleep(duration+20);setCell(name,target);
+  t.style.transition=`transform ${dur}ms cubic-bezier(.12,.73,.16,1)`;t.style.transform=`translateY(-${(arr.length-1)*h}px)`;
+  await new Promise(r=>setTimeout(r,dur+20));setCell(name,target)
 }
-function currentCode(){return `${S.letters[0]}${S.digits}${S.letters[1]}${S.letters[2]} ${S.region}`}
-function classify(){
-  const d=S.digits,L=S.letters,r=S.region;
-  const triple=/^(\d)\1\1$/.test(d),mirror=d[0]===d[2],hundreds=d[1]==='0'&&d[2]==='0',round10=d[2]==='0';
-  const sameLetters=L[0]===L[1]&&L[1]===L[2],pair=L[0]===L[2];
-  let score=0,label='Обычная комбинация';
-  if(mirror)score+=2;if(hundreds)score+=2;if(round10)score+=1;if(triple)score+=6;if(pair)score+=2;if(sameLetters)score+=6;if(SPECIAL_REGIONS.includes(r))score+=2;
-  const government=(L[0]==='А'&&L[1]==='М'&&L[2]==='Р'&&['97','77','177','197'].includes(r))||(L[0]==='С'&&L[1]==='К'&&L[2]==='Р')||(L[0]==='Е'&&L[1]==='К'&&L[2]==='К');
-  if(government){score+=10;label='Спецсерия'} else if(score>=12) label='Коллекционная'; else if(score>=9) label='Эксклюзивная'; else if(score>=6) label='Очень редкая'; else if(score>=3) label='Редкая';
-  let value=700+score*2400;
-  if(triple)value+=8500;if(sameLetters)value+=10500;if(government)value+=52000;if(['777','797','799'].includes(r))value+=7000;
-  value=Math.round(value/100)*100;
-  const coefficient=(1+score*.18).toFixed(2);
-  return{score,label,value,government,coefficient};
+async function animateCurrent(kind='all'){
+  const c=S.current,p=[];
+  if(kind==='all'||kind==='digits'){
+    p.push(rollCell('d1',c.digits[0],DIGITS,470,8));
+    p.push((async()=>{await delay(55);return rollCell('d2',c.digits[1],DIGITS,535,9)})());
+    p.push((async()=>{await delay(110);return rollCell('d3',c.digits[2],DIGITS,610,10)})());
+  }
+  if(kind==='all'||kind==='letters'){
+    p.push((async()=>{await delay(90);return rollCell('l1',c.letters[0],LETTERS,520,8)})());
+    p.push((async()=>{await delay(155);return rollCell('l2',c.letters[1],LETTERS,600,9)})());
+    p.push((async()=>{await delay(220);return rollCell('l3',c.letters[2],LETTERS,680,10)})());
+  }
+  await Promise.all(p)
 }
-function updateStatus(){
-  const c=classify(),b=$('#statusBadge');b.textContent=c.label;b.classList.toggle('hot',c.score>=4);$('#estimate').textContent=money(c.value)+(S.licenses.expert?` · x${c.coefficient}`:'');
-  $('#plate').classList.toggle('special',c.score>=7);
-  $('#specialCard').style.boxShadow=c.government?'0 0 0 2px #e45b5b66,0 8px 20px #d94a4a1f':'';
-}
-function priceWithVip(amount){return S.licenses.vip?Math.round(amount*.85):amount}
-function flashMoney(){const el=$('#balance');el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash')}
-function costPay(amount){
-  amount=priceWithVip(amount);
-  if(S.pay==='coins'){const cost=Math.ceil(amount/10);if(S.coins<cost)return false;S.coins-=cost;S.spent+=amount;historyAdd('Расход коинами',-amount,`${cost} коинов`);tone(260,.04,'square',.014);return true}
-  if(S.balance<amount)return false;S.balance-=amount;S.spent+=amount;historyAdd('Расход',-amount,'Игровая операция');tone(250,.04,'square',.014);flashMoney();return true
-}
-function saleNet(value){
-  let mult=.92;
-  if(S.licenses.dealer)mult+=.05;
-  if(S.licenses.expert)mult+=.03;
-  return Math.round(value*mult/100)*100;
-}
-function render(){
-  $('#balance').textContent=money(S.balance);$('#rep').textContent=S.rep;$('#coins').textContent=S.coins.toLocaleString('ru-RU');$('#freeSpins').textContent=S.freeSpins;
-  $('#cashKpi').textContent=money(S.balance);$('#spentKpi').textContent=money(S.spent);$('#earnedKpi').textContent=money(S.earned);$('#goalKpi').textContent=S.balance>=1000000?'ЦЕЛЬ ДОСТИГНУТА':money(1000000-S.balance);
-  $('#contractProgress').style.width=Math.min(100,(S.contractCount/5)*100)+'%';$('#claimContract').disabled=S.contractCount<5||S.contractClaimed;$('#claimContract').textContent=S.contractClaimed?'Контракт выполнен':(S.contractCount>=5?'Получить 12 000 ₽':`Контракт ${S.contractCount}/5`);
-  const ri=rankInfo(),span=Math.max(1,ri.max-ri.min+1),prog=ri.name==='Магнат'?100:Math.min(100,((S.rep-ri.min)/span)*100);
-  $('#rankName').textContent=ri.name;$('#rankProgress').style.width=prog+'%';
-  $('#rankHint').textContent=ri.name==='Магнат'?'Максимальный статус':`До следующего статуса: ${ri.max-S.rep+1} репутации`;
-  $('#profileStatus').textContent=`${ri.name} · гараж ${S.vehicles.length}/${garageLimit()}`;
-  $('#netWorth').textContent=money(netWorth());
-  $('#soundToggle').textContent=S.sound?'Звук: вкл.':'Звук: выкл.';updateCarHero();
+function delay(ms){return new Promise(r=>setTimeout(r,ms))}
 
-  $('#regionText').textContent=S.region;$('#chosenRegion').textContent=S.region;$('#plate').classList.toggle('moto',S.type==='moto');
-  $$('[data-type]').forEach(b=>b.classList.toggle('active',b.dataset.type===S.type));
-  $$('[data-pay]').forEach(b=>b.classList.toggle('active',b.dataset.pay===S.pay));
-  setCell('l1',S.letters[0]);setCell('l2',S.letters[1]);setCell('l3',S.letters[2]);
-  setCell('d1',S.digits[0]);setCell('d2',S.digits[1]);setCell('d3',S.digits[2]);
-  updateStatus();save();
-}
-function rareDigits(){
-  const x=Math.random();
-  if(x<.035)return pick(['001','007','111','222','333','444','555','666','777','888','999']);
-  if(x<.12)return pick(['010','020','030','050','100','200','300','500','700','900','101','202','303','404','505','707','808','909']);
-  return String(Math.floor(Math.random()*1000)).padStart(3,'0');
-}
-function rareLetters(){
-  const x=Math.random();
-  if(x<.015)return pick([['А','М','Р'],['С','К','Р'],['Е','К','К']]);
-  if(x<.07){const l=pick(LETTERS);return[l,l,l]}
-  if(x<.15){const a=pick(LETTERS),b=pick(LETTERS);return[a,b,a]}
-  return[pick(LETTERS),pick(LETTERS),pick(LETTERS)];
-}
-$('#rollDigits').onclick=async()=>{
-  const price=650;if(!costPay(price)){message('Недостаточно средств для прокрутки цифр.');return}
-  const d=rareDigits();$('#rollDigits').disabled=true;
-  await Promise.all([rollCell('d1',d[0],DIGITS,520,8),(async()=>{await sleep(70);return rollCell('d2',d[1],DIGITS,600,9)})(),(async()=>{await sleep(140);return rollCell('d3',d[2],DIGITS,680,10)})()]);
-  S.digits=d;S.daily.rolls++;addXP(3);const c=classify();if(c.score>=4){S.rep+=c.score;message(`Редкая цифровая комбинация: ${d}`)}else message(`Цифры обновлены: ${d}`);
-  $('#rollDigits').disabled=false;render();const finalC=classify();if(finalC.score>=6)setTimeout(()=>revealResult(finalC),220)
-};
-$('#rollLetters').onclick=async()=>{
-  const price=650;if(!costPay(price)){message('Недостаточно средств для прокрутки букв.');return}
-  const L=rareLetters();$('#rollLetters').disabled=true;
-  await Promise.all([rollCell('l1',L[0],LETTERS,560,8),(async()=>{await sleep(80);return rollCell('l2',L[1],LETTERS,650,9)})(),(async()=>{await sleep(160);return rollCell('l3',L[2],LETTERS,760,10)})()]);
-  S.letters=L;S.daily.rolls++;addXP(3);const c=classify();if(c.score>=4){S.rep+=c.score;message(`Редкая буквенная серия: ${L.join('')}`)}else message(`Буквы обновлены: ${L.join('')}`);
-  $('#rollLetters').disabled=false;render();const finalC=classify();if(finalC.score>=6)setTimeout(()=>revealResult(finalC),220)
-};
-function message(t){$('#message').textContent=t}
-$$('[data-pay]').forEach(b=>b.onclick=()=>{S.pay=b.dataset.pay;render();message(S.pay==='coins'?'Оплата коинами: 1 коин = 10 ₽.':'Способ оплаты изменён.')});
-$$('[data-type]').forEach(b=>b.onclick=()=>{S.type=b.dataset.type;render();message(S.type==='moto'?'Включён формат мотоциклетного номера.':'Включён автомобильный формат.')});
-$('#chooseRegion').onclick=()=>$('#regionModal').classList.add('show');
-$('#saveNumber').onclick=()=>{
-  const c=classify(),obj={id:Date.now(),code:currentCode(),value:c.value,label:c.label,type:S.type};
-  if(S.inventory.some(x=>x.code===obj.code)){message('Такой номер уже сохранён.');return}
-  S.inventory.push(obj);S.rep+=2;historyAdd('Номер в коллекцию',0,obj.code);save();specialTone(c.score);if(c.score>=6){$('#plate').classList.remove('rare-pulse');void $('#plate').offsetWidth;$('#plate').classList.add('rare-pulse')}message(`${obj.code} сохранён в инвентарь.`)
-};
-$('#register').onclick=()=>{
-  if(!costPay(1000)){message('Недостаточно средств для регистрации.');return}
-  const c=classify();S.registered++;S.daily.registered++;addXP(5);S.contractCount=Math.min(5,S.contractCount+1);S.rep+=Math.max(1,c.score);historyAdd('Регистрация номера',-priceWithVip(1000),currentCode());specialTone(c.score);message(`${currentCode()} зарегистрирован. Оценка ${money(c.value)}.`);render()
-};
-$$('[data-nav]').forEach(b=>b.onclick=()=>{
-  $$('[data-nav]').forEach(x=>x.classList.toggle('active',x===b));
-  if(b.dataset.nav==='inventory'){renderInventory();$('#inventoryModal').classList.add('show')}
-});
-$$('[data-close]').forEach(b=>b.onclick=()=>$('#'+b.dataset.close).classList.remove('show'));
-$$('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')}));
-function renderRegions(){
-  const g=$('#regionGrid');g.innerHTML='';
-  REGIONS.forEach(r=>{const b=document.createElement('button');b.className='reg'+(r===S.region?' selected':'');b.textContent=r;b.onclick=()=>{S.region=r;$('#regionModal').classList.remove('show');render();message(`Регион изменён на ${r}.`)};g.appendChild(b)})
-}
-function renderInventory(){
-  const g=$('#inventoryList');g.innerHTML='';
-  if(!S.inventory.length){g.innerHTML='<div style="padding:20px;text-align:center;color:#7b8790">Инвентарь пуст.</div>';return}
-  [...S.inventory].reverse().forEach(x=>{const d=document.createElement('div');d.className='inv-item';d.innerHTML=`<div><div class="inv-code">${x.code}</div><div class="inv-meta">${x.label} · оценка ${money(x.value)}</div></div>`;const btn=document.createElement('button');btn.className='sell-mini';btn.textContent='Продать';btn.onclick=()=>{const net=saleNet(x.value);if(x.value>75000&&!S.licenses.dealer){message('Для продажи номеров дороже 75 000 ₽ нужна лицензия дилера.');return}S.balance+=net;S.earned+=net;S.daily.sales++;addXP(6);S.inventory=S.inventory.filter(y=>y.id!==x.id);S.rep+=1;historyAdd('Продажа номера',net,x.code);tone(620,.06,'triangle',.028);save();renderInventory();render();toast(`+${money(net)}`);message(`${x.code} продан за ${money(net)} после комиссии.`)};d.appendChild(btn);g.appendChild(d)})
+function newNumber(boost=1,premiumRegion=false){
+  S.current.letters=rareLetters(boost);
+  S.current.digits=rareDigits(boost);
+  if(premiumRegion)S.current.region=randomRegion(true);
+  S.current.registered=false;
 }
 
-$('#rollAll').onclick=async()=>{
-  if(!costPay(1200)){message('Недостаточно средств для полной прокрутки.');return}
-  const d=rareDigits(),L=rareLetters();$('#rollAll').disabled=true;
-  await Promise.all([
-    rollCell('d1',d[0],DIGITS,480,8),(async()=>{await sleep(50);return rollCell('d2',d[1],DIGITS,540,9)})(),(async()=>{await sleep(100);return rollCell('d3',d[2],DIGITS,600,10)})(),
-    (async()=>{await sleep(120);return rollCell('l1',L[0],LETTERS,560,8)})(),(async()=>{await sleep(180);return rollCell('l2',L[1],LETTERS,640,9)})(),(async()=>{await sleep(240);return rollCell('l3',L[2],LETTERS,720,10)})()
-  ]);
-  S.digits=d;S.letters=L;S.daily.rolls++;addXP(4);$('#rollAll').disabled=false;render();message(`Новый комплект: ${currentCode()}.`);const finalC=classify();if(finalC.score>=6)setTimeout(()=>revealResult(finalC),240);
-};
-$('#premiumRegion').onclick=()=>{
-  if(!costPay(4500)){message('Недостаточно средств для премиум-региона.');return}
-  S.region=pick(SPECIAL_REGIONS);render();message(`Выдан премиум-регион ${S.region}.`);
-};
-$('#claimContract').onclick=()=>{
-  if(S.contractCount<5||S.contractClaimed)return;
-  S.balance+=12000;S.earned+=12000;S.contractClaimed=true;S.rep+=5;historyAdd('Контракт дня',12000,'Зарегистрировано 5 номеров');flashMoney();specialTone(8);render();toast('+12 000 ₽ за контракт');message('Контракт дня выполнен: +12 000 ₽.');
-};
-const licensePrice={dealer:35000,expert:20000,vip:60000};
-$$('[data-license]').forEach(btn=>btn.onclick=()=>{
-  const id=btn.dataset.license;if(S.licenses[id])return;const price=licensePrice[id];
-  if(S.balance<price){message('Недостаточно средств для лицензии.');return}
-  S.balance-=price;S.spent+=price;S.licenses[id]=true;historyAdd('Покупка лицензии',-price,id);tone(540,.07,'triangle',.025);renderLicenses();render();message('Лицензия приобретена.');
-});
-function renderLicenses(){
-  [['dealer','licDealer'],['expert','licExpert'],['vip','licVip']].forEach(([id,elid])=>{
-    const el=$('#'+elid),b=el.querySelector('button'),on=!!S.licenses[id];
-    el.classList.toggle('unlocked',on);b.disabled=on;b.textContent=on?'Открыто':money(licensePrice[id]);
-  });
+function collectionLimit(){return S.upgrades.dealer?60:24}
+function hasCollectionSpace(){
+  if(S.collection.length<collectionLimit())return true;
+  toast(`Коллекция заполнена: ${S.collection.length}/${collectionLimit()}`);
+  return false
 }
-function marketSample(){
-  const samples=[
-    {code:'А777АА 77',label:'Коллекционная',value:128000},
-    {code:'М001ММ 99',label:'Эксклюзивная',value:74000},
-    {code:'О777ОО 777',label:'Коллекционная',value:169000},
-    {code:'Е500КХ 197',label:'Очень редкая',value:48500},
-    {code:'К111КК 77',label:'Эксклюзивная',value:92000},
-    {code:'С007СС 99',label:'Очень редкая',value:61000}
+function addCurrentToCollection(){
+  const code=currentCode(),c=classify();
+  const existing=S.collection.find(n=>n.code===code);
+  if(existing){toast('Этот номер уже в коллекции');return false}
+  if(!hasCollectionSpace())return false
+  S.collection.push({id:Date.now()+Math.random(),code,value:c.value,label:c.label,registered:S.current.registered});
+  S.rep+=Math.max(1,Math.floor(c.score/2));addXP(4+c.score);hist('Номер сохранён',0,code);save();return true
+}
+function showRareResult(){
+  const c=classify();
+  if(c.score<7)return;
+  lastRare={code:currentCode(),value:c.value,label:c.label,registered:S.current.registered};
+  const box=$('#resultBox');box.className='result-box '+(c.cls||'');
+  $('#resultEyebrow').textContent=c.cls==='special'?'ИГРОВАЯ СПЕЦСЕРИЯ':c.cls==='epic'?'КОЛЛЕКЦИОННОЕ ВЫПАДЕНИЕ':'РЕДКОЕ ВЫПАДЕНИЕ';
+  $('#resultTitle').textContent=c.label;$('#resultNumber').textContent=currentCode();$('#resultValue').textContent=money(c.value);
+  $('#resultSub').textContent=S.upgrades.appraiser?`Коэффициент редкости x${c.mult}`:'Экспертная оценка откроет коэффициент редкости.';
+  $('#resultModal').classList.add('show');haptic(c.score>=12?[35,35,55]:25);tone(c.score>=12?760:610,.1,.03,'triangle')
+}
+
+function renderAll(){
+  ensureDaily();
+  $('#headerCash').textContent=money(S.cash);
+  const worth=netWorth();$('#homeWorth').textContent=money(worth);
+  const goals=[500000,1000000,3000000,10000000],goal=goals.find(g=>worth<g)||10000000,prev=goals.filter(g=>g<goal).pop()||0;
+  $('#capitalProgress').style.width=(worth>=10000000?100:clamp((worth-prev)/(goal-prev)*100,0,100))+'%';
+  $('#capitalGoal').textContent=worth>=10000000?'Капитал 10 000 000 ₽ достигнут':`До цели ${money(goal)} осталось ${money(goal-worth)}`;
+  $('#homeRank').textContent=rank();
+  $('#homeLevel').textContent=`Ур. ${S.level}`;
+  $('#homeRep').textContent=`${S.rep} реп.`;
+  $('#generatorRep').textContent=S.rep;
+  $('#luckText').textContent=S.upgrades.vip?'Premium +10% скидка':'Базовый';
+  $('#collectionCount').textContent=S.collection.length;
+  $('#dailyDate').textContent=S.daily.date.split('-').reverse().join('.');
+  renderPlate();renderMissions();renderBusinesses();renderAssets();renderCollection();renderGarage();renderMarket();renderAuction();renderProfile();save()
+}
+function renderPlate(){
+  const c=S.current;
+  setCell('l1',c.letters[0]);setCell('l2',c.letters[1]);setCell('l3',c.letters[2]);
+  setCell('d1',c.digits[0]);setCell('d2',c.digits[1]);setCell('d3',c.digits[2]);$('#regionText').textContent=c.region;
+  const x=classify(),chip=$('#rarityChip');chip.textContent=x.label;chip.className='result-chip '+(x.cls||'');
+  $('#plateValue').textContent=money(x.value);
+  $('#registeredChip').textContent=c.registered?'Зарегистрирован':'Не зарегистрирован';
+  $('#registeredChip').className='result-chip '+(c.registered?'rare':'');
+  $('#registerNumber').disabled=c.registered;
+  $('#registerNumber').textContent=c.registered?'Зарегистрирован':`Регистрация · ${money(spinCost(2000))}`;
+  $('#generatorHint').textContent=S.upgrades.appraiser?`Коэффициент редкости: x${x.mult}`:'Для установки номера на автомобиль его нужно зарегистрировать.'
+}
+function renderMissions(){
+  const tasks=[
+    {key:'Rolls',title:'Охотник',desc:'Сделать 5 прокруток',cur:S.daily.rolls,max:5,reward:7000,xp:20},
+    {key:'Regs',title:'Регистратор',desc:'Зарегистрировать 2 номера',cur:S.daily.regs,max:2,reward:10000,xp:25},
+    {key:'Sales',title:'Перекуп',desc:'Продать 1 номер',cur:S.daily.sales,max:1,reward:12000,xp:30}
   ];
-  return samples.sort(()=>Math.random()-.5).slice(0,4);
+  const g=$('#missions');g.innerHTML='';
+  for(const t of tasks){
+    const flag='claim'+t.key,d=document.createElement('div');d.className='mission';
+    d.innerHTML=`<div class="mission-top"><div><b>${t.title}</b><div class="small">${t.desc}</div></div><em>+${money(t.reward)}</em></div><div class="progress"><i style="width:${clamp(t.cur/t.max*100,0,100)}%"></i></div>`;
+    const b=document.createElement('button');b.className='claim';b.disabled=t.cur<t.max||S.daily[flag];b.textContent=S.daily[flag]?'Получено':t.cur>=t.max?'Забрать награду':`${Math.min(t.cur,t.max)}/${t.max}`;
+    b.onclick=()=>{if(b.disabled)return;S.daily[flag]=true;earn(t.reward,'Задание дня',t.title);addXP(t.xp);renderAll();toast(`+${money(t.reward)} · +${t.xp} XP`)};
+    d.appendChild(b);g.appendChild(d)
+  }
+}
+function renderBusinesses(){
+  const targets=[$('#businessHome')];
+  for(const g of targets){
+    g.innerHTML='';
+    for(const b of BUSINESSES){
+      const owned=!!S.businesses[b.id],locked=S.rep<b.rep,d=document.createElement('div');d.className='biz-row '+(owned?'owned':'');
+      d.innerHTML=`<div><b>${b.name}</b><small>${b.desc}${locked?` · нужно ${b.rep} реп.`:''}</small><span class="income">+${money(b.rate)}/час</span></div>`;
+      const bt=document.createElement('button');bt.disabled=owned||locked;bt.textContent=owned?'Открыто':money(b.price);
+      bt.onclick=()=>buyBusiness(b);d.appendChild(bt);g.appendChild(d)
+    }
+  }
+}
+function buyBusiness(b){
+  if(S.rep<b.rep){toast(`Нужно ${b.rep} репутации`);return}
+  if(S.cash<b.price){toast('Недостаточно денег');return}
+  S.cash-=b.price;S.spent+=b.price;S.businesses[b.id]=true;S.lastIncomeAt=Date.now();hist('Открыт бизнес',-b.price,b.name);addXP(Math.round(b.price/20000));renderAll();toast(`${b.name} открыт`)
+}
+function renderAssets(){
+  const g=$('#topAssets');g.innerHTML='';
+  const car=S.cars.filter(c=>c.owned).map(c=>({...c,def:carDef(c.id)})).sort((a,b)=>b.def.resale-a.def.resale)[0];
+  const num=[...S.collection].sort((a,b)=>b.value-a.value)[0];
+  const rows=[];
+  if(car)rows.push({name:car.def.name,meta:car.def.tier,value:car.def.resale});
+  if(num)rows.push({name:num.code,meta:num.label,value:num.value});
+  if(!rows.length){g.innerHTML='<div class="empty">Активов пока нет.</div>';return}
+  for(const a of rows){
+    const d=document.createElement('div');d.className='row';d.style.padding='8px 0';d.innerHTML=`<div><b style="font-size:11px">${a.name}</b><div class="small">${a.meta}</div></div><b class="money" style="font-size:11px;color:#78cf99">${money(a.value)}</b>`;g.appendChild(d)
+  }
+}
+function renderCollection(){
+  const g=$('#collectionList');g.innerHTML='';
+  if(!S.collection.length){g.innerHTML='<div class="empty">Коллекция пуста. Сохрани первый интересный номер.</div>';return}
+  [...S.collection].sort((a,b)=>b.value-a.value).forEach(n=>{
+    const d=document.createElement('div');d.className='number-card';
+    d.innerHTML=`<div><div class="number-code">${n.code}</div><div class="number-meta">${n.label} · ${n.registered?'зарегистрирован':'не зарегистрирован'}</div></div><div class="number-price"><b>${money(n.value)}</b></div>`;
+    const bt=document.createElement('button');bt.textContent='Продать';bt.onclick=()=>sellNumber(n.id);d.querySelector('.number-price').appendChild(bt);g.appendChild(d)
+  })
+}
+function sellNumber(id){
+  const n=S.collection.find(x=>x.id===id);if(!n)return;
+  const fee=saleFee(),net=Math.round(n.value*(1-fee)/100)*100;
+  for(const c of S.cars){if(c.equipped===n.code)c.equipped=null}
+  S.collection=S.collection.filter(x=>x.id!==id);S.daily.sales++;S.rep+=1;addXP(5);earn(net,'Продажа номера',`${n.code} · комиссия ${Math.round(fee*100)}%`);renderAll();toast(`Продано за ${money(net)}`)
+}
+function imgTag(c){return `<img src="${c.photo}" alt="${c.name}" loading="lazy" referrerpolicy="no-referrer" onerror="this.src='./car-placeholder.svg'">`}
+function renderGarage(){
+  const owned=S.cars.filter(c=>c.owned),selected=ownedCar(S.selectedCar)||owned[0];if(selected)S.selectedCar=selected.id;
+  $('#garageCapacity').textContent=`${owned.length} / ${garageLimit()}`;
+  const fd=carDef(S.selectedCar)||CAR_CATALOG[0],fc=ownedCar(fd.id);
+  $('#featuredCar').innerHTML=`<div class="car-photo">${imgTag(fd)}</div><div class="car-feature-info"><div class="eyebrow">Активный автомобиль</div><h2>${fd.name}</h2><div class="small">${fd.tier} · стоимость актива ${money(fd.resale)}</div><span class="plate-mini">${fc?.equipped||'БЕЗ НОМЕРА'}</span></div>`;
+
+  const g=$('#carCatalog');g.innerHTML='';
+  for(const c of CAR_CATALOG){
+    const own=ownedCar(c.id),locked=S.rep<c.unlockRep,d=document.createElement('div');d.className='car-card';
+    d.innerHTML=`<div class="car-img">${imgTag(c)}</div><div class="car-body"><h3>${c.name}</h3><small>${c.tier} · актив ${money(c.resale)}</small><div class="car-bottom"><div><div class="car-price">${own?'В гараже':c.price?money(c.price):'Стартовый'}</div>${locked?`<div class="lock">Нужно ${c.unlockRep} репутации</div>`:''}</div><div class="car-actions"></div></div></div>`;
+    const a=d.querySelector('.car-actions');
+    if(own){
+      const sel=document.createElement('button');sel.textContent=S.selectedCar===c.id?'Выбран':'Выбрать';sel.onclick=()=>{S.selectedCar=c.id;save();renderGarage();toast(`${c.name} выбран`)};
+      const eq=document.createElement('button');eq.className='buy';eq.textContent='Поставить номер';eq.onclick=()=>equipBest(c.id);a.append(sel,eq)
+    }else{
+      const buy=document.createElement('button');buy.className='buy';buy.disabled=locked||owned.length>=garageLimit();buy.textContent=locked?'Закрыто':'Купить';buy.onclick=()=>buyCar(c);a.appendChild(buy)
+    }
+    g.appendChild(d)
+  }
+}
+function buyCar(c){
+  if(S.rep<c.unlockRep){toast(`Нужно ${c.unlockRep} репутации`);return}
+  if(S.cars.filter(x=>x.owned).length>=garageLimit()){toast('Сначала повысь статус и расширь гараж');return}
+  if(S.cash<c.price){toast('Недостаточно денег');return}
+  S.cash-=c.price;S.spent+=c.price;S.cars.push({id:c.id,owned:true,equipped:null});S.selectedCar=c.id;S.rep+=Math.max(3,Math.round(c.price/250000));addXP(Math.max(12,Math.round(c.price/50000)));hist('Покупка автомобиля',-c.price,c.name);save();renderAll();toast(`${c.name} добавлен в гараж`)
+}
+function equipBest(carId){
+  const car=ownedCar(carId);if(!car)return;
+  const candidates=S.collection.filter(n=>n.registered).sort((a,b)=>b.value-a.value);
+  if(!candidates.length){toast('Нет зарегистрированных номеров');navigate('numbers');return}
+  const n=candidates[0];for(const c of S.cars){if(c.equipped===n.code)c.equipped=null}car.equipped=n.code;S.selectedCar=carId;S.rep+=1;hist('Номер установлен',0,`${n.code} → ${carDef(carId).name}`);save();renderAll();toast(`${n.code} установлен`)
+}
+
+function ensureMarket(){
+  if(S.market.date===today()&&S.market.items.length)return;
+  const pool=[
+    ['А777АА','77',98000,'Коллекционный'],['М001ММ','99',52000,'Очень редкий'],['О111ОО','777',148000,'Коллекционный'],
+    ['К500КК','197',36000,'Редкий'],['Х007ХХ','99',47000,'Очень редкий'],['Т888ТТ','77',89000,'Коллекционный'],
+    ['Е505КЕ','97',24000,'Редкий'],['Р010РР','177',32000,'Редкий']
+  ];
+  S.market={date:today(),items:pool.sort(()=>Math.random()-.5).slice(0,6).map((x,i)=>({id:`m${i}-${today()}`,code:`${x[0]} ${x[1]}`,value:x[2],label:x[3],price:Math.round(x[2]*(1.05+Math.random()*.16)/100)*100,bought:false}))};save()
 }
 function renderMarket(){
-  const g=$('#marketList');g.innerHTML='';
-  marketSample().forEach(x=>{
-    const d=document.createElement('div');d.className='market-card';
-    d.innerHTML=`<div class="mcode">${x.code}</div><small>${x.label} · рыночная цена</small><div class="mprice">${money(x.value)}</div>`;
-    const b=document.createElement('button');b.textContent='Купить';
-    b.onclick=()=>{if(S.balance<x.value){message('Недостаточно средств для покупки.');return}S.balance-=x.value;S.spent+=x.value;S.inventory.push({id:Date.now()+Math.random(),code:x.code,value:x.value,label:x.label,type:'car'});historyAdd('Покупка на рынке',-x.value,x.code);tone(320,.05,'square',.018);save();render();message(`${x.code} куплен за ${money(x.value)}.`);b.disabled=true;b.textContent='Куплено'};
-    d.appendChild(b);g.appendChild(d);
-  });
-}
-$$('[data-nav]').forEach(b=>b.addEventListener('click',()=>{
-  if(b.dataset.nav==='market'){renderMarket();$('#marketModal').classList.add('show')}
-  if(b.dataset.nav==='economy'){renderLicenses();$('#economyModal').classList.add('show')}
-}));
-renderLicenses();
-
-$('#homeBtn').onclick=openHub;
-$('#soundToggle').onclick=()=>{S.sound=!S.sound;save();render();if(S.sound)tone(520,.06,'sine',.02)};
-
-function renderVehicles(){
-  updateCarHero();const g=$('#vehicleList');g.innerHTML='';
-  S.vehicles.forEach(v=>{
-    const d=document.createElement('div');d.className='vehicle'+(v.id===S.selectedVehicle?' selected':'');
-    d.innerHTML=`<div class="vehicle-top"><div><div class="vehicle-name">${v.name}</div><div class="vehicle-tier">${v.tier}</div></div><b>${money(v.value)}</b></div>
-      <div class="vehicle-visual"><div class="car-shape"></div></div>
-      <div class="vehicle-number"><span>Установленный номер</span><b>${v.number||'—'}</b></div>`;
-    const act=document.createElement('div');act.className='vehicle-actions';
-    const sel=document.createElement('button');sel.className='select-car';sel.textContent=v.id===S.selectedVehicle?'Выбран':'Выбрать';
-    sel.onclick=()=>{S.selectedVehicle=v.id;save();renderVehicles();render();toast(`${v.name} выбран`)};
-    const ass=document.createElement('button');ass.className='assign-number';ass.textContent='Поставить номер';
-    ass.onclick=()=>assignNumber(v.id);
-    act.append(sel,ass);d.appendChild(act);g.appendChild(d);
-  });
-}
-function renderShowroom(){
-  const g=$('#showroomList');g.innerHTML='';
-  CARS.filter(c=>!S.vehicles.some(v=>v.id===c.id)).forEach(c=>{
-    const d=document.createElement('div');d.className='buy-car';
-    d.innerHTML=`<b>${c.name}</b><small>${c.tier} · актив ${money(c.value)}</small><div class="price">${money(c.price)}</div>`;
-    const b=document.createElement('button');b.textContent='Купить автомобиль';
-    b.onclick=()=>buyVehicle(c);d.appendChild(b);g.appendChild(d);
-  });
-  if(!g.children.length)g.innerHTML='<div style="font-size:10px;color:#7a8690;padding:10px">Все автомобили уже куплены.</div>';
-}
-function buyVehicle(c){
-  if(S.vehicles.length>=garageLimit()){toast('Повышай статус, чтобы расширить гараж');return}
-  if(S.balance<c.price){toast('Недостаточно денег на автомобиль');return}
-  S.balance-=c.price;S.spent+=c.price;S.vehicles.push({...c,number:null});S.rep+=Math.max(5,Math.round(c.price/100000));
-  historyAdd('Покупка автомобиля',-c.price,c.name);addXP(Math.max(10,Math.round(c.price/50000)));checkAchievements();tone(430,.08,'triangle',.026);save();renderVehicles();renderShowroom();render();toast(`${c.name} добавлен в гараж`);
-}
-function assignNumber(vehicleId){
-  if(!S.inventory.length){toast('Сначала сохрани номер в инвентарь');return}
-  const v=S.vehicles.find(x=>x.id===vehicleId);
-  const available=S.inventory.slice().sort((a,b)=>(b.value||0)-(a.value||0));
-  const n=available[0];
-  for(const car of S.vehicles){if(car.number===n.code)car.number=null}
-  v.number=n.code;S.selectedVehicle=v.id;S.rep+=2;historyAdd('Номер установлен',0,`${n.code} → ${v.name}`);save();renderVehicles();render();toast(`${n.code} установлен на ${v.name}`);
-}
-
-function auctionLots(){
-  const base=[
-    {code:'А001АА 77',label:'Коллекционная',value:148000},
-    {code:'М777ММ 97',label:'Эксклюзивная',value:119000},
-    {code:'О111ОО 777',label:'Коллекционная',value:181000},
-    {code:'Х007ХХ 99',label:'Очень редкая',value:69000},
-    {code:'К500КК 197',label:'Очень редкая',value:53500},
-    {code:'Т888ТТ 77',label:'Эксклюзивная',value:106000}
-  ];
-  return base.sort(()=>Math.random()-.5).slice(0,4).map((x,i)=>({...x,bid:Math.round(x.value*(.67+Math.random()*.14)/100)*100,buyout:Math.round(x.value*1.12/100)*100,sec:55+i*23,feed:'Участник AutoBid выставил стартовую ставку',leading:false}));
-}
-let currentAuction=[];
-function renderAuction(){
-  currentAuction=auctionLots();drawAuction();
-}
-function drawAuction(){
-  const g=$('#auctionList');g.innerHTML='';
-  currentAuction.forEach((x,idx)=>{
-    const d=document.createElement('div');d.className='auction-item';
-    d.innerHTML=`<div class="auction-top"><div><div class="auction-code"><span class="live-dot"></span>${x.code}</div><div class="auction-meta">${x.label}</div></div><div class="auction-time">${Math.max(0,x.sec)} сек</div></div>
-      <div class="auction-price">Текущая ставка: ${money(x.bid)}</div><div class="bid-feed">${x.feed||'Ожидание ставок участников…'}</div>`;
-    const a=document.createElement('div');a.className='auction-actions';
-    const bid=document.createElement('button');bid.className='bid';bid.textContent=`Ставка ${money(Math.round(x.bid*1.08/100)*100)}`;
-    bid.onclick=()=>placeBid(idx);
-    const buy=document.createElement('button');buy.className='buyout';buy.textContent=`Выкуп ${money(x.buyout)}`;
-    buy.onclick=()=>buyoutAuction(idx);
-    a.append(bid,buy);d.appendChild(a);g.appendChild(d);
-  });
-}
-function placeBid(i){
-  const x=currentAuction[i],next=Math.round(x.bid*1.08/100)*100;x.feed=`Вы сделали ставку ${money(next)}`;x.leading=true;
-  if(S.balance<next){toast('Недостаточно средств для ставки');return}
-  if(Math.random()<.44){x.bid=Math.round(next*(1.04+Math.random()*.07)/100)*100;x.feed=`Участник NumberHunter перебил ставку`;x.leading=false;toast(`Ставку перебили: ${money(x.bid)}`)}
-  else{S.balance-=next;S.spent+=next;S.inventory.push({id:Date.now()+Math.random(),code:x.code,value:x.value,label:x.label,type:'car'});S.auctionsWon++;S.rep+=8;historyAdd('Победа на аукционе',-next,x.code);currentAuction.splice(i,1);tone(700,.11,'triangle',.03);save();render();drawAuction();toast(`Лот выигран: ${x.code}`)}
-  drawAuction();
-}
-function buyoutAuction(i){
-  const x=currentAuction[i];
-  if(S.balance<x.buyout){toast('Недостаточно средств для выкупа');return}
-  S.balance-=x.buyout;S.spent+=x.buyout;S.inventory.push({id:Date.now()+Math.random(),code:x.code,value:x.value,label:x.label,type:'car'});S.auctionsWon++;S.rep+=10;historyAdd('Выкуп с аукциона',-x.buyout,x.code);currentAuction.splice(i,1);tone(760,.12,'triangle',.03);save();render();drawAuction();toast(`Куплен ${x.code}`)
-}
-function renderHistory(){
-  const g=$('#historyList');g.innerHTML='';
-  if(!S.history.length){g.innerHTML='<div style="padding:20px;text-align:center;color:#7b8790">История пока пустая.</div>';return}
-  S.history.forEach(h=>{
-    const d=document.createElement('div');d.className='hist';
-    d.innerHTML=`<div><b>${h.title}</b><br><small>${h.meta||''} · ${h.time}</small></div><b class="${h.amount>0?'pos':h.amount<0?'neg':''}">${h.amount===0?'—':(h.amount>0?'+':'')+money(h.amount)}</b>`;
-    g.appendChild(d);
-  });
-}
-$$('[data-nav]').forEach(b=>b.addEventListener('click',()=>{
-  if(b.dataset.nav==='cars'){renderVehicles();renderShowroom();$('#carsModal').classList.add('show')}
-  if(b.dataset.nav==='auction'){renderAuction();$('#auctionModal').classList.add('show')}
-  if(b.dataset.nav==='history'){renderHistory();$('#historyModal').classList.add('show')}
-}));
-
-
-$('#bootStart').onclick=()=>{
-  S.bootSeen=true;save();$('#bootScreen').classList.add('hide');document.body.classList.remove('app-locked');tone(520,.07,'triangle',.024);
-  setTimeout(()=>{$('#bootScreen').style.display='none';openHub()},700)
-};
-if(S.bootSeen){$('#bootScreen').style.display='none';document.body.classList.remove('app-locked');setTimeout(openHub,120)}
-$$('[data-dock]').forEach(b=>b.onclick=()=>{
-  $$('[data-dock]').forEach(x=>x.classList.toggle('active',x===b));
-  const target=b.dataset.dock;
-  if(target==='hub'){openHub();return}
-  if(target==='create'){document.querySelector('.desktop-wrap').scrollIntoView({behavior:'smooth',block:'start'});sectionFlash();return}
-  const nav=document.querySelector(`[data-nav="${target}"]`);if(nav)nav.click()
-});
-$('#resultClose').onclick=()=>{$('#resultOverlay').classList.remove('show');S.lastReveal=null;save()};
-$('#resultKeep').onclick=keepLastReveal;
-$('#resultOverlay').addEventListener('click',e=>{if(e.target===$('#resultOverlay')){$('#resultOverlay').classList.remove('show');S.lastReveal=null;save()}});
-
-
-function triggerSection(name){
-  closeHub();
-  if(name==='terminal'){window.scrollTo({top:0,behavior:'smooth'});return}
-  const nav=document.querySelector(`[data-nav="${name}"]`);if(nav)setTimeout(()=>nav.click(),180)
-}
-$$('[data-hub-action]').forEach(b=>b.onclick=()=>triggerSection(b.dataset.hubAction));
-$('#hubToTerminal').onclick=()=>triggerSection('terminal');
-
-renderRegions();render();
-
-let sec=299;setInterval(()=>{
-  sec--;if(sec<0){sec=299;S.freeSpins++;render()}
-  const m=String(Math.floor(sec/60)).padStart(2,'0'),s=String(sec%60).padStart(2,'0');$('#timer').textContent=`${m}:${s}`;
-  if(currentAuction.length&&$('#auctionModal').classList.contains('show')){
-    let changed=false;
-    currentAuction=currentAuction.filter(x=>{
-      x.sec--;
-      if(!x.leading&&x.sec>4&&Math.random()<.16){const names=['PlateKing','AutoBid','Region77','NumberHunter'];x.bid=Math.round(x.bid*(1.015+Math.random()*.025)/100)*100;x.feed=`${pick(names)} повысил ставку до ${money(x.bid)}`}
-      if(x.sec<=0){changed=true;return false}return true
-    });
-    if(changed||currentAuction.length)drawAuction();
+  ensureMarket();const g=$('#marketPanel');g.innerHTML='';
+  for(const x of S.market.items.filter(i=>!i.bought)){
+    const d=document.createElement('div');d.className='listing';
+    d.innerHTML=`<div class="listing-head"><div><div class="listing-code">${x.code}</div><small>${x.label} · оценка ${money(x.value)}</small></div><div class="listing-price">${money(x.price)}</div></div><div class="listing-actions"><button>Комиссия при продаже ${Math.round(saleFee()*100)}%</button><button class="buy">Купить</button></div>`;
+    d.querySelector('.buy').onclick=()=>buyMarket(x.id);g.appendChild(d)
   }
-},1000);
-if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js?v=5.1').catch(()=>{}));
+  if(!g.children.length)g.innerHTML='<div class="empty">Сегодняшний рынок выкуплен. Обновление завтра.</div>'
+}
+function buyMarket(id){
+  const x=S.market.items.find(i=>i.id===id);if(!x||x.bought)return;
+  if(!hasCollectionSpace())return;
+  if(S.cash<x.price){toast('Недостаточно денег');return}
+  S.cash-=x.price;S.spent+=x.price;x.bought=true;S.collection.push({id:Date.now()+Math.random(),code:x.code,value:x.value,label:x.label,registered:false});hist('Покупка на рынке',-x.price,x.code);addXP(5);save();renderAll();toast(`${x.code} куплен`)
+}
+
+function ensureAuction(){
+  if(S.auction.lots.length)return;
+  const base=[
+    ['А001АА 77',130000,'Коллекционный'],['М777ММ 97',115000,'Коллекционный'],['О111ОО 777',175000,'Коллекционный'],
+    ['Х007ХХ 99',62000,'Очень редкий'],['К500КК 197',43000,'Редкий'],['Т888ТТ 77',99000,'Коллекционный']
+  ];
+  S.auction.lots=base.sort(()=>Math.random()-.5).slice(0,3).map((x,i)=>({
+    id:'a'+Date.now()+i,code:x[0],value:x[1],label:x[2],bid:Math.round(x[1]*(.62+Math.random()*.12)/100)*100,
+    leader:'npc',userMax:0,sec:70+i*25,feed:'Стартовая ставка принята'
+  }));S.auction.lastTick=Date.now();save()
+}
+function renderAuction(){
+  ensureAuction();const g=$('#auctionPanel');g.innerHTML='';
+  for(const x of S.auction.lots){
+    const d=document.createElement('div');d.className='auction live';
+    d.innerHTML=`<div class="listing-head"><div><div class="listing-code"><span class="live-dot"></span>${x.code}</div><small>${x.label} · оценка ${money(x.value)}</small></div><div class="timer">${x.sec} сек</div></div><div style="margin-top:9px" class="row"><span class="small">Текущая ставка</span><b class="listing-price">${money(x.bid)}</b></div><div class="auction-feed">${x.feed}${x.leader==='user'?'<div class="you">Вы лидируете</div>':''}</div><div class="listing-actions"><button class="bid">Повысить +8%</button><button class="buy">Выкуп ${money(Math.round(x.value*1.18/100)*100)}</button></div>`;
+    d.querySelector('.bid').onclick=()=>placeBid(x.id);d.querySelector('.buy').onclick=()=>buyout(x.id);g.appendChild(d)
+  }
+  if(!S.auction.lots.length)g.innerHTML='<div class="empty">Новые лоты появятся через несколько секунд.</div>'
+}
+function placeBid(id){
+  const x=S.auction.lots.find(l=>l.id===id);if(!x)return;
+  const next=Math.round(x.bid*1.08/100)*100;
+  if(S.cash<next){toast('Недостаточно денег для этой ставки');return}
+  x.bid=next;x.userMax=next;x.leader='user';x.feed=`Ваша ставка: ${money(next)}`;tone(430,.05,.018);save();renderAuction()
+}
+function buyout(id){
+  const x=S.auction.lots.find(l=>l.id===id);if(!x)return;
+  if(!hasCollectionSpace())return;
+  const price=Math.round(x.value*1.18/100)*100;
+  if(S.cash<price){toast('Недостаточно денег');return}
+  S.cash-=price;S.spent+=price;S.collection.push({id:Date.now()+Math.random(),code:x.code,value:x.value,label:x.label,registered:false});S.auction.lots=S.auction.lots.filter(l=>l.id!==id);hist('Выкуп на аукционе',-price,x.code);S.rep+=3;addXP(8);save();renderAll();toast(`Лот ${x.code} выкуплен`)
+}
+function auctionTick(){
+  ensureAuction();
+  for(const x of [...S.auction.lots]){
+    x.sec--;
+    if(x.sec>4&&Math.random()<.16){
+      if(x.leader==='user'&&Math.random()<.7){
+        x.bid=Math.round(x.bid*(1.03+Math.random()*.05)/100)*100;x.leader='npc';x.feed=`NumberHunter перебил ставку до ${money(x.bid)}`
+      }else if(x.leader==='npc'){
+        x.bid=Math.round(x.bid*(1.01+Math.random()*.025)/100)*100;x.feed=`AutoBid повысил ставку до ${money(x.bid)}`
+      }
+    }
+    if(x.sec<=0){
+      if(x.leader==='user'){
+        if(!hasCollectionSpace()){toast(`Лот ${x.code} не получен: коллекция заполнена`)}
+        else if(S.cash>=x.bid){
+          S.cash-=x.bid;S.spent+=x.bid;S.collection.push({id:Date.now()+Math.random(),code:x.code,value:x.value,label:x.label,registered:false});hist('Победа на аукционе',-x.bid,x.code);S.rep+=4;addXP(10);toast(`Вы выиграли ${x.code}`)
+        }else toast(`Лот ${x.code} проигран: не хватило денег`)
+      }
+      S.auction.lots=S.auction.lots.filter(l=>l.id!==x.id)
+    }
+  }
+  if(!S.auction.lots.length){S.auction.lots=[];ensureAuction()}
+  save();if(activeView==='market'&&marketTab==='auction')renderAuction()
+}
+
+function renderProfile(){
+  $('#profileRank').textContent=rank();$('#profileLevel').textContent=`Уровень ${S.level} · ${S.rep} репутации`;
+  $('#xpBar').style.width=clamp(S.xp/xpNeed()*100,0,100)+'%';$('#xpText').textContent=`${S.xp} / ${xpNeed()} XP`;
+  $('#profileCash').textContent=money(S.cash);$('#profileWorth').textContent=money(netWorth());$('#earnedStat').textContent=money(S.earned);$('#spentStat').textContent=money(S.spent);
+  const g=$('#upgrades');g.innerHTML='';
+  for(const u of UPGRADES){
+    const owned=!!S.upgrades[u.id],locked=S.rep<u.rep,d=document.createElement('div');d.className='upgrade';
+    d.innerHTML=`<div><b>${u.name}</b><small>${u.desc}${locked?` · нужно ${u.rep} реп.`:''}</small></div>`;
+    const b=document.createElement('button');b.disabled=owned||locked;b.textContent=owned?'Открыто':money(u.price);b.onclick=()=>buyUpgrade(u);d.appendChild(b);g.appendChild(d)
+  }
+  const h=$('#history');h.innerHTML='';
+  if(!S.history.length)h.innerHTML='<div class="empty">История пока пуста.</div>';
+  else S.history.slice(0,12).forEach(x=>{
+    const d=document.createElement('div');d.className='history-item';d.innerHTML=`<div><b>${x.title}</b><small>${x.meta||''} · ${x.time}</small></div><div class="history-amt ${x.amount>0?'pos':x.amount<0?'neg':''}">${x.amount===0?'—':(x.amount>0?'+':'')+money(x.amount)}</div>`;h.appendChild(d)
+  })
+}
+function buyUpgrade(u){
+  if(S.rep<u.rep){toast(`Нужно ${u.rep} репутации`);return}
+  if(S.cash<u.price){toast('Недостаточно денег');return}
+  S.cash-=u.price;S.spent+=u.price;S.upgrades[u.id]=true;hist('Куплена лицензия',-u.price,u.name);addXP(Math.round(u.price/15000));save();renderAll();toast(`${u.name} открыта`)
+}
+
+function navigate(view){
+  activeView=view;$$('.view').forEach(v=>v.classList.toggle('active',v.dataset.view===view));$$('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.go===view));
+  window.scrollTo({top:0,behavior:'smooth'});renderAll()
+}
+function setNumberTab(tab){
+  numberTab=tab;$$('[data-numtab]').forEach(b=>b.classList.toggle('active',b.dataset.numtab===tab));
+  $('#createTab').classList.toggle('hidden',tab!=='create');$('#collectionTab').classList.toggle('hidden',tab!=='collection');renderCollection()
+}
+function setMarketTab(tab){
+  marketTab=tab;$$('[data-market-tab]').forEach(b=>b.classList.toggle('active',b.dataset.marketTab===tab));
+  $('#marketPanel').classList.toggle('hidden',tab!=='market');$('#auctionPanel').classList.toggle('hidden',tab!=='auction');if(tab==='auction')renderAuction()
+}
+
+async function doRoll(kind,boost=1,premium=false,cost=1500){
+  if(!spend(cost,kind==='all'?'Прокрутка номера':kind==='digits'?'Прокрутка цифр':kind==='letters'?'Прокрутка букв':'Premium-поиск'))return;
+  S.daily.rolls++;addXP(kind==='all'?4:2);
+  if(kind==='digits'){S.current.digits=rareDigits(boost);S.current.registered=false}
+  else if(kind==='letters'){S.current.letters=rareLetters(boost);S.current.registered=false}
+  else{newNumber(boost,premium)}
+  renderPlate();await animateCurrent(kind==='premium'?'all':kind);renderAll();showRareResult()
+}
+
+function openRegions(){renderRegionGrid();$('#regionSheet').classList.add('show')}
+function renderRegionGrid(){
+  const g=$('#regionGrid');g.innerHTML='';
+  for(const r of REGIONS){
+    const b=document.createElement('button');b.textContent=r;b.classList.toggle('active',r===S.current.region);
+    b.onclick=()=>{if(r===S.current.region){$('#regionSheet').classList.remove('show');return}if(!spend(800,'Смена региона'))return;S.current.region=r;S.current.registered=false;$('#regionSheet').classList.remove('show');renderAll();toast(`Регион ${r}`)};g.appendChild(b)
+  }
+}
+
+function startApp(){
+  S.started=true;save();$('#splash').classList.add('hide');setTimeout(()=>$('#splash').classList.add('hidden'),520);collectPassive();renderAll()
+}
+
+$('#startBtn').onclick=startApp;
+$$('[data-go]').forEach(b=>b.onclick=()=>navigate(b.dataset.go));
+$$('[data-numtab]').forEach(b=>b.onclick=()=>setNumberTab(b.dataset.numtab));
+$$('[data-market-tab]').forEach(b=>b.onclick=()=>setMarketTab(b.dataset.marketTab));
+$('#rollDigits').onclick=()=>doRoll('digits',1,false,1350);
+$('#rollLetters').onclick=()=>doRoll('letters',1,false,1350);
+$('#rollAll').onclick=()=>doRoll('all',1,false,2500);
+$('#premiumRoll').onclick=()=>doRoll('premium',3.2,true,9000);
+$('#changeRegion').onclick=openRegions;
+$('#regionSheet').onclick=e=>{if(e.target===$('#regionSheet'))$('#regionSheet').classList.remove('show')};
+$('#saveNumber').onclick=()=>{if(addCurrentToCollection()){renderAll();toast('Номер сохранён')}};
+$('#registerNumber').onclick=()=>{
+  if(S.current.registered)return;
+  if(!spend(2000,'Регистрация номера'))return;
+  S.current.registered=true;S.daily.regs++;S.rep+=2;addXP(6);hist('Номер зарегистрирован',0,currentCode());
+  const inCol=S.collection.find(n=>n.code===currentCode());if(inCol){inCol.registered=true;inCol.value=classify().value}
+  save();renderAll();toast('Регистрация завершена')
+};
+$('#keepResult').onclick=()=>{if(addCurrentToCollection()){renderAll();toast('Редкий номер сохранён')}$('#resultModal').classList.remove('show')};
+$('#closeResult').onclick=()=>$('#resultModal').classList.remove('show');
+$('#resultModal').onclick=e=>{if(e.target===$('#resultModal'))$('#resultModal').classList.remove('show')};
+$('#resetGame').onclick=()=>{
+  if(!confirm('Сбросить весь игровой прогресс?'))return;
+  localStorage.removeItem(KEY);S=fresh();save();renderAll();navigate('home');toast('Прогресс сброшен')
+};
+
+function boot(){
+  ensureDaily();ensureMarket();ensureAuction();renderAll();
+  if(S.started){$('#splash').classList.add('hidden');collectPassive()}
+  else $('#splash').classList.remove('hidden');
+  const qa=new URLSearchParams(location.search).get('qa');
+  if(qa){$('#splash').classList.add('hidden');S.started=true;navigate(['home','numbers','garage','market','profile'].includes(qa)?qa:'home')}
+  clearInterval(timerHandle);timerHandle=setInterval(auctionTick,1000);
+  document.documentElement.dataset.ready='1'
+}
+boot();
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load',async()=>{
+    try{const r=await navigator.serviceWorker.register('./service-worker.js?v=6',{updateViaCache:'none'});r.update()}catch{}
+  })
+}
 })();
 </script>
-
 </body>
 </html>

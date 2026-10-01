@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+<defs><linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#263440"/><stop offset="1" stop-color="#0b1015"/></linearGradient><linearGradient id="c" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#71808c"/><stop offset="1" stop-color="#313b43"/></linearGradient></defs>
+<rect width="1200" height="700" fill="url(#b)"/>
+<ellipse cx="600" cy="545" rx="420" ry="70" fill="#000" opacity=".35"/>
+<path d="M210 465 Q245 375 385 350 L470 250 H745 Q820 265 885 350 Q1000 370 1035 455 L1015 520 H190Z" fill="url(#c)"/>
+<path d="M450 347 L510 270 H720 Q760 282 810 347Z" fill="#1b252d"/>
+<circle cx="350" cy="510" r="62" fill="#090b0d"/><circle cx="350" cy="510" r="34" fill="#56626b"/>
+<circle cx="875" cy="510" r="62" fill="#090b0d"/><circle cx="875" cy="510" r="34" fill="#56626b"/>
+<text x="600" y="620" fill="#8a99a5" font-family="Arial" font-size="28" text-anchor="middle">Фото автомобиля недоступно</text>
+</svg>
