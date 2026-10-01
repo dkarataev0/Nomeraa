@@ -1,7 +1,7 @@
 {
   "name": "Nomeraa — коллекционер автономеров",
   "short_name": "Nomeraa",
-  "start_url": "./",
+  "start_url": "./?v=5.1",
   "scope": "./",
   "display": "standalone",
   "background_color": "#090d11",

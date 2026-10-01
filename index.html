@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Номера">
-<link rel="manifest" href="./manifest.webmanifest">
+<link rel="manifest" href="./manifest.webmanifest?v=5.1">
 <link rel="apple-touch-icon" href="./apple-touch-icon.png">
 <title>Система автономеров</title>
 <style>
@@ -503,6 +503,165 @@ display:grid;place-items:center;font-size:36px;font-weight:950;box-shadow:0 18px
   </div>
 </div>
 
+
+<div class="modal" id="marketModal">
+  <div class="modal-card">
+    <div class="modal-head"><b>Рынок автономеров</b><button class="close" data-close="marketModal">Закрыть</button></div>
+    <div style="font-size:10px;color:#77838d;margin-bottom:10px">Редкие номера — игровые активы. При продаже удерживается комиссия 8%.</div>
+    <div class="market-grid" id="marketList"></div>
+  </div>
+</div>
+
+<div class="modal" id="economyModal">
+  <div class="modal-card">
+    <div class="modal-head"><b>Экономика и развитие</b><button class="close" data-close="economyModal">Закрыть</button></div>
+    <table class="economy-table">
+      <tr><td>Прокрутка цифр / букв</td><td>650 ₽</td></tr>
+      <tr><td>Полный новый комплект</td><td>1 200 ₽</td></tr>
+      <tr><td>Премиум-регион</td><td>4 500 ₽</td></tr>
+      <tr><td>Регистрация транспорта</td><td>1 000 ₽</td></tr>
+      <tr><td>Комиссия рынка</td><td>8%</td></tr>
+      <tr><td>Контракт дня</td><td>+12 000 ₽</td></tr>
+      <tr><td>Главная цель</td><td>1 000 000 ₽</td></tr>
+      <tr><td>Статусы</td><td>Новичок → Перекуп → Дилер → Коллекционер → Магнат</td></tr>
+    </table>
+    <div style="height:12px"></div>
+    <div class="license" id="licDealer"><div><b>Лицензия дилера</b><small>Разрешает продажу номеров дороже 75 000 ₽ и даёт +5% к выручке</small></div><button data-license="dealer">35 000 ₽</button></div>
+    <div class="license" id="licExpert"><div><b>Экспертная оценка</b><small>Показывает коэффициент редкости и даёт +3% к выручке</small></div><button data-license="expert">20 000 ₽</button></div>
+    <div class="license" id="licVip"><div><b>VIP-регистратор</b><small>Скидка 15% на прокрутки, регистрацию и премиум-регионы</small></div><button data-license="vip">60 000 ₽</button></div>
+  </div>
+</div>
+
+
+<div class="modal" id="carsModal">
+  <div class="modal-card">
+    <div class="modal-head"><b>Гараж и автомобили</b><button class="close" data-close="carsModal">Закрыть</button></div>
+    <div style="font-size:10px;color:#76828c;margin-bottom:10px">Номера получают дополнительную ценность, когда закреплены за автомобилем. Более дорогой класс машины увеличивает коллекционный капитал.</div>
+    <div class="car-detail">
+      <div class="car-stage"><div class="hero-car"></div></div>
+      <div><small>ВЫБРАННЫЙ АВТОМОБИЛЬ</small><h3 id="heroCarName">Lada Granta</h3><small>КАПИТАЛ АВТОМОБИЛЯ</small><div class="big-capital" id="heroCarValue">450 000 ₽</div><span class="hero-number" id="heroCarNumber">БЕЗ НОМЕРА</span></div>
+    </div>
+    <div class="vehicle-grid" id="vehicleList"></div>
+    <div style="height:12px"></div>
+    <b style="font-size:11px">Автосалон</b>
+    <div class="dealer-showroom" id="showroomList" style="margin-top:8px"></div>
+  </div>
+</div>
+
+<div class="modal" id="auctionModal">
+  <div class="modal-card">
+    <div class="modal-head"><b>Аукцион номеров</b><button class="close" data-close="auctionModal">Закрыть</button></div>
+    <div style="font-size:10px;color:#77838d;margin-bottom:10px">Виртуальные участники повышают ставки. Лоты обновляются при каждом открытии аукциона.</div>
+    <div class="auction-list" id="auctionList"></div>
+  </div>
+</div>
+
+<div class="modal" id="historyModal">
+  <div class="modal-card">
+    <div class="modal-head"><b>История операций</b><button class="close" data-close="historyModal">Закрыть</button></div>
+    <div class="history-list" id="historyList"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+
+<div class="mobile-dock" id="mobileDock">
+  <button class="active" data-dock="hub"><b>⌂</b>Главная</button>
+  <button data-dock="cars"><b>🚘</b>Гараж</button>
+  <button data-dock="market"><b>₽</b>Рынок</button>
+  <button data-dock="auction"><b>⚑</b>Аукцион</button>
+  <button data-dock="history"><b>≡</b>История</button>
+</div>
+
+
+<div class="result-overlay" id="resultOverlay">
+  <div class="result-card" id="resultCard">
+    <div class="result-inner">
+      <div class="result-eyebrow" id="resultEyebrow">РЕДКОЕ ВЫПАДЕНИЕ</div>
+      <div class="result-title" id="resultTitle">Редкий номер</div>
+      <div class="result-plate" id="resultPlate">А777АА 77</div>
+      <div class="result-value" id="resultValue">100 000 ₽</div>
+      <div class="result-sub" id="resultSub">Коллекционная оценка</div>
+      <div class="result-actions">
+        <button class="keep" id="resultKeep">Сохранить номер</button>
+        <button class="close-result" id="resultClose">Продолжить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="hub" id="gameHub">
+  <div class="hub-shell">
+    <div class="hub-top">
+      <div class="player"><div class="avatar77">77</div><div><small>ПРОФИЛЬ ИГРОКА</small><b id="hubRank">Новичок</b></div></div>
+      <div class="hub-money"><small>НАЛИЧНЫЕ</small><b id="hubBalance">50 000 ₽</b></div>
+    </div>
+
+    <div class="level-strip">
+      <b id="hubLevel">УР. 1</b><div class="xpbar"><i id="hubXp"></i></div><span id="hubXpText">0 / 100 XP</span>
+    </div>
+
+    <section class="hero-balance">
+      <div class="eyebrow">ОБЩИЙ КАПИТАЛ</div>
+      <h2 id="hubWorth">500 000 ₽</h2>
+      <div class="worth">Коллекционный рейтинг: <b id="collectionScore">0</b></div>
+      <div class="hero-actions">
+        <button class="primary" data-hub-action="terminal">Создать номер</button>
+        <button data-hub-action="garage">Гараж</button>
+        <button data-hub-action="auction">Аукцион</button>
+      </div>
+    </section>
+
+    <div class="hub-grid">
+      <div>
+        <section class="hub-card">
+          <h3>Игровые разделы</h3>
+          <small>Развивай коллекцию и капитал</small>
+          <div class="menu-grid">
+            <button class="menu-tile hot" data-hub-action="terminal"><div class="tile-icon">▣</div><b>Регистрация</b><small>Генерация и оценка новых номеров</small></button>
+            <button class="menu-tile" data-hub-action="garage"><div class="tile-icon">🚘</div><b>Гараж</b><small>Автомобили и установленные номера</small></button>
+            <button class="menu-tile" data-hub-action="market"><div class="tile-icon">₽</div><b>Рынок</b><small>Покупка и перепродажа номеров</small></button>
+            <button class="menu-tile" data-hub-action="auction"><div class="tile-icon">⚑</div><b>Аукцион</b><small>Ставки против виртуальных коллекционеров</small></button>
+            <button class="menu-tile" data-hub-action="economy"><div class="tile-icon">⌁</div><b>Бизнес</b><small>Лицензии и источники дохода</small></button>
+            <button class="menu-tile" data-hub-action="history"><div class="tile-icon">≡</div><b>История</b><small>Доходы, расходы и сделки</small></button>
+          </div>
+        </section>
+
+        <section class="hub-card" style="margin-top:12px">
+          <h3>Активы</h3>
+          <small>Самые ценные вещи аккаунта</small>
+          <div id="hubAssets"></div>
+        </section>
+      </div>
+
+      <div>
+        <section class="hub-card">
+          <h3>Задания дня</h3>
+          <small>Стабильный источник денег и репутации</small>
+          <div class="daily-list" id="dailyList"></div>
+        </section>
+
+        <section class="hub-card" style="margin-top:12px">
+          <h3>Дилерский бизнес</h3>
+          <small>Вкладывай деньги в постоянный доход</small>
+          <div class="business-list" id="businessList"></div>
+        </section>
+
+        <section class="hub-card" style="margin-top:12px">
+          <h3>Достижения</h3>
+          <div class="achievement-row" id="achievementList"></div>
+        </section>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:center;margin-top:13px"><button class="exit-hub" id="hubToTerminal">Открыть терминал регистрации</button></div>
+    <div class="hub-footer">Nomeraa · игровой симулятор · прогресс хранится локально на устройстве</div>
+  </div>
+</div>
+
+
 <script>
 (()=>{
 const $=q=>document.querySelector(q), $$=q=>[...document.querySelectorAll(q)];
@@ -528,6 +687,12 @@ if(!S.achievements)S.achievements={...fresh.achievements};
 if(typeof S.xp!=='number')S.xp=0;
 if(typeof S.level!=='number')S.level=1;
 if(typeof S.lastIncomeAt!=='number')S.lastIncomeAt=0;
+if(!Array.isArray(S.inventory))S.inventory=[];
+if(!Array.isArray(S.vehicles)||!S.vehicles.length)S.vehicles=JSON.parse(JSON.stringify(fresh.vehicles));
+if(!S.licenses)S.licenses={...fresh.licenses};
+if(typeof S.balance!=='number')S.balance=fresh.balance;
+if(typeof S.rep!=='number')S.rep=0;
+if(typeof S.coins!=='number')S.coins=fresh.coins;
 const money=n=>Math.round(n).toLocaleString('ru-RU')+' ₽', pick=a=>a[Math.floor(Math.random()*a.length)], sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const save=()=>localStorage.setItem(KEY,JSON.stringify(S));
 
@@ -1007,166 +1172,9 @@ let sec=299;setInterval(()=>{
     if(changed||currentAuction.length)drawAuction();
   }
 },1000);
-if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js?v=5.1').catch(()=>{}));
 })();
 </script>
-
-<div class="modal" id="marketModal">
-  <div class="modal-card">
-    <div class="modal-head"><b>Рынок автономеров</b><button class="close" data-close="marketModal">Закрыть</button></div>
-    <div style="font-size:10px;color:#77838d;margin-bottom:10px">Редкие номера — игровые активы. При продаже удерживается комиссия 8%.</div>
-    <div class="market-grid" id="marketList"></div>
-  </div>
-</div>
-
-<div class="modal" id="economyModal">
-  <div class="modal-card">
-    <div class="modal-head"><b>Экономика и развитие</b><button class="close" data-close="economyModal">Закрыть</button></div>
-    <table class="economy-table">
-      <tr><td>Прокрутка цифр / букв</td><td>650 ₽</td></tr>
-      <tr><td>Полный новый комплект</td><td>1 200 ₽</td></tr>
-      <tr><td>Премиум-регион</td><td>4 500 ₽</td></tr>
-      <tr><td>Регистрация транспорта</td><td>1 000 ₽</td></tr>
-      <tr><td>Комиссия рынка</td><td>8%</td></tr>
-      <tr><td>Контракт дня</td><td>+12 000 ₽</td></tr>
-      <tr><td>Главная цель</td><td>1 000 000 ₽</td></tr>
-      <tr><td>Статусы</td><td>Новичок → Перекуп → Дилер → Коллекционер → Магнат</td></tr>
-    </table>
-    <div style="height:12px"></div>
-    <div class="license" id="licDealer"><div><b>Лицензия дилера</b><small>Разрешает продажу номеров дороже 75 000 ₽ и даёт +5% к выручке</small></div><button data-license="dealer">35 000 ₽</button></div>
-    <div class="license" id="licExpert"><div><b>Экспертная оценка</b><small>Показывает коэффициент редкости и даёт +3% к выручке</small></div><button data-license="expert">20 000 ₽</button></div>
-    <div class="license" id="licVip"><div><b>VIP-регистратор</b><small>Скидка 15% на прокрутки, регистрацию и премиум-регионы</small></div><button data-license="vip">60 000 ₽</button></div>
-  </div>
-</div>
-
-
-<div class="modal" id="carsModal">
-  <div class="modal-card">
-    <div class="modal-head"><b>Гараж и автомобили</b><button class="close" data-close="carsModal">Закрыть</button></div>
-    <div style="font-size:10px;color:#76828c;margin-bottom:10px">Номера получают дополнительную ценность, когда закреплены за автомобилем. Более дорогой класс машины увеличивает коллекционный капитал.</div>
-    <div class="car-detail">
-      <div class="car-stage"><div class="hero-car"></div></div>
-      <div><small>ВЫБРАННЫЙ АВТОМОБИЛЬ</small><h3 id="heroCarName">Lada Granta</h3><small>КАПИТАЛ АВТОМОБИЛЯ</small><div class="big-capital" id="heroCarValue">450 000 ₽</div><span class="hero-number" id="heroCarNumber">БЕЗ НОМЕРА</span></div>
-    </div>
-    <div class="vehicle-grid" id="vehicleList"></div>
-    <div style="height:12px"></div>
-    <b style="font-size:11px">Автосалон</b>
-    <div class="dealer-showroom" id="showroomList" style="margin-top:8px"></div>
-  </div>
-</div>
-
-<div class="modal" id="auctionModal">
-  <div class="modal-card">
-    <div class="modal-head"><b>Аукцион номеров</b><button class="close" data-close="auctionModal">Закрыть</button></div>
-    <div style="font-size:10px;color:#77838d;margin-bottom:10px">Виртуальные участники повышают ставки. Лоты обновляются при каждом открытии аукциона.</div>
-    <div class="auction-list" id="auctionList"></div>
-  </div>
-</div>
-
-<div class="modal" id="historyModal">
-  <div class="modal-card">
-    <div class="modal-head"><b>История операций</b><button class="close" data-close="historyModal">Закрыть</button></div>
-    <div class="history-list" id="historyList"></div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-
-<div class="mobile-dock" id="mobileDock">
-  <button class="active" data-dock="hub"><b>⌂</b>Главная</button>
-  <button data-dock="cars"><b>🚘</b>Гараж</button>
-  <button data-dock="market"><b>₽</b>Рынок</button>
-  <button data-dock="auction"><b>⚑</b>Аукцион</button>
-  <button data-dock="history"><b>≡</b>История</button>
-</div>
-
-
-<div class="result-overlay" id="resultOverlay">
-  <div class="result-card" id="resultCard">
-    <div class="result-inner">
-      <div class="result-eyebrow" id="resultEyebrow">РЕДКОЕ ВЫПАДЕНИЕ</div>
-      <div class="result-title" id="resultTitle">Редкий номер</div>
-      <div class="result-plate" id="resultPlate">А777АА 77</div>
-      <div class="result-value" id="resultValue">100 000 ₽</div>
-      <div class="result-sub" id="resultSub">Коллекционная оценка</div>
-      <div class="result-actions">
-        <button class="keep" id="resultKeep">Сохранить номер</button>
-        <button class="close-result" id="resultClose">Продолжить</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="hub" id="gameHub">
-  <div class="hub-shell">
-    <div class="hub-top">
-      <div class="player"><div class="avatar77">77</div><div><small>ПРОФИЛЬ ИГРОКА</small><b id="hubRank">Новичок</b></div></div>
-      <div class="hub-money"><small>НАЛИЧНЫЕ</small><b id="hubBalance">50 000 ₽</b></div>
-    </div>
-
-    <div class="level-strip">
-      <b id="hubLevel">УР. 1</b><div class="xpbar"><i id="hubXp"></i></div><span id="hubXpText">0 / 100 XP</span>
-    </div>
-
-    <section class="hero-balance">
-      <div class="eyebrow">ОБЩИЙ КАПИТАЛ</div>
-      <h2 id="hubWorth">500 000 ₽</h2>
-      <div class="worth">Коллекционный рейтинг: <b id="collectionScore">0</b></div>
-      <div class="hero-actions">
-        <button class="primary" data-hub-action="terminal">Создать номер</button>
-        <button data-hub-action="garage">Гараж</button>
-        <button data-hub-action="auction">Аукцион</button>
-      </div>
-    </section>
-
-    <div class="hub-grid">
-      <div>
-        <section class="hub-card">
-          <h3>Игровые разделы</h3>
-          <small>Развивай коллекцию и капитал</small>
-          <div class="menu-grid">
-            <button class="menu-tile hot" data-hub-action="terminal"><div class="tile-icon">▣</div><b>Регистрация</b><small>Генерация и оценка новых номеров</small></button>
-            <button class="menu-tile" data-hub-action="garage"><div class="tile-icon">🚘</div><b>Гараж</b><small>Автомобили и установленные номера</small></button>
-            <button class="menu-tile" data-hub-action="market"><div class="tile-icon">₽</div><b>Рынок</b><small>Покупка и перепродажа номеров</small></button>
-            <button class="menu-tile" data-hub-action="auction"><div class="tile-icon">⚑</div><b>Аукцион</b><small>Ставки против виртуальных коллекционеров</small></button>
-            <button class="menu-tile" data-hub-action="economy"><div class="tile-icon">⌁</div><b>Бизнес</b><small>Лицензии и источники дохода</small></button>
-            <button class="menu-tile" data-hub-action="history"><div class="tile-icon">≡</div><b>История</b><small>Доходы, расходы и сделки</small></button>
-          </div>
-        </section>
-
-        <section class="hub-card" style="margin-top:12px">
-          <h3>Активы</h3>
-          <small>Самые ценные вещи аккаунта</small>
-          <div id="hubAssets"></div>
-        </section>
-      </div>
-
-      <div>
-        <section class="hub-card">
-          <h3>Задания дня</h3>
-          <small>Стабильный источник денег и репутации</small>
-          <div class="daily-list" id="dailyList"></div>
-        </section>
-
-        <section class="hub-card" style="margin-top:12px">
-          <h3>Дилерский бизнес</h3>
-          <small>Вкладывай деньги в постоянный доход</small>
-          <div class="business-list" id="businessList"></div>
-        </section>
-
-        <section class="hub-card" style="margin-top:12px">
-          <h3>Достижения</h3>
-          <div class="achievement-row" id="achievementList"></div>
-        </section>
-      </div>
-    </div>
-
-    <div style="display:flex;justify-content:center;margin-top:13px"><button class="exit-hub" id="hubToTerminal">Открыть терминал регистрации</button></div>
-    <div class="hub-footer">Nomeraa · игровой симулятор · прогресс хранится локально на устройстве</div>
-  </div>
-</div>
 
 </body>
 </html>
