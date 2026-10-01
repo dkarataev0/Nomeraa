@@ -1,6 +1,6 @@
 {
-  "name": "Система автономеров — Premium",
-  "short_name": "Номера",
+  "name": "Nomeraa — коллекционер автономеров",
+  "short_name": "Nomeraa",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
